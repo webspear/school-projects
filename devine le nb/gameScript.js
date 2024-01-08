@@ -42,10 +42,20 @@ function verif(a) {
         console.log('small')
         remainingHealth -= damage
         fredcomment.innerHTML = 'Maybe try a bigger amount?'
+        if (document.getElementById('fredcom').style.display == 'none') {
+            document.getElementById('fredcom').style.display = 'block'
+            document.getElementById('fredcom').style.animation = '0.2s 1 fadeInOverlay'
+            setTimeout(function(){document.getElementById('fredcom').style.display = 'block'}, 100)
+        }
     } else if (choice > answer) {
         remainingHealth -= damage
         console.log('big')
         fredcomment.innerHTML = 'Maybe try a smaller amount?'
+        if (document.getElementById('fredcom').style.display == 'none') {
+            document.getElementById('fredcom').style.display = 'block'
+            document.getElementById('fredcom').style.animation = '0.2s 1 fadeInOverlay'
+            setTimeout(function(){document.getElementById('fredcom').style.display = 'block'}, 100)
+        }
     }
     healthcomment.innerHTML = 'Remaining health: ' + remainingHealth + '/100'
     console.log('remaining health: ' + remainingHealth)
@@ -147,24 +157,24 @@ function nextDialogueRetry() {
 document.getElementById('fredhoverarea').onmouseover = function() {
     document.getElementById('fredhover').style.opacity = 1
     document.getElementById('fredcom').style.display = 'block'
-    document.getElementById('fredcom').style.animation = '0.4s 1 fadeInOverlay'
-    setTimeout(function(){document.getElementById('fredcom').style.display = 'block'}, 300)
+    document.getElementById('fredcom').style.animation = '0.2s 1 fadeInOverlay'
+    setTimeout(function(){document.getElementById('fredcom').style.display = 'block'}, 100)
 }
 document.getElementById('fredhoverarea').onmouseout = function() {
     document.getElementById('fredhover').style.opacity = 0
-    document.getElementById('fredcom').style.animation = '0.4s 1 fadeOutOverlay'
-    setTimeout(function(){document.getElementById('fredcom').style.display = 'none'}, 300)
+    document.getElementById('fredcom').style.animation = '0.2s 1 fadeOutOverlay'
+    setTimeout(function(){document.getElementById('fredcom').style.display = 'none'}, 100)
 }
 document.getElementById('healthbar').onmouseover = function() {
     document.getElementById('healthhover').style.opacity = 1
     document.getElementById('healthcom').style.display = 'block'
-    document.getElementById('healthcom').style.animation = '0.4s 1 fadeInOverlay'
-    setTimeout(function(){document.getElementById('healthcom').style.display = 'block'}, 300)
+    document.getElementById('healthcom').style.animation = '0.2s 1 fadeInOverlay'
+    setTimeout(function(){document.getElementById('healthcom').style.display = 'block'}, 100)
 }
 document.getElementById('healthbar').onmouseout = function() {
     document.getElementById('healthhover').style.opacity = 0
-    document.getElementById('healthcom').style.animation = '0.4s 1 fadeOutOverlay'
-    setTimeout(function(){document.getElementById('healthcom').style.display = 'none'}, 300)
+    document.getElementById('healthcom').style.animation = '0.2s 1 fadeOutOverlay'
+    setTimeout(function(){document.getElementById('healthcom').style.display = 'none'}, 100)
 }
 
 
