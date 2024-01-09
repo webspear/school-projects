@@ -78,10 +78,30 @@ function nextDialogueTutorial() {
     select()
     next += 1
     if (next == 2) {
-        console.log("passed")
-        dialogue.innerHTML = "so uh... i dont have dialogue yet (just know that u can hover over stuff)"
+        dialogue.innerHTML = "So you're here lookin' for a job, eh?"
     }
     if (next == 3) {
+        dialogue.innerHTML = "I'll take you in. Name's Fred, been workin' here for over two decades now."
+    }
+    if (next == 4) {
+        dialogue.innerHTML = "The work's pretty simple, I'll explain it to you."
+    }
+    if (next == 5) {
+        dialogue.innerHTML = "You'll have to determine the right amount of liquor to use for a cocktail."
+    }
+    if (next == 6) {
+        dialogue.innerHTML = "To start, I'll give you an average order. The amount of mL should be between 0 and 100."
+    }
+    if (next == 7) {
+        dialogue.innerHTML = "I'll give you other orders once you're done with this."
+    }
+    if (next == 8) {
+        dialogue.innerHTML = "Oh yeah, you can also hover your mouse on stuff you see to get an explanation."
+    }
+    if (next == 9) {
+        dialogue.innerHTML = "Good luck!"
+    }
+    if (next >= 10) {
         console.log("end tutorial")
         const bartender = document.getElementById("startupOverlay")
         document.getElementById("tutorialDialogue").style.animation = '0.4s 1 fadeOutOverlay'
@@ -120,9 +140,9 @@ function retryScreen(e){
         setTimeout(function(){
             retryScreen.style.opacity = 1
             if (e == 'win') {
-                document.getElementById('retryDialogue1').innerHTML = 'Congratulations!'
+                document.getElementById('retryDialogue1').innerHTML = 'Well done!'
             } else {
-                document.getElementById('retryDialogue1').innerHTML = 'It seems you have failed...'
+                document.getElementById('retryDialogue1').innerHTML = 'Accidents happen... Maybe give it another shot?'
             }
         }, 300)
     }, 300)
@@ -136,17 +156,17 @@ function nextDialogueRetry() {
     select()
     next2 += 1
     if (next2 == 2) {
-        dialogue.innerHTML = 'You tried ' + tries + ' time(s) and your remaining health is ' + remainingHealth + '.'
+        dialogue.innerHTML = 'You tried ' + tries + ' time(s) and your remaining liquor is ' + remainingHealth + 'mL.'
     } else if (next2 == 3) {
         dialogue.innerHTML = 'You can try again on the same difficulty, ...'
     } else if (next2 == 4) {
-        dialogue.innerHTML = '...or try a harder challenge.'
+        dialogue.innerHTML = '...or try a harder mix.'
     } else if (next2 == 5) {
-        dialogue.innerHTML = 'A harder challenge means more health penalties and a bigger range.'
+        dialogue.innerHTML = 'A harder mix means more ingredient loss and a bigger range.'
     } else if (next2 == 6) {
-        dialogue.innerHTML = 'If it was too hard, you can also try an easier challenge.'
+        dialogue.innerHTML = 'If it was too hard, you can also try an easier order.'
     } else if (next2 == 7) {
-        dialogue.innerHTML = 'An easier challenge means less health penalties and a smaller range.'
+        dialogue.innerHTML = 'An easier order means less ingredient loss and a smaller range.'
     } else if (next2 == 8) {
         dialogue.innerHTML = 'What will you do?'
     } else if (next2 >= 9) {
@@ -183,21 +203,21 @@ document.getElementById('easy').onclick = function() {
     console.log('difficulty set to easy')
     damage = 5
     range = 20
-    document.getElementById('inputcomment').textContent = 'Answer is between 0 and 20'
+    document.getElementById('inputcomment').textContent = 'Amount is between 0 and 20'
     reset()
 }
 document.getElementById('normal').onclick = function() {
     console.log('difficulty set to normal')
     damage = 10
     range = 100
-    document.getElementById('inputcomment').textContent = 'Answer is between 0 and 100'
+    document.getElementById('inputcomment').textContent = 'Amount is between 0 and 100'
     reset()
 }
 document.getElementById('hard').onclick = function() {
     console.log('difficulty set to hard')
     damage = 20
     range = 200
-    document.getElementById('inputcomment').textContent = 'Answer is between 0 and 200'
+    document.getElementById('inputcomment').textContent = 'Amount is between 0 and 200'
     reset()
 }
 
@@ -205,8 +225,8 @@ function reset() {
     tries = 0
     remainingHealth = 100
     console.log(tries, remainingHealth, range)
-    document.getElementById('fredcomment').innerHTML = 'You can now try again!'
-    document.getElementById('healthcomment').innerHTML = 'Remaining health: ' + remainingHealth + '/100'
+    document.getElementById('fredcomment').innerHTML = 'You can go again!'
+    document.getElementById('healthcomment').innerHTML = 'Remaining Liquor: ' + remainingHealth + '/100'
     document.getElementById('healthbar').src = 'Images/healthbar - filled.png'
     answer = Math.ceil(Math.random()*range)
     console.log('new answer: ' + answer)
