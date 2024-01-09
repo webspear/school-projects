@@ -63,7 +63,7 @@ body {
 }
 
 .tutorialDialogue {
-    font-size: 100%;
+    font-size: 1.9vw;
     width: 100vmin;
     height: 20vmin;
     background-color: rgb(0, 0, 0, 0.65);
@@ -80,6 +80,7 @@ body {
     justify-content: center;
 }
 #fredid {
+    font-size: 3vw;
     position: absolute;
     top: -3vh;
     transform: translate(-50%, -50%);
@@ -234,14 +235,14 @@ body {
     height: 3vw;
     width: 6vw;
     background-color: rgb(0, 0, 0, 0);
-    border: 5px solid white;
+    border: 0.5vw solid white;
     color: white;
     transform: translateY(-20px);
     outline: none;
     text-align: center;
     cursor: url("https://imgur.com/BIIZmdl.png"), auto;
     &:hover {
-        border-width: 8px;
+        border-width: 0.8vw;
     }
 }
 input::-webkit-outer-spin-button,
@@ -261,7 +262,7 @@ input::-webkit-inner-spin-button {
 #confirm {
     background-color: black;
     outline: none;
-    border: 5px solid white;
+    border: 0.5vw solid white;
     color: white;
     font-size: 2.5vw;
     font-family: ending;
@@ -272,15 +273,15 @@ input::-webkit-inner-spin-button {
     margin-top: 3vw;
     &:hover {
         background-color: black;
-        border-width: 8px;
+        border-width: 0.8vw;
     }
 }
 #mute {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 40px;
-    height: 40px;
+    top: 0.5vw;
+    right: 0.5vw;
+    width: 12vw;
+    height: 12vw;
 }
 
 
@@ -315,15 +316,15 @@ input::-webkit-inner-spin-button {
     text-align: center;
     background-color: black;
     outline: none;
-    border: 5px solid white;
+    border: 0.5vw solid white;
     color: white;
-    font-size: 300%;
+    font-size: 1.9vw;
     font-family: ending;
-    height: 60px;
-    width: 250px;
+    height: 3.5vw;
+    width: 15vw;
     margin: 0 auto;
     cursor: url("https://imgur.com/BIIZmdl.png"), auto;
     &:hover {
-        border-width: 8px;
+        border-width: 0.8vw;
     }
 }
