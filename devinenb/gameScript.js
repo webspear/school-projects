@@ -75,6 +75,7 @@ function verif(a) {
 let next = 1
 function nextDialogueTutorial() {
     const dialogue = document.getElementById("tutorialDialogue1")
+    select()
     next += 1
     if (next == 2) {
         console.log("passed")
@@ -132,6 +133,7 @@ let next2 = 1
 function nextDialogueRetry() {
     console.log('arrived at retry sequence part 2')
     const dialogue = document.getElementById("retryDialogue1")
+    select()
     next2 += 1
     if (next2 == 2) {
         dialogue.innerHTML = 'You tried ' + tries + ' time(s) and your remaining health is ' + remainingHealth + '.'
