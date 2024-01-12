@@ -7,7 +7,7 @@ let tries = 0
 let damage = 10
 let difficulty = 'normal'
 document.getElementById('fredcom').style.display = 'none'
-const bgmusic = new Audio('Sounds/Fireside-Tales-MP3.mp3')
+const bgmusic = new Audio('Sounds/bg-music.mp3')
 
 
 document.getElementById('startbutton').onclick = function() {
@@ -23,7 +23,7 @@ document.getElementById('startbutton').onclick = function() {
             dialogue.style.display = 'flex'
             bgmusic.play()
             bgmusic.loop = true
-            bgmusic.volume = 0.03
+            bgmusic.volume = 0.1
         }, 500)
     }, 500)
 }
