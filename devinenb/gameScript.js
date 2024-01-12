@@ -5,6 +5,8 @@ let totalHealth = 100
 let remainingHealth = totalHealth
 let tries = 0
 let damage = 10
+let difficulty = 'normal'
+document.getElementById('fredcom').style.display = 'none'
 const bgmusic = new Audio('Sounds/Fireside-Tales-MP3.mp3')
 
 
@@ -29,10 +31,11 @@ document.getElementById('startbutton').onclick = function() {
 
 function verif(a) {
     var choice = a
-    console.log(choice)
+    console.log("user's choice: " + choice)
     const healthbar = document.getElementById('healthbar')
     const fredcomment = document.getElementById('fredcomment')
     const healthcomment = document.getElementById('healthcomment')
+    const fredcom = document.getElementById('fredcom')
     tries += 1
     if (choice == answer) {
         console.log('win')
@@ -41,20 +44,28 @@ function verif(a) {
         console.log('small')
         remainingHealth -= damage
         fredcomment.innerHTML = 'Maybe try a bigger amount?'
-        if (document.getElementById('fredcom').style.display == 'none') {
-            document.getElementById('fredcom').style.display = 'block'
-            document.getElementById('fredcom').style.animation = '0.2s 1 fadeInOverlay'
-            setTimeout(function(){document.getElementById('fredcom').style.display = 'block'}, 100)
+        if (fredcom.style.display == 'block') {
+            fredcom.style.animation = '0.2s 1 fadeOutOverlay'
+            setTimeout(function(){fredcom.style.display = 'block'}, 100)
         }
+        setTimeout(function(){
+            fredcom.style.display = 'block'
+            fredcom.style.animation = '0.2s 1 fadeInOverlay'
+            setTimeout(function(){fredcom.style.display = 'block'}, 100)
+        }, 100)
     } else if (choice > answer) {
         remainingHealth -= damage
         console.log('big')
         fredcomment.innerHTML = 'Maybe try a smaller amount?'
-        if (document.getElementById('fredcom').style.display == 'none') {
-            document.getElementById('fredcom').style.display = 'block'
-            document.getElementById('fredcom').style.animation = '0.2s 1 fadeInOverlay'
-            setTimeout(function(){document.getElementById('fredcom').style.display = 'block'}, 100)
+        if (fredcom.style.display == 'block') {
+            fredcom.style.animation = '0.2s 1 fadeOutOverlay'
+            setTimeout(function(){fredcom.style.display = 'block'}, 100)
         }
+        setTimeout(function(){
+            fredcom.style.display = 'block'
+            fredcom.style.animation = '0.2s 1 fadeInOverlay'
+            setTimeout(function(){fredcom.style.display = 'block'}, 100)
+        }, 100)
     }
     healthcomment.innerHTML = 'Remaining health: ' + remainingHealth + '/100'
     console.log('remaining health: ' + remainingHealth)
@@ -160,9 +171,15 @@ function nextDialogueRetry() {
     } else if (next2 == 3) {
         dialogue.innerHTML = 'You can try again on the same difficulty, ...'
     } else if (next2 == 4) {
-        dialogue.innerHTML = '...or try a harder mix.'
+        if (difficulty == 'hard') {
+            dialogue.innerHTML = '...or try an easier mix.'
+            next2 = 6
+        } else {
+            dialogue.innerHTML = '...or try a harder mix.'
+        }
     } else if (next2 == 5) {
         dialogue.innerHTML = 'A harder mix means more ingredient loss and a bigger range.'
+        if (difficulty == 'easy') {next2 = 7}
     } else if (next2 == 6) {
         dialogue.innerHTML = 'If it was too hard, you can also try an easier order.'
     } else if (next2 == 7) {
@@ -201,6 +218,7 @@ document.getElementById('healthhoverarea').onmouseout = function() {
 
 document.getElementById('easy').onclick = function() {
     console.log('difficulty set to easy')
+    difficulty = 'easy'
     damage = 5
     range = 20
     document.getElementById('inputcomment').textContent = 'Amount is between 0 and 20'
@@ -208,6 +226,7 @@ document.getElementById('easy').onclick = function() {
 }
 document.getElementById('normal').onclick = function() {
     console.log('difficulty set to normal')
+    difficulty = 'normal'
     damage = 10
     range = 100
     document.getElementById('inputcomment').textContent = 'Amount is between 0 and 100'
@@ -215,6 +234,7 @@ document.getElementById('normal').onclick = function() {
 }
 document.getElementById('hard').onclick = function() {
     console.log('difficulty set to hard')
+    difficulty = 'hard'
     damage = 20
     range = 200
     document.getElementById('inputcomment').textContent = 'Amount is between 0 and 200'
