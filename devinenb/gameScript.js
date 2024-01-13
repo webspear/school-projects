@@ -19,7 +19,9 @@ document.getElementById('startbutton').onclick = function() {
         document.getElementById('startbutton').style.display = 'none'
         starting.style.display = 'none'
         dialogue.style.animation = '0.6s 1 fadeInOverlay'
+        document.getElementById('mute').style.animation = '0.6s 1 fadeInOverlay'
         setTimeout(function(){
+            document.getElementById('mute').style.opacity = 1
             dialogue.style.display = 'flex'
             bgmusic.play()
             bgmusic.loop = true
