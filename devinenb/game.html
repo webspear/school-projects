@@ -10,7 +10,7 @@
 
 </head>
 <body>
-    <img src="Images/background bar.png" alt="" id="background">
+    <img src="Images/background bar.png" alt="" id="background"> 
     <div class="startup">
         <button id="startbutton">START</button>
         <img src="Images/background bar tutorial.png" alt="" id="startupOverlay">
@@ -21,20 +21,21 @@
             <img src="Images/next animation.gif" alt="" id="nextAnim">
         </div>
     </div>
+    <div id="sound" onmouseover="hover()" onmousedown="select()"><img src="Images/mute.png" alt="" id="mute"></div>
     <div class="overlay" id="overlay">
-        <div id="fredFrame" onmouseenter="hover()">
+        <div id="fredFrame">
             <img src="Images/fred with table hover.png" alt="" id="fredhover">
             <img src="Images/fred with table.png" alt="" id="fred">
-            <div id="fredhoverarea"></div>
+            <div id="fredhoverarea" onmouseenter="hover()"></div>
         </div>
         <div id="fredcom">
             <img src="Images/pop-up.png" alt="" id="fredpop">
             <h1 id="fredcomment">You can hover over things for more information (and clues)!</h1>
         </div>
-        <div id="healthbarFrame" onmouseenter="hover()">
+        <div id="healthbarFrame">
             <img src="Images/healthbar - hover.png" alt="" id="healthhover">
             <img src="Images/healthbar - filled.png" alt="" id="healthbar">
-            <div id="healthhoverarea"></div>
+            <div id="healthhoverarea" onmouseenter="hover()"></div>
         </div>
         <div id="healthcom">
             <img src="Images/pop-up2.png" alt="" id="healthpop">
@@ -49,7 +50,7 @@
             <h1 id="inputcomment">Amount is between 0 and 100</h1>
             <button id="confirm" onmouseenter="hover()" onmousedown="select()">MIX IT UP!</button> 
         </div>
-        <div id="sound" onmouseover="hover()" onmousedown="select()"><img src="Images/mute.png" alt="" id="mute"></div>
+        
     </div>
     <div class="retry" id="retryScreen">
         <img src="Images/background bar tutorial.png" alt="" id="retryScreenOverlay">
