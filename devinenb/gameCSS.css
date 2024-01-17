@@ -12,7 +12,7 @@
 body {
     font-family: ending;
     display: flex;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
 }
 
 
@@ -45,7 +45,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 200%;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
     font-family: ending;
     color: white;
     background-color: black;
@@ -240,7 +240,7 @@ body {
     transform: translateY(-1vw);
     outline: none;
     text-align: center;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
 } #input:hover {
     border-width: 0.5vw;
 }
@@ -268,7 +268,7 @@ input::-webkit-inner-spin-button {
     height: 3vw;
     width: 18vw;
     text-align: center;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
     margin-top: 3vw;
 } #confirm:hover {
         background-color: black;
@@ -322,7 +322,7 @@ input::-webkit-inner-spin-button {
     height: 3vw;
     width: 16vw;
     margin: 0 auto;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
 } .difficulty:hover {
     border-width: 0.5vw;
 }
