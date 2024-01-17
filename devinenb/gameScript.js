@@ -69,7 +69,7 @@ function verif(a) {
             setTimeout(function(){fredcom.style.display = 'block'}, 100)
         }, 100)
     }
-    healthcomment.innerHTML = 'Remaining health: ' + remainingHealth + '/100'
+    healthcomment.innerHTML = 'Remaining Liquor: ' + remainingHealth + 'mL/100mL'
     console.log('remaining health: ' + remainingHealth)
     console.log('tries: ' + tries)
     if (remainingHealth <= totalHealth*0.75) {
@@ -248,7 +248,7 @@ function reset() {
     remainingHealth = 100
     console.log(tries, remainingHealth, range)
     document.getElementById('fredcomment').innerHTML = 'You can go again!'
-    document.getElementById('healthcomment').innerHTML = 'Remaining Liquor: ' + remainingHealth + '/100'
+    document.getElementById('healthcomment').innerHTML = 'Remaining Liquor: ' + remainingHealth + 'mL/100mL'
     document.getElementById('healthbar').src = 'Images/healthbar - filled.png'
     answer = Math.ceil(Math.random()*range)
     console.log('new answer: ' + answer)
