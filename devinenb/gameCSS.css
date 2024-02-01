@@ -1,6 +1,7 @@
 *{
     margin: 0;
     box-sizing: border-box;
+    user-select: none;
 }
 
 
@@ -11,7 +12,7 @@
 body {
     font-family: ending;
     display: flex;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
 }
 
 
@@ -44,7 +45,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 200%;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
     font-family: ending;
     color: white;
     background-color: black;
@@ -63,14 +64,14 @@ body {
 }
 
 .tutorialDialogue {
-    font-size: 100%;
+    font-size: 1vw;
     width: 100vmin;
     height: 20vmin;
-    background-color: rgb(0, 0, 0, 0.8);
-    border: 5px solid white;
+    background-color: rgb(0, 0, 0, 0.65);
+    border: 0.5vw solid white;
     text-align: center;
     color: white;
-    padding: 50px;
+    padding: 2vw;
     position: absolute;
     left: 50%;
     top: 85%;
@@ -97,107 +98,113 @@ body {
 
 .overlay {
     width: 70vw;
-    height: 80vh;
-    background-color: rgb(0, 0, 0, 0.8);
-    border: 5px solid white;
+    height: 40vw;
+    background-color: rgb(0, 0, 0, 0.65);
+    border: 0.5vw solid white;
     color: white;
     position: relative;
     left: 50%;
-    top: 10vh;
-    transform: translate(-50%, 0%);
+    top: 50vh;
+    transform: translate(-50%, -50%);
     display: none;
 }
 
 
 #fred {
     position: absolute;
-    bottom: 5vh;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 90%;
+    top: 55%;
+    left: 0;
+    transform: translate(0, -50%);
+    width: 95%;
     opacity: 1;
     object-fit: cover;
 }
 #fredhover {
     position: absolute;
-    bottom: 5vh;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 90%;
+    top: 55%;
+    left: 0;
+    transform: translate(0, -50%);
+    width: 95%;
     object-fit: cover;
     opacity: 0;
 }
 #fredhoverarea {
-    width: 9vw;
-    height: 12vw;
+    width: 18vw;
+    height: 25vw;
     position: absolute;
-    bottom: 8vh;
-    left: 51%;
-    transform: translate(-50%, 0);
+    top: 48%;
+    left: 11vw;
+    transform: translate(-50%, -50%);
+    z-index: 999;
 }
 
 #fredpop {
     position: absolute;
-    bottom: 20vh;
-    right: 15vw;
-    width: 15vw;
-    transform: scaleX(-1);
+    top: 18%;
+    left: 32%;
+    transform: translate(-50%, -50%);
+    z-index: 990;
+    width: 13vw;
 }
 #fredcomment {
     position: absolute;
     color: black;
-    font-size: 1vw;
-    width: 13vw;
-    top: 52vh;
+    font-size: 0.9vw;
+    width: 12vw;
+    top: 15%;
+    left: 32%;
     transform: translate(-50%, -50%);
-    right: 9vw;
     text-align: center;
+    z-index: 991;
 }
 #fredcom {
     display: none;
 }
 
-.topbar {
-    position: relative;
-    top: 5vh;
-    width: 90%;
-    height: 40vh;
-    left: 50%;
-    transform: translateX(-50%);
-}
 #healthbar {
     opacity: 1;
-    height: 40vh;
     position: absolute;
-    right: 10vw;
-    top: 50%;
-    transform: translate(50%, -50%);
+    top: 55%;
+    left: 0;
+    transform: translate(0, -50%);
+    width: 95%;
 }
 #healthhover {
     opacity: 0;
-    height: 40vh;
     position: absolute;
-    right: 10vw;
-    top: 50%;
-    transform: translate(50%, -50%);
+    top: 55%;
+    left: 0;
+    transform: translate(0, -50%);
+    width: 95%;
+}
+#healthhoverarea {
+    width: 6vw;
+    height: 14vw;
+    position: absolute;
+    top: 61%;
+    left: 23.5vw;
+    transform: translate(-50%, -50%);
+    z-index: 998;
 }
 
 #healthpop{
     position: absolute;
-    right: 22vw;
-    top: 45%;
-    transform: translate(50%, -50%);
+    top: 65%;
+    left: 51%;
+    transform: translate(-50%, -50%);
+    z-index: 995;
     width: 15vw;
 }
 #healthcomment {
     position: absolute;
     color: black;
-    font-size: 1vw;
-    right: 23vw;
-    top: 45%;
-    transform: translate(50%, -50%);
-    width: 13vw;
+    font-size: 0.9vw;
+    width: 12vw;
+    top: 65%;
+    left: 53%;
+    transform: translate(-50%, -50%);
     text-align: center;
+    z-index: 996;
 }
 #healthcom {
     display: none;
@@ -205,13 +212,15 @@ body {
 
 .inputarea {
     position: absolute;
-    left: 10vw;
+    left: 65%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 #inputFrame {
-    position: absolute;
-    top: 7vh;
-    left: 28vw;
-    transform: translateX(-50%);
     width: 30vw;
     height: 1vw;
     display: flex;
@@ -219,55 +228,61 @@ body {
     justify-content: center;
     text-align: center;
 }
-#text1 {
-    font-size: 200%;
-}
 #input {
-    font-size: 300%;
+    font-size: 2.3vw;
     font-family: ending;
-    margin: 0 10px;
-    height: 60px;
-    width: 120px;
+    margin: 0 1vw;
+    height: 3vw;
+    width: 6vw;
     background-color: rgb(0, 0, 0, 0);
-    border: 5px solid white;
+    border: 0.3vw solid white;
     color: white;
-    transform: translateY(-20px);
+    transform: translateY(-1vw);
     outline: none;
     text-align: center;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
-    &:hover {
-        border-width: 8px;
-    }
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+} #input:hover {
+    border-width: 0.5vw;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+#inputcomment {
+    text-align: center;
+    margin: 2vw 0;
+    font-size: 1.6vw;
+}
+#text1 {
+    font-size: 1.6vw;
+}
 
 #confirm {
     background-color: black;
     outline: none;
-    border: 5px solid white;
+    border: 0.3vw solid white;
     color: white;
-    font-size: 300%;
+    font-size: 2.2vw;
     font-family: ending;
-    height: 60px;
-    width: 300px;
-    position: absolute;
-    top: 18vh;
-    left: 28vw;
-    transform: translateX(-50%);
+    height: 3vw;
+    width: 18vw;
     text-align: center;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
-    &:hover {
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    margin-top: 3vw;
+} #confirm:hover {
         background-color: black;
-        border-width: 10px;
-        height: 70px;
-        width: 310px;
-        top: 17.5vh;
-    }
+        border-width: 0.5vw;
 }
+#mute {
+    position: absolute;
+    top: 0.5vw;
+    right: 0.5vw;
+    width: 3vw;
+    height: 3vw;
+    opacity: 0;
+}
+
 
 .retry {
     display: none;
@@ -300,15 +315,14 @@ input::-webkit-inner-spin-button {
     text-align: center;
     background-color: black;
     outline: none;
-    border: 5px solid white;
+    border: 0.3vw solid white;
     color: white;
-    font-size: 300%;
+    font-size: 2.5vw;
     font-family: ending;
-    height: 60px;
-    width: 250px;
+    height: 3vw;
+    width: 16vw;
     margin: 0 auto;
-    cursor: url("https://imgur.com/BIIZmdl.png"), auto;
-    &:hover {
-        border-width: 8px;
-    }
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+} .difficulty:hover {
+    border-width: 0.5vw;
 }
