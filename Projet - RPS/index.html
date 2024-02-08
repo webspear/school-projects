@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors!</title>
+    <link rel="icon" href="images/favicon.png">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    
+    <!--background image-->
+    <img src="images/background.jpg" alt="" id="background"> 
+
+    <!--mute background music button-->
+    <div id="sound" onmouseover="hover()" onmousedown="select()"><img src="images/mute.png" alt="" id="mute"></div>
+
+    <!--starting menu-->
+    <div id="menu">
+        <h1 class="bigText">Rock, Paper, Scissors!</h1>
+        <button id="startButton" onmouseover="hover()" onmousedown="select()">START</button>
+        <button id="helpButton" onmouseover="hover()" onmousedown="select()">HOW TO PLAY</button>
+    </div>
+
+    <!--help menu-->
+    <div id="help">
+        <h1 class="bigText">HOW TO PLAY</h1>
+        <p class="smallText" id="helpText">
+            1. Basic Rules:<br>
+            Rock beats Scissors.<br>
+            Scissors beats Paper.<br>
+            Paper beats Rock. <br><br>
+            2. Health <br>
+            You start off with 100 health points. After each loss, you will receive a health penalty depending on the difficulty, as listed below: <br>
+            Easy: 10 HP lost.<br>
+            Normal: 20 HP lost.<br>
+            Hard: 50 HP lost.<br><br>
+            3. Points<br>
+            Each win gives you 10 points. Your goal is to get the most amount of points before you lose all your health.
+        </p>
+        <button id="closeHelp" onmouseover="hover()" onmousedown="select()">CLOSE</button>
+    </div>
+
+    <!--difficulty selecting screen-->
+    <div id="difficulties">
+        <h1 class="bigText">PLEASE SELECT YOUR DIFFICULTY</h1>
+        <button class="difficulty" id="easy" onmouseover="hover()" onmousedown="select()">EASY</button>
+        <button class="difficulty" id="normal" onmouseover="hover()" onmousedown="select()">NORMAL</button>
+        <button class="difficulty" id="hard" onmouseover="hover()" onmousedown="select()">HARD</button>
+    </div>
+
+    <!--the game itself-->
+    <div id="game">
+        <div id="optionContainerPlayer">
+            <div id="rock" class="choice" onclick="play(this)" onmouseover="hover()" onmousedown="select()"><img src="images/rock.png" alt="" class="image"></div>
+            <div id="paper" class="choice" onclick="play(this)" onmouseover="hover()" onmousedown="select()"><img src="images/paper.png" alt="" class="image"></div>
+            <div id="scissors" class="choice" onclick="play(this)" onmouseover="hover()" onmousedown="select()"><img src="images/scissors.png" alt="" class="image"></div>
+        </div>
+
+
+        <div id="brawl">
+            <h1 class="smallText" id="playerText">YOU</h1>
+            <h1 class="smallText" id="computerText">COMPUTER</h1>
+            <img src="images/rock.png" alt="" id="computerChoice" class="image">
+            <img src="images/rock.png" alt="" id="playerChoice" class="image">
+            <h1 class="bigText" id="countdown"></h1>
+        </div>
+
+        <div class="stats">
+            <div id="playerHealthContainer">
+                <h1 class="smallText" id="playerHealth">HEALTH: 100</h1>
+                <div id="healthbar"></div>
+                <div id="healthbarFrame"></div>
+            </div>
+            <h1 class="smallText" id="score">SCORE: 0</h1>
+            <h1 class="smallText" id="difficulty">DIFFICULTY: null</h1>
+        </div>
+    </div>
+
+    <!--game over screen-->
+    <div id="over">
+        <h1 class="bigText" id="gameOverText">GAME OVER</h1>
+        <h1 class="smallText" id="finalScore">SCORE: 0</h1>
+        <button id="retry" onmouseover="hover()" onmousedown="select()">RETRY</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
