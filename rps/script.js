@@ -10,28 +10,32 @@ const computerChoice = document.getElementById('computerChoice')
 const countdown = document.getElementById('countdown')
 const playerHealthText = document.getElementById('playerHealth')
 const scoreText = document.getElementById('score')
-// sound varaibles
+// sound variables
 const punch = new Audio('sounds/punch.mp3')
 const damageSFX = new Audio('sounds/damage.mp3')
 const correctSFX = new Audio('sounds/correct.mp3')
 const bgMusic = new Audio('sounds/bg-music.mp3')
 
+// start the game
+document.getElementById('startGame').onclick = function() {
+    document.getElementById('startOverlay').style.animation = 'fadeOut 1550ms'
+    setTimeout(() => { document.getElementById('startOverlay').style.visibility = 'hidden' }, 1500)// start music (autoplay policices prevent me from starting the music on page load)
+    bgMusic.play()
+    bgMusic.loop = true
+    bgMusic.volume = 0.1
+}
+
 // screen changing
 document.getElementById('startButton').onclick = function() { 
     document.getElementById('menu').style.visibility = 'hidden'
     document.getElementById('difficulties').style.visibility = 'visible'
-
-    // start music (autoplay policices prevent me from starting the music on page load)
-    bgMusic.play()
-    bgMusic.loop = true
-    bgMusic.volume = 0.1
 }
 
 // open help menu
 document.getElementById('helpButton').onclick = function() {
     document.getElementById('help').style.visibility = 'visible'
 }
-//close help menu
+// close help menu
 document.getElementById('closeHelp').onclick = function() {
     document.getElementById('help').style.visibility = 'hidden'
 }
@@ -291,12 +295,12 @@ function deathScreen() {
 
 // sound effects
 function hover(){
-    const hover = new Audio('sounds/hover.mp3')
+    const hover = new Audio('Sounds/hover.mp3')
     hover.play()
 }
 
 function select(){
-    const select = new Audio('sounds/select.mp3')
+    const select = new Audio('Sounds/select.mp3')
     select.play()
 }
 

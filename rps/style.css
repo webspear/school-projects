@@ -10,6 +10,7 @@
 body {
     font-family: ending;
     cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    overflow: hidden;
 }
 button {
     cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
@@ -30,12 +31,32 @@ button {
     font-size: 1.5vw;
 }
 
+/* start overlay */
+#startOverlay {
+    position: absolute;
+    top: auto;
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    z-index: 999;
+    text-align: center;
+}
+#startGame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 0;
+    background-color: black;
+    color: white;
+}
+
 /* background image */
 #background {
     position: absolute;
     top: auto;
     height: 100vh;
-    width: 100vw;
+    width: 101vw;
     object-fit: cover;
 }
 
