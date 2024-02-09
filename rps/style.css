@@ -2,6 +2,7 @@
     margin: 0;
     box-sizing: border-box;
     user-select: none;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
 }
 @font-face {
     font-family: ending;
@@ -9,11 +10,9 @@
 }
 body {
     font-family: ending;
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
     overflow: hidden;
 }
 button {
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
     font-family: ending;
     font-size: 2vw;
     width: 20vw;
