@@ -295,12 +295,12 @@ function deathScreen() {
 
 // sound effects
 function hover(){
-    const hover = new Audio('Sounds/hover.mp3')
+    const hover = new Audio('sounds/hover.mp3')
     hover.play()
 }
 
 function select(){
-    const select = new Audio('Sounds/select.mp3')
+    const select = new Audio('sounds/select.mp3')
     select.play()
 }
 
