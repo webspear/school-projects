@@ -1,0 +1,430 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+}
+@font-face {
+    font-family: ending;
+    src: url("Perfect\ DOS\ VGA\ 437.ttf");
+}
+body {
+    font-family: ending;
+    overflow: hidden;
+}
+
+/* start overlay */
+#start-overlay {
+    position: absolute;
+    top: auto;
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    z-index: 999;
+    text-align: center;
+}
+#start-game {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    color: white;
+    font-family: ending;
+    border: 0;
+    font-size: 10vmin;
+}
+
+/* black screen */
+#black-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 99999;
+    background-color: black;
+    visibility: hidden;
+}
+
+/* background image */
+#background {
+    position: absolute;
+    top: auto;
+    height: 100vh;
+    width: 101vw;
+    object-fit: cover;
+    z-index: -999;
+}
+#background-alt {
+    position: absolute;
+    top: auto;
+    height: 100vh;
+    width: 101vw;
+    object-fit: cover;
+    visibility: hidden;
+    z-index: -998;
+}
+
+/* menu */
+#menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+}
+#title {
+    font-size: 10vmin;
+}
+#start-button {
+    margin-top: 10%;
+    font-size: 5vmin;
+    width: fit-content;
+}
+#help-button {
+    margin-top: 1%;
+    font-size: 3vmin;
+    width: fit-content;
+}
+#help {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 60%;
+    top: 170%;
+    width: 40%;
+    visibility: hidden;
+    opacity: 0;
+    transition: 300ms;
+}
+#help-bg {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 150%;
+    z-index: -900;
+}
+#help-title {
+    text-align: center;
+    font-size: 5vmin;
+    margin-bottom: 7%;
+}
+h2 {
+    font-size: 2.5vmin;
+}
+p {
+    font-size: 1.7vmin;
+}
+
+
+/* game screen */
+.container {
+    visibility: hidden;
+    position: relative;
+    top: 50vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 0.5vw solid black;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 2% 2%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#game-bg {
+    position: absolute;
+    top: auto;
+    height: 100%;
+    width: 101%;
+    object-fit: cover;
+    z-index: -998;
+}
+
+#screen {
+    position: relative;
+    grid-area: 1 / 1 / 4 / 4;
+    overflow: hidden;
+    box-sizing: border-box;
+    outline: 1vmin solid black;
+}
+.typing {
+    position: relative;
+    grid-area: 4 / 1 / 5 / 5;
+    overflow: hidden;
+}
+.stuff {
+    position: relative;
+    grid-area: 1 / 4 / 4 / 5;
+}
+#castle-wall {
+    position: absolute;
+    top: auto;
+    height: 100%;
+    width: 101%;
+    object-fit: cover;
+    z-index: -997;
+}
+.end {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    width: 65%;
+    height: 55%;
+}
+
+/* stat stuff */
+.info {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 65%;
+    width: 85%;
+}
+#scroll-bg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    object-fit: cover;
+    z-index: -998;
+}
+#wave-text, #health-text, #health, #points-text, #points {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+}
+#wave-text {
+    top: 8%;
+    font-size: 4vmin;
+}
+#health-text {
+    top: 30%;
+    font-size: 2vmin;
+}
+#health {
+    top: 40%;
+    font-size: 4vmin;
+}
+#points-text {
+    top: 55%;
+    font-size: 2vmin;
+}
+#points {
+    top: 65%;
+    font-size: 4vmin;
+}
+
+/* screen elements */
+#wave-announcer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#peace-timer {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    font-size: 6vmin;
+    transition: 1000ms;
+    z-index: 100;
+}
+.shop {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    width: 80%;
+    height: 70%;
+}
+#shop-text {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 5vmin;
+    z-index: 99;
+}
+#shop-bg {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    z-index: -99;
+}
+#health-up, #repair-up, #speed-up {
+    position: relative;
+    margin: 3%;
+    height: 80%;
+    width: 23%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#health-up-img, #repair-up-img, #speed-up-img {
+    width: 85%;
+}
+#health-up-title, #repair-up-title, #speed-up-title {
+    font-size: 3vmin;
+    text-align: center;
+    margin-top: 2%;
+}
+#health-up-cost, #repair-up-cost, #speed-up-cost {
+    font-size: 2vmin;
+    text-align: center;
+    margin-top: 2%;
+}
+#health-up-desc, #repair-up-desc, #speed-up-desc {
+    font-size: 2vmin;
+    text-align: center;
+    margin-top: 6%;
+}
+#health-up-status, #repair-up-status, #speed-up-status {
+    font-size: 2vmin;
+    text-align: center;
+    margin-top: 2%;
+}
+#wave-title {
+    font-size: 10vmin;
+}
+#wave-comment {
+    font-size: 4vmin;
+}
+.enemy {
+    position: absolute;
+    right: -15%;
+    width: 10%;
+    height: 20%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+}
+#enemy1 {
+    top: 20%;
+}
+#enemy2 {
+    top: 40%;
+}
+#enemy3 {
+    top: 60%;
+}
+#enemy4 {
+    top: 80%;
+}
+.img {
+    transform: scaleX(-1);
+    width: auto;
+    height: 75%;
+}
+.text {
+    font-size: 3vmin;
+    position: absolute;
+    bottom: 0;
+}
+
+/* input field elements */
+#input {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 7vmin;
+}
+#input-bg {
+    position: relative;
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#input1, #input2, #input3 {
+    transition: 70ms;
+    height: 100%;
+}
+#input3 {
+    width: 5%;
+}
+
+/* end game screen */
+#end-bg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    z-index: 199;
+}
+#end-com {
+    z-index: 201;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+#status {
+    font-size: 20vmin;
+}
+#end-desc {
+    font-size: 3vmin;
+    margin-top: 10%;
+}
+#end-title {
+    font-size: 3vmin;
+    margin-top: 2%;
+}
+#retry {
+    font-size: 5vmin;
+    margin-top: 4%;
+}
+
+
+/* animations */
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+@keyframes red {
+    0% {color: black;}
+    50% {color: red;}
+    100% {color: black;}
+}
+@keyframes fadeToBlack {
+    0% {opacity: 0;}
+    50% {opacity: 1;}
+    100% {opacity: 0;}
+}
