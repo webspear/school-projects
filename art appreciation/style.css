@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", serif;
+    overflow: hidden;
+    user-select: none;
+}
+
+body {
+    padding: 0 80px;
+}
+
+#top-bar {
+    width: 100%;
+    height: 100px;
+    position: sticky;
+    border-bottom: 3px lightskyblue solid;
+}
+
+#title {
+    transform: translateY(25px);
+    font-size: 300%;
+}
+#menu-btn {
+    float: right;
+    width: 70px;
+    height: 40px;
+    transform: translateY(-80%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+}
+#top-line {
+    margin: auto 0;
+    width: 100%;
+    height: 3px;
+    background-color: black;
+}
+#bottom-line {
+    margin: auto 0 auto 40%;
+    width: 60%;
+    height: 3px;
+    background-color: black;
+    float: right;
+}
+#credit {
+    font-size: large;
+}
+
+#menu {
+    height: 100vh;
+    width: 500px;
+    position: absolute;
+    transform: translateX(50%);
+    top: 0;
+    right: -250px;
+    background-color: lightblue;
+    border-left: 10px lightskyblue solid;
+    transition: 500ms;
+    padding: 25px;
+    z-index: 999;
+}
+#unfocus {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 998;
+    visibility: hidden;
+    opacity: 0;
+    backdrop-filter: blur(6px);
+    transition: 500ms;
+}
+
+#close-btn {
+    width: 70px;
+    height: 70px;
+    overflow: visible;
+    float: right;
+    cursor: pointer;
+}
+#close-1 {
+    width: 70px;
+    height: 5px;
+    transform: translateY(35px) rotate(45deg);
+    background-color: black;
+}
+#close-2 {
+    width: 70px;
+    height: 5px;
+    transform: translateY(30px) rotate(135deg);
+    background-color: black;
+}
+#menu-title {
+    position: absolute;
+    font-size: 220%;
+}
+#menu-options {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+.options {
+    margin: 20px 0;
+    transition: 500ms;
+    font-style: normal;
+    font-size: xx-large;
+    color: black;
+}
+
+.container-outer {
+    width: 100%;
+    overflow-x: hidden;
+}
+.container-inner {
+    width: calc(100% + 20px);
+    overflow-y: scroll;
+    height: calc(100vh - 100px);
+    scroll-behavior: smooth;
+}
+
+#subtitle-start {
+    font-size: 10vmin;
+    text-align: center;
+}
+#arrow {
+    font-size: 12vmin;
+    text-align: center;
+    transition: 500ms;
+    transition-timing-function: ease-in-out;
+}
+#continue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: none;
+    height: calc(100vh - 127px);
+}
+
+section {
+    height: calc(100vh - 100px);
+    position: relative;
+    border-bottom: 1vmin lightblue solid;
+}
+#two {
+    height: 150vh;
+}
+#three {
+    height: 250vh;
+}
+
+#img-1 {
+    height: 100%;
+    width: 40%;
+    object-fit: cover;
+    position: absolute;
+    left: 0;
+    border-right: 1vmin lightblue solid;
+}
+#img-2 {
+    height: 50%;
+    width: 100%;
+    position: absolute;
+    transform: translateX(-50%);
+    object-fit: cover;
+    left: 50%;
+    bottom: 0;
+    border-top: 1vmin lightblue solid;
+}
+#img-3-1 {
+    height: 30%;
+    width: 40%;
+    object-fit: cover;
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    transform: translateY(-50%);
+    border: 1vmin lightblue solid;
+}
+#img-3-2 {
+    height: 30%;
+    width: 45%;
+    object-fit: cover;
+    position: absolute;
+    top: 53%;
+    right: 5%;
+    transform: translateY(-50%);
+    border: 1vmin lightblue solid;
+}
+#img-3-3 {
+    height: 12%;
+    width: 25%;
+    object-fit: cover;
+    position: absolute;
+    top: 92%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    border: 1vmin lightblue solid;
+}
+#img-3-4 {
+    height: 12%;
+    width: 25%;
+    object-fit: cover;
+    position: absolute;
+    top: 92%;
+    right: 30%;
+    transform: translate(50%, -50%);
+    border: 1vmin lightblue solid;
+}
+#img-4 {
+    height: 100%;
+    width: 40%;
+    object-fit: contain;
+    position: absolute;
+    left: 0;
+    background-color: black;
+    border-right: 1vmin lightblue solid;
+}
+#src-2 {
+    font-size: 1.5vmin;
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+}
+
+.text {
+    position: absolute;
+    padding: 5%;
+    font-size: 2vmin;
+    border: 1.5vmin lightblue solid;
+    border-radius: 5%;
+}
+#one-text {
+    right: 30%;
+    top: 55%;
+    width: 40%;
+    transform: translate(50%, -50%);
+}
+#two-text {
+    left: 50%;
+    top: 30%;
+    width: 90%;
+    transform: translate(-50%, -50%);
+}
+#three1-text {
+    right: 30%;
+    top: 25%;
+    width: 40%;
+    transform: translate(50%, -50%);
+}
+#three2-text {
+    left: 5%;
+    top: 55%;
+    width: 40%;
+    transform: translateY(-50%);
+}
+#three3-text {
+    left: 50%;
+    top: 77%;
+    width: 90%;
+    transform: translate(-50%, -50%);
+}
+#four-text {
+    right: 30%;
+    top: 55%;
+    width: 40%;
+    transform: translate(50%, -50%);
+    text-align: center;
+}
+
+.subtitle-italic {
+    font-style: italic;
+    text-align: center;
+    font-size: 4vmin;
+    width: fit-content;
+    border-bottom: 0.7vmin lightblue solid;
+    position: absolute;
+}
+.subtitle {
+    text-align: center;
+    font-size: 4vmin;
+    width: fit-content;
+    border-bottom: 0.7vmin lightblue solid;
+    position: absolute;
+}
+#one-title {
+    right: 30%;
+    top: 10%;
+    transform: translate(50%, -50%);
+}
+#two-title {
+    left: 50%;
+    top: 10%;
+    transform: translate(-50%, -50%);
+}
+#three-title {
+    left: 50%;
+    top: 6%;
+    transform: translate(-50%, -50%);
+}
+#four-title {
+    right: 30%;
+    top: 10%;
+    transform: translate(50%, -50%);
+}
+
+.container-inner > #continue {
+    animation: fade-out linear;
+    animation-timeline: view(20vh 100vh);
+}
+.container-inner > #one > #one-text {
+    animation: fade-out linear;
+    animation-timeline: view(20vh 100vh);
+}
+
+@keyframes fade-out {
+    from {scale: 1; opacity: 1;}
+    to {scale: 0.5; opacity: 0.3;}
+}
+@keyframes fade-in {
+    from {scale: 0.5; opacity: 0;}
+    to {scale: 1; opacity: 1;}
+}
