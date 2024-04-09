@@ -622,6 +622,7 @@ function waveEnd() {
                 if (warMusic.volume <= 0.1) {
                     // volume already 0
                     warMusic.pause()
+                    warMusic.currentTime = 0
                 } 
                 else {
                     warMusic.volume -= 0.1
@@ -805,6 +806,20 @@ document.getElementById('speed-up-img').onmouseup = () => {
 
 // end the game
 function endGame(event) {
+    
+    function lowerVolume() {
+    if (warMusic.volume <= 0.1) {
+        // volume already 0
+        warMusic.pause()
+        warMusic.currentTime = 0
+    } 
+    else {
+        warMusic.volume -= 0.1
+        setTimeout(lowerVolume, 50)
+    }
+}
+lowerVolume()
+
     if (event == 'loss') {
         document.getElementById('status').textContent = 'Defeat'
         document.getElementById('end-desc').textContent = 'The castle has fallen...'
