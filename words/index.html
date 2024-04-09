@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Last Line of Defence</title>
+    <link rel="icon" href="assets/images/icon.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <!--start overlay to accomodate autoplay policies-->
+    <div id="start-overlay" onmousedown="select()"><button id="start-game">START GAME</button></div>
+
+    <!--background image-->
+    <img src="assets/images/background.png" alt="" id="background">
+    <img src="assets/images/background-alt.png" alt="" id="background-alt">
+
+    <!--black screen for fade outs-->
+    <div id="black-overlay"></div>
+
+    <!--menu-->
+    <div id="menu">
+        <h1 id="title">Last Line of Defence</h1>
+        <h1 id="start-button">PLAY</h1>
+        <h1 id="help-button">HOW TO PLAY</h1>
+
+        <!--help menu-->
+
+        <div id="help">
+            <img src="assets/images/help.png" alt="" id="help-bg">
+            <h1 id="help-title">How to play</h1>
+            <div id="help-text">
+                <p id="help-desc">This is a wave based game where you defend the castle from incoming ennemies.</p><br>
+                <h2 class="help-header">Enemies</h2>
+                <p class="help-desc">In order to defeat an enemy, you will have to type the matching word that is associated to it.</p><br>
+                <h2 class="help-header">Stats</h2>
+                <p class="help-desc">When the enemy comes into contact with the castle wall, your health (castle integrity) reduces. <br>
+                    Each time an enemy is defeated, points are obtained. <br>
+                    Points can be exchanged for upgrades or repairs at the shop between waves.</p><br>
+                <h2 class="help-header">Waves</h2>
+                <p class="help-desc">There are five waves in total, with each increasing in difficulty. <br>
+                    At later waves, you will encounter bosses, which have longer words.</p>
+            </div>
+        </div>
+    </div>
+
+    <!--the game-->
+    <div class="container" id="game">
+
+        <!--the background for the game-->
+        <img src="assets/images/wood.png" alt="" id="game-bg">
+
+        <!--screen where all the animation are-->
+        <div id="screen">
+            <img src="assets/images/castle-wall.png" alt="" id="castle-wall">
+            <img src="assets/images/castle-wall-2.png" alt="" id="castle-wall-2">
+
+            <h1 id="peace-timer"></h1>
+
+            <div id="wave-announcer">
+                <h1 id="wave-title"></h1>
+                <h1 id="wave-comment"></h1>
+            </div>
+            
+            <!--enemies-->
+            <div id="enemy1" class="enemy">
+                <img src="" alt="" id="img1" class="img">
+                <h1 id="text1" class="text"></h1>
+            </div>
+            <div id="enemy2" class="enemy">
+                <img src="" alt="" id="img2" class="img">
+                <h1 id="text2" class="text"></h1>
+            </div>
+            <div id="enemy3" class="enemy">
+                <img src="" alt="" id="img3" class="img">
+                <h1 id="text3" class="text"></h1>
+            </div>
+            <div id="enemy4" class="enemy">
+                <img src="" alt="" id="img4" class="img">
+                <h1 id="text4" class="text"></h1>
+            </div>
+            
+            <!--shop-->
+            <div class="shop" id="shop">
+                <h1 id="shop-text">Shop</h1>
+                <!--shop background-->
+                <img src="assets/images/shop.png" alt="" id="shop-bg">
+
+                <!--all upgrades-->
+                <div id="health-up">
+                    <img src="assets/images/health.png" alt="" id="health-up-img" draggable="false">
+                    <h1 id="health-up-title">Reinforce Walls</h1>
+                    <h1 id="health-up-cost">Cost: 50 points</h1>
+                    <h1 id="health-up-desc">Upgrade wall integrity by 30</h1>
+                    <h1 id="health-up-status">Bought: 0 (max 3)</h1>
+                </div>
+                <div id="repair-up">
+                    <img src="assets/images/repair.png" alt="" id="repair-up-img" draggable="false">
+                    <h1 id="repair-up-title">Repair Walls</h1>
+                    <h1 id="repair-up-cost">Cost: 40 points</h1>
+                    <h1 id="repair-up-desc">Repair walls by 20</h1>
+                </div>
+                <div id="speed-up">
+                    <img src="assets/images/speed.png" alt="" id="speed-up-img" draggable="false">
+                    <h1 id="speed-up-title">Slower Enemies</h1>
+                    <h1 id="speed-up-cost">Cost: 50 points</h1>
+                    <h1 id="speed-up-desc">Reduce enemy speed by 10%</h1>
+                    <h1 id="speed-up-status">Bought: 0 (max 5)</h1>
+                </div>
+            </div>
+        </div>
+        
+        <!--bottom screen for typing-->
+        <div class="typing" id="typing">
+            <div id="input-bg">
+                <img src="assets/images/input1.png" alt="" id="input1">
+                <img src="assets/images/input3.png" alt="" id="input3">
+                <img src="assets/images/input2.png" alt="" id="input2">
+            </div>
+
+            <h1 id="input"></h1>
+        </div>
+        
+        <!--stats, shop, settings on the right-->
+        <div class="stuff" id="stuff">
+
+            <!--background img-->
+            <img src="assets/images/scroll.png" alt="" id="scroll-bg">
+
+            <div class="info">
+                <h1 id="wave-text">Wave 1</h1>
+                <h1 id="health-text">Castle Integrity:</h1>
+                <h1 id="health">100/100</h1>
+                <h1 id="points-text">Points:</h1>
+                <h1 id="points">0</h1>
+            </div>
+        </div>
+
+    </div>
+
+    <!--end game screen-->
+    <div class="end" id="end">
+        <!--bg img-->
+        <img src="assets/images/end.png" alt="" id="end-bg">
+
+        <div id="end-com">
+            <h1 id="status">Victory</h1>
+            <h1 id='end-desc'>You have successfully pushed back the enemy!</h1>
+            <h1 id="end-title">Good Job!</h1>
+            <h1 id="retry">Retry</h1>
+        </div>
+    </div>
+
+    
+    <!--script-->
+    <script src="data/words.js"></script>
+    <script src="data/long-words.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
