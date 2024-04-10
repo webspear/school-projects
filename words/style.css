@@ -175,7 +175,7 @@ p {
     height: 100%;
     width: 101%;
     object-fit: cover;
-    z-index: 2;
+    z-index: -100;
 }
 .end {
     position: absolute;
@@ -336,6 +336,7 @@ p {
     transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
+    z-index: -101;
 }
 #enemy1 {
     top: 20%;

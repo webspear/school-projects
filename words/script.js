@@ -14,6 +14,9 @@ const peaceTimer = document.getElementById('peace-timer')
 const menuMusic = new Audio('assets/sounds/menu.mp3')
 const peaceMusic = new Audio('assets/sounds/peace-time.mp3')
 const warMusic = new Audio('assets/sounds/war.mp3')
+const upgrade = new Audio('assets/sounds/upgrade.mp3')
+const denied = new Audio('assets/sounds/denied.mp3')
+const horn = new Audio('assets/sounds/horn.mp3')
 
 // handle all the game events
 const gameInfo = {
@@ -316,6 +319,7 @@ function gameHandler() {
 
     // announce the wave number
     waveAnnouncer.style.opacity = 1
+    horn.play()
 
     setTimeout(() => {
         waveAnnouncer.style.animation = 'fadeOut 3000ms linear forwards'
@@ -719,6 +723,9 @@ const pointsText = document.getElementById('points')
 // health upgrade
 document.getElementById('health-up-img').onclick = () => {
     if (gameInfo.points >= 60 && gameInfo.maxHealthCounter < 3) {
+
+        upgrade.play()
+
         gameInfo.maxHealth += 30
         gameInfo.health += 30
         document.getElementById('health').textContent = `${gameInfo.health}/${gameInfo.maxHealth}`
@@ -728,6 +735,9 @@ document.getElementById('health-up-img').onclick = () => {
         pointsText.textContent = `${gameInfo.points}`
     }
     else if (gameInfo.points < 60) {
+
+        denied.play()
+
         console.log('not enough!')
         pointsText.style.animation = 'red 500ms linear'
         points.addEventListener('animationend', () => {
@@ -735,6 +745,9 @@ document.getElementById('health-up-img').onclick = () => {
         })
     }
     else if (gameInfo.maxHealthCounter >= 3) {
+
+        denied.play()
+
         document.getElementById('health-up-status').style.animation = 'red 500ms linear'
         document.getElementById('health-up-status').addEventListener('animationend', () => {
             document.getElementById('health-up-status').style.animation = ''
@@ -751,6 +764,9 @@ document.getElementById('health-up-img').onmouseup = () => {
 // heal
 document.getElementById('repair-up-img').onclick = () => {
     if (gameInfo.points >= 40 && gameInfo.health < gameInfo.maxHealth) {
+
+        upgrade.play()
+
         gameInfo.health += 20
         gameInfo.points -= 40
         pointsText.textContent = `${gameInfo.points}`
@@ -760,6 +776,9 @@ document.getElementById('repair-up-img').onclick = () => {
         document.getElementById('health').textContent = `${gameInfo.health}/${gameInfo.maxHealth}`
     }
     else if (gameInfo.points < 40) {
+
+        denied.play()
+
         console.log('not enough!')
         pointsText.style.animation = 'red 500ms linear'
         points.addEventListener('animationend', () => {
@@ -777,6 +796,9 @@ document.getElementById('repair-up-img').onmouseup = () => {
 // enemy speed
 document.getElementById('speed-up-img').onclick = () => {
     if (gameInfo.points >= 50 && gameInfo.speedModCounter < 5) {
+
+        upgrade.play()
+
         gameInfo.speedMod += 0.1
         gameInfo.points -= 50
         pointsText.textContent = `${gameInfo.points}`
@@ -784,6 +806,9 @@ document.getElementById('speed-up-img').onclick = () => {
         document.getElementById('speed-up-status').textContent = `Bought: ${gameInfo.speedModCounter} (max 5)`
     }
     else if (gameInfo.points < 50) {
+
+        denied.play()
+
         console.log('not enough!')
         pointsText.style.animation = 'red 500ms linear'
         points.addEventListener('animationend', () => {
@@ -791,6 +816,9 @@ document.getElementById('speed-up-img').onclick = () => {
         })
     }
     else if (gameInfo.speedModCounter >= 5) {
+
+        denied.play()
+
         document.getElementById('speed-up-status').style.animation = 'red 500ms linear'
         document.getElementById('speed-up-status').addEventListener('animationend', () => {
             document.getElementById('speed-up-status').style.animation = ''
@@ -804,21 +832,24 @@ document.getElementById('speed-up-img').onmouseup = () => {
     document.getElementById('speed-up-img').style.scale = 1
 }
 
+const endMusic = new Audio('assets/sounds/end.mp3')
 // end the game
 function endGame(event) {
     
     function lowerVolume() {
-    if (warMusic.volume <= 0.1) {
-        // volume already 0
-        warMusic.pause()
-        warMusic.currentTime = 0
-    } 
-    else {
-        warMusic.volume -= 0.1
-        setTimeout(lowerVolume, 50)
+        if (warMusic.volume <= 0.1) {
+            // volume already 0
+            warMusic.pause()
+            warMusic.currentTime = 0
+        } 
+        else {
+            warMusic.volume -= 0.1
+            setTimeout(lowerVolume, 50)
+        }
     }
-}
-lowerVolume()
+    lowerVolume()
+
+    
 
     if (event == 'loss') {
         document.getElementById('status').textContent = 'Defeat'
@@ -831,6 +862,10 @@ lowerVolume()
         document.getElementById('game').style.display = 'none'
         document.getElementById('background-alt').style.visibility = 'hidden'
         document.getElementById('end').style.visibility = 'visible'
+
+        endMusic.play()
+        endMusic.volume = 0.7
+
         setTimeout(() => {
             blackOverlay.style.animation = ''
             blackOverlay.style.visibility = 'hidden'
@@ -868,10 +903,4 @@ function select(){
 function tick(){
     const sfx = new Audio('assets/sounds/tick.mp3')
     sfx.play()
-}
-
-function menu() {
-    const menuMusic = new Audio('assets/sounds/menu.mp3')
-    menuMusic.play()
-    menuMusic = true
 }
