@@ -320,6 +320,7 @@ function gameHandler() {
     // announce the wave number
     waveAnnouncer.style.opacity = 1
     horn.play()
+    horn.volume = 0.7
 
     setTimeout(() => {
         waveAnnouncer.style.animation = 'fadeOut 3000ms linear forwards'
@@ -608,6 +609,7 @@ enemy4.addEventListener('transitionend', () => {
 })
 
 const shop = document.getElementById('shop')
+const next = document.getElementById('next-btn')
 
 // wave ends
 function waveEnd() {
@@ -621,6 +623,7 @@ function waveEnd() {
             // music
             peaceMusic.play()
             peaceMusic.volume = 1
+            peaceMusic.loop = true
             
             function lowerVolume() {
                 if (warMusic.volume <= 0.1) {
@@ -642,25 +645,67 @@ function waveEnd() {
                     waveAnnouncer.style.animation = ''
                     waveAnnouncer.style.opacity = 0
                 })
-                setTimeout(() => {
-                    peaceTimer.style.transform = 'translate(-50%, -380%) scale(65%)'
                     
-                    // show the shop
-                    setTimeout(() => {
-                        shop.style.opacity = 0
+                // show the shop and the next button
+                setTimeout(() => {
+                    shop.style.opacity = 0
+                    next.style.opacity = 0
+                    shop.style.visibility = 'visible'
+                    next.style.visibility = 'visible'
+                    shop.style.animation = 'fadeIn 1000ms linear forwards'
+                    next.style.animation = 'fadeIn 1000ms linear forwards'
+                    shop.addEventListener('animationend', () => {
+                        shop.style.opacity = 1
                         shop.style.visibility = 'visible'
-                        shop.style.animation = 'fadeIn 1000ms linear forwards'
-                        shop.addEventListener('animationend', () => {
-                            shop.style.opacity = 1
-                            shop.style.visibility = 'visible'
-                        })
-                    }, 700);
-                }, 500);
+                    })
+                    next.addEventListener('animationend', () => {
+                        next.style.opacity = 1
+                        next.style.visibility = 'visible'
+                    })
+                }, 1200);
             }, 1000)
             peaceTimer.style.opacity = 1
 
+            next.onclick = () => {
+
+                select()
+
+                setTimeout(() => {
+                    peaceCountdown()
+                }, 1000)
+                
+                // fade out shop and the next button
+                shop.style.animation = 'fadeOut 1000ms linear forwards'
+                next.style.animation = 'fadeOut 1000ms linear forwards'
+                shop.addEventListener('animationend', () => {
+                    shop.style.animation = ''
+                    shop.style.visibility = 'hidden'
+                })
+                next.addEventListener('animationend', () => {
+                    next.style.animation = ''
+                    next.style.visibility = 'hidden'
+                })
+
+                // lower volume
+                function lowerVolume() {
+                    if (peaceMusic.volume <= 0.1) {
+                        // volume already 0
+                        peaceMusic.pause()
+                        peaceMusic.currentTime = 0
+                    } 
+                    else {
+                        peaceMusic.volume -= 0.1
+                        setTimeout(lowerVolume, 50)
+                    }
+                }
+                lowerVolume()
+
+
+            }
+
+
             // countdown till next wave
-            let timer = 20
+            let timer = 3
             function peaceCountdown() {
                 peaceTimer.textContent = `Next wave in: ${timer}`
                 if (timer > 0) {
@@ -673,41 +718,20 @@ function waveEnd() {
                     }
                 }
                 else {
+                    tick()
+
                     peaceTimer.style.animation = 'fadeOut 1000ms linear forwards'
                     peaceTimer.addEventListener('animationend', () => {
                         peaceTimer.style.animation = ''
                         peaceTimer.style.opacity = 0
-                        peaceTimer.style.transform = 'translate(-50%, -50%)' // go back to its original position
-                    })
 
-                    // next wave
-                    gameInfo.wave += 1
-                    document.getElementById('wave-text').textContent = `Wave ${gameInfo.wave}`
-                    gameHandler()
-                }
-                if (timer == 3) {
-                    shop.style.animation = 'fadeOut 1000ms linear forwards'
-                    shop.addEventListener('animationend', () => {
-                        shop.style.animation = ''
-                        shop.style.visibility = 'hidden'
+                        // next wave
+                        gameInfo.wave += 1
+                        document.getElementById('wave-text').textContent = `Wave ${gameInfo.wave}`
+                        gameHandler()
                     })
-                    function lowerVolume() {
-                        if (peaceMusic.volume <= 0.1) {
-                            // volume already 0
-                            peaceMusic.pause()
-                            peaceMusic.currentTime = 0
-                        } 
-                        else {
-                            peaceMusic.volume -= 0.1
-                            setTimeout(lowerVolume, 50)
-                        }
-                    }
-                    lowerVolume()
                 }
             }
-
-            peaceCountdown()
-
         }
 
         // end the game: player wins!
@@ -715,6 +739,15 @@ function waveEnd() {
             endGame('win')
         }
     }, 500);
+}
+
+// hover effect for next wave button
+next.onmouseover = () => {
+    hover()
+    next.textContent = '> Next Wave'
+}
+next.onmouseout = () => {
+    next.textContent = 'Next Wave'
 }
 
 // upgrades you can have

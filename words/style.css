@@ -111,7 +111,7 @@ body {
 #help-title {
     text-align: center;
     font-size: 5vmin;
-    margin-bottom: 7%;
+    margin-bottom: 4%;
 }
 h2 {
     font-size: 2.5vmin;
@@ -209,7 +209,7 @@ p {
     object-fit: cover;
     z-index: -998;
 }
-#wave-text, #health-text, #health, #points-text, #points {
+#wave-text, #health-text, #health, #points-text, #points, #next-btn {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -236,6 +236,11 @@ p {
     top: 65%;
     font-size: 4vmin;
 }
+#next-btn {
+    top: 90%;
+    font-size: 3vmin;
+    visibility: hidden;
+}
 
 /* screen elements */
 #wave-announcer {
@@ -253,7 +258,7 @@ p {
     position: absolute;
     top: 35%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -380%) scale(65%);
     opacity: 0;
     font-size: 6vmin;
     transition: 1000ms;
