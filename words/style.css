@@ -261,7 +261,6 @@ p {
     transform: translate(-50%, -380%) scale(65%);
     opacity: 0;
     font-size: 6vmin;
-    transition: 1000ms;
     z-index: 100;
 }
 .shop {

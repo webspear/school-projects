@@ -21,6 +21,7 @@ const horn = new Audio('assets/sounds/horn.mp3')
 // handle all the game events
 const gameInfo = {
     wave: 1,
+    newWave: false,
     frequency: 0,
     enemyCounter: 0,
     enemySpeed: 1,
@@ -279,6 +280,8 @@ console.log(gameInfo)
 
 function gameHandler() {
 
+    console.log(gameInfo.wave)
+
     if (gameInfo.wave == 1) {
         gameInfo.frequency = 7
         gameInfo.enemyCD = 3
@@ -337,6 +340,8 @@ function gameHandler() {
         warMusic.play()
         warMusic.volume = 1
         warMusic.loop = true
+
+        gameInfo.newWave = false
 
     }, 3000)
 }
@@ -664,7 +669,6 @@ function waveEnd() {
                     })
                 }, 1200);
             }, 1000)
-            peaceTimer.style.opacity = 1
 
             next.onclick = () => {
 
@@ -672,6 +676,7 @@ function waveEnd() {
 
                 setTimeout(() => {
                     peaceCountdown()
+                    peaceTimer.style.opacity = 1
                 }, 1000)
                 
                 // fade out shop and the next button
@@ -706,29 +711,30 @@ function waveEnd() {
 
             // countdown till next wave
             let timer = 3
+
             function peaceCountdown() {
+                console.log('counting')
                 peaceTimer.textContent = `Next wave in: ${timer}`
+                tick()
                 if (timer > 0) {
                     setTimeout(() => {
-                        timer--
+                        timer-=1
                         peaceCountdown() // recursuve function
                     }, 1000)
-                    if (timer <= 5) {
-                        tick()
-                    }
                 }
-                else {
-                    tick()
-
+                else if (timer == 0) {
                     peaceTimer.style.animation = 'fadeOut 1000ms linear forwards'
                     peaceTimer.addEventListener('animationend', () => {
                         peaceTimer.style.animation = ''
                         peaceTimer.style.opacity = 0
 
                         // next wave
-                        gameInfo.wave += 1
-                        document.getElementById('wave-text').textContent = `Wave ${gameInfo.wave}`
-                        gameHandler()
+                        if (!gameInfo.newWave) {
+                            gameInfo.wave += 1
+                            gameInfo.newWave = true
+                            document.getElementById('wave-text').textContent = `Wave ${gameInfo.wave}`
+                            gameHandler()
+                        }
                     })
                 }
             }
