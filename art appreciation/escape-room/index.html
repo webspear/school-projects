@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            background-color: black;margin: 0;
+            box-sizing: border-box;
+            user-select: none;
+            cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+        }
+        @font-face {
+            font-family: ending;
+            src: url("./assets/fonts/Perfect\ DOS\ VGA\ 437.ttf");
+        }
+        #canvas {
+            position: absolute;
+            margin: 0;
+            top: 0;
+            left: 0;
+        }
+        #interact-btn {
+            position: absolute;
+            margin: 0;
+            z-index: 9999;
+            font-family: ending;
+            left: 50%;
+            top: 90%;
+            transform: translate(-50%, -50%);
+            visibility: hidden;
+        }
+        #btn {
+            position: absolute;
+            z-index: 9998;
+        }
+        #btn2 {
+            position: absolute;
+            top: 30px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <h1 id="interact-btn">[E] to interact</h1>
+    <button id="btn">hello</button>
+    <button id="btn2">cam test</button>
+
+    <script src="./js/event_listeners.js"></script>
+    <script src="./js/classes/player.js"></script>
+    <script src="./js/classes/sprite.js"></script>
+    <script src="./js/classes/collision.js"></script>
+    <script src="./js/blocks.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
