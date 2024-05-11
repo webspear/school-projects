@@ -131,9 +131,6 @@ function checkresize() {
     
     scaledCanvas.width = canvas.width / zoomFactor
     scaledCanvas.height = canvas.height / zoomFactor
-
-    // const interactBtn = document.getElementById('interact-btn')
-    // interactBtn.style.bottom = 
 }
 
 document.getElementById('btn').onclick = () => {
