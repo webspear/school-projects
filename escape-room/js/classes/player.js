@@ -119,16 +119,16 @@ class Player {
     checkForInteractablesCollisions() {
         for (let i = 0; i < interactables.length; i++) {
             const interactable = this.interactables[i]
-            // console.log(this.position.x + this.width - interactable.position.x >= 0)
-            console.log(this.position.x - interactable.position.x + interactable.width >= 0)
 
-            if (this.position.x + this.width >= interactable.position.x &&
-                this.position.x <= interactable.position.x + interactable.width &&
+            if (this.position.x <= interactable.position.x + interactable.size.width &&
+                this.position.x + this.width >= interactable.position.x &&
                 this.position.y + this.height >= interactable.position.y &&
-                this.position.y <= interactable.position.y + interactable.height
+                this.position.y <= interactable.position.y + interactable.size.height
             ) {
-                console.log('hi')
+                canInteract = true
+                currentInteractBlock = interactable
             }
+            else canInteract = false
         }
     }
 }

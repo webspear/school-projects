@@ -13,6 +13,11 @@ window.addEventListener('keydown', (event) => {
         case 'd':
             keys.d.pressed = true
             break
+        case 'e':
+            if (canInteract) {
+                interact()
+            }
+            break
     }
 })
 

@@ -10,6 +10,10 @@ let camFocus = false
 let camFocusTargetX = 0
 let camFocusTargetY = 0
 
+let canInteract = false
+let interactOpacity = 0
+let currentInteractBlock = null
+
 const scaledCanvas = {
     width: canvas.width / zoomFactor,
     height: canvas.height / zoomFactor
@@ -101,6 +105,13 @@ function animate() {
         
         // if (player.velocity.y < 0) 
         // else if (player.velocity.y > 0) 
+
+        // interact text 
+        if (canInteract && document.getElementById('interact-btn').style.opacity <= 1) 
+            interactOpacity += 0.05
+        else if (!canInteract && document.getElementById('interact-btn').style.opacity >= 0) 
+            interactOpacity -= 0.05
+        document.getElementById('interact-btn').style.opacity = interactOpacity
     }
     else if (camFocus) {
         const smoothness = 0.1
@@ -120,6 +131,14 @@ function animate() {
 }
 
 animate()
+
+function interact() {
+    if (currentInteractBlock.tag = 'ladder') {
+        player.position.x = interact1.position.x - player.width/2
+        paused = true
+        climbing = true
+    }
+}
 
 // determine how the game size should be like (depending on the window size)
 window.addEventListener(onload, checkresize())

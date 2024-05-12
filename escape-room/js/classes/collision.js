@@ -15,9 +15,11 @@ class CollisionBlock {
 }
 
 class Interactable {
-    constructor({position, size}) {
+    constructor({position, size, tag}) {
         this.position = position
         this.size = size
+
+        this.tag = tag
 
         interactables.push(this)
     }

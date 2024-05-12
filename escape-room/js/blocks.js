@@ -40,7 +40,8 @@ const interact1 = new Interactable({
         y: 400,
     },
     size: {
-        width: 100,
+        width: 1,
         height: 227,
-    }
+    },
+    tag: 'ladder'
 })
