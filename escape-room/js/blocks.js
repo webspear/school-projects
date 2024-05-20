@@ -25,11 +25,11 @@ const block2 = new CollisionBlock({
 })
 const block3 = new CollisionBlock({
     position: {
-        x: 300,
+        x: 200,
         y: 400,
     },
     size: {
-        width: 300,
+        width: 200,
         height: 10,
     }
 })

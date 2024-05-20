@@ -7,9 +7,6 @@ class Player {
         }
         this.width = 50
         this.height = 50
-        this.sides = {
-            bottom: this.position.y + this.height
-        }
         this.gravity = gravity
 
         this.collisionBlocks = collisionBlocks
@@ -36,7 +33,10 @@ class Player {
         camera.position.y -= (targetY + camera.position.y) * smoothness
     }
 
-    
+    applyYVelocity() {
+        this.position.y += this.velocity.y
+    }
+
     update() {
         // camera
         this.updateCamBox()
@@ -51,8 +51,7 @@ class Player {
 
         // apply gravity
         this.velocity.y += this.gravity
-        this.position.y += this.velocity.y
-        this.sides.bottom = this.position.y + this.height
+        this.applyYVelocity()
 
         // check for vertcial collisions
         this.checkVerticalCollisions()

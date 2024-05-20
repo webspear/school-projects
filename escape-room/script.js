@@ -7,12 +7,14 @@ const zoomFactor = 2.5
 let paused = false
 
 let camFocus = false
-let camFocusTargetX = 0
-let camFocusTargetY = 0
+let camFocusTargetX
+let camFocusTargetY
 
 let canInteract = false
 let interactOpacity = 0
-let currentInteractBlock = null
+let currentInteractBlock
+let locked = false
+let climbing = false
 
 const scaledCanvas = {
     width: canvas.width / zoomFactor,
@@ -25,10 +27,17 @@ const keys = {
         inAir: false,
         jumped: false,
     },
+    w: {
+        pressed: false,
+        climbCD: false,
+    },
     d: {
         pressed: false,
     },
     a: {
+        pressed: false,
+    },
+    s: {
         pressed: false,
     },
 }
@@ -76,52 +85,18 @@ function animate() {
     ctx.translate(camera.position.x, camera.position.y)
     
     background.update()
-    if (!paused) {
-        collisionBlocks.forEach(block => {
-            block.draw()
-        })
-        interactables.forEach(block => {
-            block.draw()
-        })
+    if (!paused && !locked) {
+        drawObjects()
 
-        player.update()
+        playerMovement()
 
-        // player movement
-        player.velocity.x = 0
-        if (keys.d.pressed && keys.a.pressed) player.velocity.x = 0
-        else if (keys.d.pressed) {
-            player.velocity.x = 4
-        }
-        else if (keys.a.pressed) {
-            player.velocity.x = -4
-        }
-        if (keys.jump.inAir) {
-            if (!keys.jump.jumped) {
-                player.velocity.y = -12
-                keys.jump.jumped = true
-            }
-            keys.jump.inAir = false
-        }
-        
-        // if (player.velocity.y < 0) 
-        // else if (player.velocity.y > 0) 
-
-        // interact text 
-        if (canInteract && document.getElementById('interact-btn').style.opacity <= 1) 
-            interactOpacity += 0.05
-        else if (!canInteract && document.getElementById('interact-btn').style.opacity >= 0) 
-            interactOpacity -= 0.05
-        document.getElementById('interact-btn').style.opacity = interactOpacity
+        interactTxtAnim()
     }
     else if (camFocus) {
-        const smoothness = 0.1
-        camera.position.x -= (camFocusTargetX + camera.position.x) * smoothness
-        camera.position.y -= (camFocusTargetY + camera.position.y) * smoothness
-
-        setTimeout(() => {
-            camFocus = false
-            paused = false
-        }, 2000);
+        animateCam()
+    }
+    else if (locked) {
+        lockPlayer()
     }
     else {
         player.draw()
@@ -132,10 +107,104 @@ function animate() {
 
 animate()
 
+function drawObjects() {
+    collisionBlocks.forEach(block => {
+        block.draw()
+    })
+    interactables.forEach(block => {
+        block.draw()
+    })
+
+    player.update()
+}
+
+function playerMovement() {
+    // player movement
+    player.velocity.x = 0
+    if (keys.d.pressed && keys.a.pressed) player.velocity.x = 0
+    else if (keys.d.pressed) {
+        player.velocity.x = 4
+    }
+    else if (keys.a.pressed) {
+        player.velocity.x = -4
+    }
+    if (keys.jump.inAir) {
+        if (!keys.jump.jumped && !keys.w.climbCD) {
+            player.velocity.y = -12
+            keys.jump.jumped = true
+        }
+        keys.jump.inAir = false
+    }
+
+    // if (player.velocity.y < 0) 
+    // else if (player.velocity.y > 0) 
+}
+
+function interactTxtAnim() {
+    // interact text 
+    if (canInteract && document.getElementById('interact-btn').style.opacity <= 1) 
+        interactOpacity += 0.05
+    else if (!canInteract && document.getElementById('interact-btn').style.opacity >= 0) 
+        interactOpacity -= 0.05
+    document.getElementById('interact-btn').style.opacity = interactOpacity
+}
+
+function animateCam() {
+    const smoothness = 0.1
+    camera.position.x -= (camFocusTargetX + camera.position.x) * smoothness
+    camera.position.y -= (camFocusTargetY + camera.position.y) * smoothness
+
+    setTimeout(() => {
+        camFocus = false
+        paused = false
+    }, 2000)
+}
+
+function lockPlayer() {
+    player.draw()
+
+    if (!paused) {
+        player.updateCamBox()
+        player.applyYVelocity()
+        block3.draw()
+
+        // fade the interact btn
+        if (document.getElementById('interact-btn').style.opacity >= 0) 
+            interactOpacity -= 0.05
+        document.getElementById('interact-btn').style.opacity = interactOpacity
+        
+        // climbing
+        if (climbing) {
+            player.velocity.y = 0
+            if (keys.w.pressed) {
+                if (player.position.y > block3.position.y - player.height)
+                    player.velocity.y = -2
+                else { // top of the ladder
+                    keys.w.climbCD = true
+                    locked = false
+                    climbing = false
+
+                    // update player
+                    player.velocity.x = 0
+                    player.position.x = player.position.x - player.width
+
+                    setTimeout(() => {
+                        keys.w.climbCD = false
+                    }, 700);
+                }
+            }
+            else if (keys.s.pressed) {
+                if (player.position.y + player.height + 2 < block1.position.y)
+                    player.velocity.y = 2
+            }
+        }
+    }
+}
+
 function interact() {
     if (currentInteractBlock.tag = 'ladder') {
-        player.position.x = interact1.position.x - player.width/2
-        paused = true
+        player.position.x = interact1.position.x
+        locked = true
         climbing = true
     }
 }
@@ -150,11 +219,6 @@ function checkresize() {
     
     scaledCanvas.width = canvas.width / zoomFactor
     scaledCanvas.height = canvas.height / zoomFactor
-}
-
-document.getElementById('btn').onclick = () => {
-    if (!paused) paused = true
-    else paused = false
 }
 
 document.getElementById('btn2').onclick = () => {
