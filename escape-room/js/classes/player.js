@@ -1,21 +1,33 @@
-class Player {
-    constructor({position, gravity, collisionBlocks, interactables}) {
+class Player extends Sprite {
+    constructor({position, gravity, collisionBlocks, interactables, imageSrc, frameRate, type, animations}) {
+        super({imageSrc, frameRate, type})
         this.position = position
         this.velocity= {
             x: 0,
             y: 0,
         }
-        this.width = 50
-        this.height = 50
+        this.width = 70
+        this.height = 85
         this.gravity = gravity
+
+        this.flip = false
 
         this.collisionBlocks = collisionBlocks
         this.interactables = interactables
+
+        this.animations = animations
+
+        for (let key in this.animations) {
+            const image = new Image()
+            image.src = this.animations[key].imageSrc
+
+            this.animations[key].image = image
+        }
     }
 
-    draw() {
-        ctx.fillStyle = 'red'
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+    drawHitbox() {
+        // ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'
+        // ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 
     // move with player
@@ -27,8 +39,8 @@ class Player {
         const smoothness = 0.1 // adjust to control smoothness of the panning
         if (camera.position.x - (targetX + camera.position.x) * smoothness > 0) 
             camera.position.x = 0
-        else if (camera.position.x - (targetX + camera.position.x) * smoothness < -1629 - this.width/2 + scaledCanvas.width) // ??? the hell
-            camera.position.x = -1629 - this.width/2 + scaledCanvas.width
+        else if (camera.position.x - (targetX + camera.position.x) * smoothness < -2525 - this.width/2 + scaledCanvas.width) // ??? the hell
+            camera.position.x = -2525 - this.width/2 + scaledCanvas.width
         else camera.position.x -= (targetX + camera.position.x) * smoothness
         camera.position.y -= (targetY + camera.position.y) * smoothness
     }
@@ -41,6 +53,11 @@ class Player {
         // camera
         this.updateCamBox()
 
+        // update animations
+        this.updateAnims()
+        this.updateFrames()
+
+        this.drawHitbox()
         this.draw()
 
         // movement
@@ -58,6 +75,7 @@ class Player {
 
         // check for collisions with interact blocks
         this.checkForInteractablesCollisions()
+
     }
 
     checkHorizontalCollisions() {
@@ -129,5 +147,25 @@ class Player {
             }
             else canInteract = false
         }
+    }
+
+    updateAnims() {
+        if (this.velocity.x !== 0) {
+            this.switchSprite('Walk')
+            if (player.velocity.y <= 0 && keys.jump.jumped) player.switchSprite('Jump_Walk')
+            else if (player.velocity.y > 0) player.switchSprite('Fall_Walk')
+        }
+        else {
+            this.switchSprite('Idle')
+            if (player.velocity.y <= 0 && keys.jump.jumped) player.switchSprite('Jump_Idle')
+            else if (player.velocity.y > 0) player.switchSprite('Fall_Idle')
+        }
+    }
+
+    switchSprite(key) {
+        if (this.image === this.animations[key].image) return
+        this.image = this.animations[key].image
+        this.frameBuffer = this.animations[key].frameBuffer
+        this.frameRate = this.animations[key].frameRate
     }
 }

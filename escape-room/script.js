@@ -2,7 +2,7 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
-const zoomFactor = 2.5
+const zoomFactor = 1.75
 
 let paused = false
 
@@ -55,7 +55,7 @@ const background = new Sprite({
 const camera = {
     position: {
         x: 1,
-        y: -1260 + scaledCanvas.height + 900, // 1260 is the height of the background image (change later)
+        y: -2560 + scaledCanvas.height + 1600, // 2560 is the height of the background image (change later)
     },
 
 }
@@ -63,13 +63,57 @@ const camera = {
 // the player
 const player = new Player({
     position: {
-        x: 600,
-        y: 600,
+        x: 1500,
+        y: 1100,
     },
     gravity: 1, // change gravity as see fit
 
     collisionBlocks: collisionBlocks,
     interactables: interactables,
+
+    imageSrc: './assets/images/anims/idle.png',
+    frameRate: 4,
+
+    type: 'player',
+
+    animations: {
+        Idle: {
+            imageSrc: './assets/images/anims/idle.png',
+            frameRate: 4,
+            frameBuffer: 20,
+        },
+        Walk: {
+            imageSrc: './assets/images/anims/walk.png',
+            frameRate: 4,
+            frameBuffer: 10,
+        },
+        Climb: {
+            imageSrc: './assets/images/anims/climb.png',
+            frameRate: 2,
+            frameBuffer: 10,
+        },
+        Jump_Idle: {
+            imageSrc: './assets/images/anims/jump-idle.png',
+            frameRate: 1,
+            frameBuffer: 1,
+        },
+        Jump_Walk: {
+            imageSrc: './assets/images/anims/jump-walk.png',
+            frameRate: 1,
+            frameBuffer: 1,
+        },
+        Fall_Idle: {
+            imageSrc: './assets/images/anims/fall-idle.png',
+            frameRate: 1,
+            frameBuffer: 1,
+        },
+        Fall_Walk: {
+            imageSrc: './assets/images/anims/fall-walk.png',
+            frameRate: 1,
+            frameBuffer: 1,
+        },
+    },
+
 })
 
 // make the game work
@@ -130,14 +174,11 @@ function playerMovement() {
     }
     if (keys.jump.inAir) {
         if (!keys.jump.jumped && !keys.w.climbCD) {
-            player.velocity.y = -12
+            player.velocity.y = -15
             keys.jump.jumped = true
         }
         keys.jump.inAir = false
     }
-
-    // if (player.velocity.y < 0) 
-    // else if (player.velocity.y > 0) 
 }
 
 function interactTxtAnim() {
