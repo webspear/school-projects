@@ -1,3 +1,5 @@
 # webspear.github.io
-stuff's here ig
-u can check it out
+where stuff gets done
+
+
+... most of the time

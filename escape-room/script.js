@@ -16,6 +16,9 @@ let currentInteractBlock
 let locked = false
 let climbing = false
 
+// unlocks
+let vineUnlocked = false
+
 const scaledCanvas = {
     width: canvas.width / zoomFactor,
     height: canvas.height / zoomFactor
@@ -48,7 +51,16 @@ const background = new Sprite({
         x: 0,
         y: 0,
     },
-    imageSrc: './assets/images/background.png' // this is a placeholder lol, change later
+    imageSrc: './assets/images/main-bg.png' // this is a placeholder lol, change later
+})
+
+// grown plant
+const grownPlant = new Sprite({
+    position: {
+        x: 456,
+        y: 880,
+    },
+    imageSrc: './assets/images/plant-grown.png'
 })
 
 // camera
@@ -76,6 +88,7 @@ const player = new Player({
 
     type: 'player',
 
+    // all different animations
     animations: {
         Idle: {
             imageSrc: './assets/images/anims/idle.png',
@@ -129,8 +142,13 @@ function animate() {
     ctx.translate(camera.position.x, camera.position.y)
     
     background.update()
+
+    if (vineUnlocked) grownPlant.update()
+    
     if (!paused && !locked) {
         drawObjects()
+
+        player.update()
 
         playerMovement()
 
@@ -151,6 +169,7 @@ function animate() {
 
 animate()
 
+// for debugging
 function drawObjects() {
     collisionBlocks.forEach(block => {
         block.draw()
@@ -158,8 +177,6 @@ function drawObjects() {
     interactables.forEach(block => {
         block.draw()
     })
-
-    player.update()
 }
 
 function playerMovement() {
@@ -207,7 +224,10 @@ function lockPlayer() {
     if (!paused) {
         player.updateCamBox()
         player.applyYVelocity()
-        block3.draw()
+        player.updateAnims()
+        vineTop.draw()
+
+        if (player.velocity.y !== 0) Sprite.prototype.update.call(player)
 
         // fade the interact btn
         if (document.getElementById('interact-btn').style.opacity >= 0) 
@@ -218,7 +238,7 @@ function lockPlayer() {
         if (climbing) {
             player.velocity.y = 0
             if (keys.w.pressed) {
-                if (player.position.y > block3.position.y - player.height)
+                if (player.position.y > vineTop.position.y - player.height)
                     player.velocity.y = -2
                 else { // top of the ladder
                     keys.w.climbCD = true
@@ -227,7 +247,6 @@ function lockPlayer() {
 
                     // update player
                     player.velocity.x = 0
-                    player.position.x = player.position.x - player.width
 
                     setTimeout(() => {
                         keys.w.climbCD = false
@@ -235,16 +254,28 @@ function lockPlayer() {
                 }
             }
             else if (keys.s.pressed) {
-                if (player.position.y + player.height + 2 < block1.position.y)
+                if (player.position.y + player.height + 2 < groundMiddle.position.y)
                     player.velocity.y = 2
+                else { // bottom of the ladder
+                    keys.w.climbCD = true
+                    locked = false
+                    climbing = false
+
+                    // update player
+                    player.velocity.x = 0
+
+                    setTimeout(() => {
+                        keys.w.climbCD = false
+                    }, 700);
+                }
             }
         }
     }
 }
 
 function interact() {
-    if (currentInteractBlock.tag = 'ladder') {
-        player.position.x = interact1.position.x
+    if (currentInteractBlock.tag = 'ladder' && vineUnlocked) {
+        player.position.x = (ladderVine.position.x + ladderVine.size.width/2) - player.width/2
         locked = true
         climbing = true
     }
@@ -261,7 +292,9 @@ function checkresize() {
     scaledCanvas.width = canvas.width / zoomFactor
     scaledCanvas.height = canvas.height / zoomFactor
 }
-
+document.getElementById('btn').onclick = () => {
+    vineUnlocked = true
+}
 document.getElementById('btn2').onclick = () => {
     if (!paused) {
         paused = true

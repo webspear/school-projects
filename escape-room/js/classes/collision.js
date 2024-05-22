@@ -9,7 +9,7 @@ class CollisionBlock {
     }
 
     draw() {
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'
         ctx.fillRect(this.position.x, this.position.y, this.size.width, this.size.height)
     }
 }
@@ -21,6 +21,7 @@ class Interactable {
 
         this.tag = tag
 
+        if (tag)
         interactables.push(this)
     }
 

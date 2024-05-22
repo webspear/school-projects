@@ -3,17 +3,27 @@ let collisionBlocks = []
 // interacting blocks
 let interactables = []
 
-const block1 = new CollisionBlock({
+const groundMiddle = new CollisionBlock({
     position: {
         x: 0,
         y: 1280,
     },
     size: {
-        width: 3000,
+        width: 2016,
         height: 5,
     }
 })
-const block2 = new CollisionBlock({
+const groundBottom = new CollisionBlock({
+    position: {
+        x: 0,
+        y: 1920,
+    },
+    size: {
+        width: 2560,
+        height: 5,
+    }
+})
+const boundaryLeft = new CollisionBlock({
     position: {
         x: -10,
         y: 0,
@@ -23,17 +33,17 @@ const block2 = new CollisionBlock({
         height: 2560,
     }
 })
-const block3 = new CollisionBlock({
+const tube = new CollisionBlock({
     position: {
         x: 360,
-        y: 904,
+        y: 960,
     },
     size: {
-        width: 95,
-        height: 386,
+        width: 96,
+        height: 320,
     }
 })
-const block4 = new CollisionBlock({
+const beakerLeft = new CollisionBlock({
     position: {
         x: 1472,
         y: 1096,
@@ -43,9 +53,9 @@ const block4 = new CollisionBlock({
         height: 184,
     }
 })
-const block5 = new CollisionBlock({
+const beakerRight = new CollisionBlock({
     position: {
-        x: 1608,
+        x: 1624,
         y: 1096,
     },
     size: {
@@ -53,25 +63,36 @@ const block5 = new CollisionBlock({
         height: 184,
     }
 })
-const block6 = new CollisionBlock({
+const beakerBottom = new CollisionBlock({
     position: {
         x: 1472,
         y: 1176,
     },
     size: {
-        width: 144,
+        width: 160,
         height: 104,
     }
 })
-
-const interact1 = new Interactable({
+const vineTop = new CollisionBlock({
     position: {
-        x: 400,
-        y: 400,
+        x: 456,
+        y: 960,
     },
     size: {
-        width: 1,
-        height: 227,
+        width: 128,
+        height: 32,
+    }
+})
+
+// interactable places
+const ladderVine = new Interactable({
+    position: {
+        x: 560,
+        y: 880,
+    },
+    size: {
+        width: 32,
+        height: 400,
     },
     tag: 'ladder'
 })

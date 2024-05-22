@@ -142,6 +142,7 @@ class Player extends Sprite {
                 this.position.y + this.height >= interactable.position.y &&
                 this.position.y <= interactable.position.y + interactable.size.height
             ) {
+                if ((!vineUnlocked && interactable === ladderVine)) return
                 canInteract = true
                 currentInteractBlock = interactable
             }
@@ -150,15 +151,22 @@ class Player extends Sprite {
     }
 
     updateAnims() {
-        if (this.velocity.x !== 0) {
-            this.switchSprite('Walk')
-            if (player.velocity.y <= 0 && keys.jump.jumped) player.switchSprite('Jump_Walk')
-            else if (player.velocity.y > 0) player.switchSprite('Fall_Walk')
+        if (!climbing) {
+            if (this.velocity.x !== 0) {
+                this.switchSprite('Walk')
+                if (player.velocity.y <= 0 && keys.jump.jumped) player.switchSprite('Jump_Walk')
+                else if (player.velocity.y > 0) player.switchSprite('Fall_Walk')
+            }
+            else {
+                this.switchSprite('Idle')
+                if (player.velocity.y <= 0 && keys.jump.jumped) player.switchSprite('Jump_Idle')
+                else if (player.velocity.y > 0) player.switchSprite('Fall_Idle')
+            }
         }
-        else {
-            this.switchSprite('Idle')
-            if (player.velocity.y <= 0 && keys.jump.jumped) player.switchSprite('Jump_Idle')
-            else if (player.velocity.y > 0) player.switchSprite('Fall_Idle')
+        
+        if (climbing && player.velocity.y !== 0) {
+            console.log('hello')
+            this.switchSprite('Climb')
         }
     }
 

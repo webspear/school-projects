@@ -21,10 +21,10 @@ class Sprite {
         // crop the img for the player animations
         const cropbox = {
             position: {
-                x: this.currentFrame * (this.image.width / this.frameRate),
+                x: this.currentFrame * (this.image.width / this.frameRate) + 1,
                 y: 0,
             },
-            width: this.image.width / this.frameRate,
+            width: this.image.width / this.frameRate - 1,
             height: this.image.height,
         }
 
