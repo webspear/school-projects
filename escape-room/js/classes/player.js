@@ -33,7 +33,7 @@ class Player extends Sprite {
     // move with player
     updateCamBox() {
         const targetX = this.position.x + this.width/2 - scaledCanvas.width/2
-        const targetY = this.position.y + this.height/2 - scaledCanvas.height/2 - 70
+        const targetY = this.position.y + this.height/2 - scaledCanvas.height/2 - yCamOffset
         
         // smoothly interpolate the camera position towards the target position
         const smoothness = 0.1 // adjust to control smoothness of the panning
@@ -76,6 +76,8 @@ class Player extends Sprite {
         // check for collisions with interact blocks
         this.checkForInteractablesCollisions()
 
+        // check if exiting beaker
+        this.checkOutsideBeaker()
     }
 
     checkHorizontalCollisions() {
@@ -134,6 +136,7 @@ class Player extends Sprite {
     }
 
     checkForInteractablesCollisions() {
+        let willInteract = false
         for (let i = 0; i < interactables.length; i++) {
             const interactable = this.interactables[i]
 
@@ -142,12 +145,14 @@ class Player extends Sprite {
                 this.position.y + this.height >= interactable.position.y &&
                 this.position.y <= interactable.position.y + interactable.size.height
             ) {
-                if ((!vineUnlocked && interactable === ladderVine)) return
-                canInteract = true
+                if (!((vineUnlocked && interactable === ladderVine) || (ventUnlocked && interactable === ventDoor) || (ventUnlocked && interactable === ventDoorTop))) return
+                willInteract = true
                 currentInteractBlock = interactable
+                
             }
-            else canInteract = false
         }
+        if (willInteract) canInteract = true
+        else canInteract = false
     }
 
     updateAnims() {
@@ -175,5 +180,14 @@ class Player extends Sprite {
         this.image = this.animations[key].image
         this.frameBuffer = this.animations[key].frameBuffer
         this.frameRate = this.animations[key].frameRate
+    }
+
+    checkOutsideBeaker() {
+        if (this.position.x + this.width < beakerLeft.position.x || this.position.x > beakerRight.position.x + beakerRight.size.width) {
+            outsideBeaker = true
+            beakerLeft.collideable = false
+            beakerBottom.collideable = false
+            beakerRight.collideable = false
+        }
     }
 }

@@ -3,6 +3,16 @@ let collisionBlocks = []
 // interacting blocks
 let interactables = []
 
+const groundTop = new CollisionBlock({
+    position: {
+        x: 0,
+        y: 584,
+    },
+    size: {
+        width: 2560,
+        height: 5,
+    }
+})
 const groundMiddle = new CollisionBlock({
     position: {
         x: 0,
@@ -26,6 +36,16 @@ const groundBottom = new CollisionBlock({
 const boundaryLeft = new CollisionBlock({
     position: {
         x: -10,
+        y: 0,
+    },
+    size: {
+        width: 10,
+        height: 2560,
+    }
+})
+const boundaryRight = new CollisionBlock({
+    position: {
+        x: 2560,
         y: 0,
     },
     size: {
@@ -94,5 +114,27 @@ const ladderVine = new Interactable({
         width: 32,
         height: 400,
     },
-    tag: 'ladder'
+    type: 'ladder',
+})
+const ventDoor = new Interactable({
+    position: {
+        x: 1688,
+        y: 1736,
+    },
+    size: {
+        width: 192,
+        height: 184,
+    },
+    type: 'door',
+})
+const ventDoorTop = new Interactable({
+    position: {
+        x: 2536,
+        y: 304,
+    },
+    size: {
+        width: 24,
+        height: 280,
+    },
+    type: 'door',
 })

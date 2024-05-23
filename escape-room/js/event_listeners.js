@@ -3,10 +3,10 @@ window.addEventListener('keydown', (event) => {
     switch (event.key) {
         case 'w':
             keys.w.pressed = true
-            if (!keys.jump.inAir && !keys.w.climbCD) keys.jump.inAir = true
+            if (!keys.jump.inAir && !keys.w.climbCD && player.velocity.y <= 0) keys.jump.inAir = true
             break
         case ' ':
-            if (!keys.jump.inAir) keys.jump.inAir = true
+            if (!keys.jump.inAir && player.velocity.y <= 0) keys.jump.inAir = true
             break
         case 'a':
             keys.a.pressed = true

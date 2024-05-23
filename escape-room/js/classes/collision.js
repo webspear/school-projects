@@ -15,13 +15,12 @@ class CollisionBlock {
 }
 
 class Interactable {
-    constructor({position, size, tag}) {
+    constructor({position, size, type}) {
         this.position = position
         this.size = size
 
-        this.tag = tag
+        this.type = type
 
-        if (tag)
         interactables.push(this)
     }
 

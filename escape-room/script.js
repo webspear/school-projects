@@ -2,13 +2,16 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
-const zoomFactor = 1.75
+const zoomFactor = 1.85
 
 let paused = false
+
+let outsideBeaker = false
 
 let camFocus = false
 let camFocusTargetX
 let camFocusTargetY
+let yCamOffset = 130
 
 let canInteract = false
 let interactOpacity = 0
@@ -16,8 +19,15 @@ let currentInteractBlock
 let locked = false
 let climbing = false
 
+let teleporting = false
+let teleportTargetX
+let teleportTargetY
+
+let blackoutOpacity = 0
+
 // unlocks
 let vineUnlocked = false
+let ventUnlocked = false
 
 const scaledCanvas = {
     width: canvas.width / zoomFactor,
@@ -46,14 +56,29 @@ const keys = {
 }
 
 //bg img
-const background = new Sprite({
+const foreground = new Sprite({
     position: {
         x: 0,
         y: 0,
     },
-    imageSrc: './assets/images/main-bg.png' // this is a placeholder lol, change later
+    imageSrc: './assets/images/lab-foreground-final.png' // this is a placeholder lol, change later
+})
+const background = new Sprite({
+    position: {
+        x: -256,
+        y: 0,
+    },
+    imageSrc: './assets/images/lab-background-final.png' // this is a placeholder lol, change later
 })
 
+// beaker overlay
+const beakerOverlay = new Sprite({
+    position: {
+        x: 1464,
+        y: 1096,
+    },
+    imageSrc: './assets/images/beaker-overlay.png'
+})
 // grown plant
 const grownPlant = new Sprite({
     position: {
@@ -61,6 +86,14 @@ const grownPlant = new Sprite({
         y: 880,
     },
     imageSrc: './assets/images/plant-grown.png'
+})
+// open vent
+const ventOpen = new Sprite({
+    position: {
+        x: 1688,
+        y: 1736,
+    },
+    imageSrc: './assets/images/vent-open.png'
 })
 
 // camera
@@ -133,22 +166,34 @@ const player = new Player({
 function animate() {
     window.requestAnimationFrame(animate)
     // redraw canvas
-    ctx.fillStyle = 'white'
+    ctx.fillStyle = 'black'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    // slower background to add depth
+    ctx.save()
+    ctx.scale(zoomFactor, zoomFactor)
+    ctx.translate(camera.position.x * 0.8, camera.position.y * 1)
+    background.update()
+    ctx.restore()
 
     // zoom
     ctx.save()
     ctx.scale(zoomFactor, zoomFactor)
     ctx.translate(camera.position.x, camera.position.y)
     
-    background.update()
+    foreground.update()
 
     if (vineUnlocked) grownPlant.update()
+    if (ventUnlocked) ventOpen.update()
     
     if (!paused && !locked) {
         drawObjects()
 
+        if (outsideBeaker) beakerOverlay.update()
+
         player.update()
+
+        if (!outsideBeaker) beakerOverlay.update()
 
         playerMovement()
 
@@ -270,14 +315,54 @@ function lockPlayer() {
                 }
             }
         }
+
+        // teleporting
+        if (teleporting) {
+            player.updateCamBox()
+            player.updateAnims()
+            vineTop.draw()
+            Sprite.prototype.update.call(player)
+
+            if (blackoutOpacity <= 1 && player.position.x !== teleportTargetX) blackoutOpacity += 0.02
+            else {
+                player.position.x = teleportTargetX
+                player.position.y = teleportTargetY
+                player.flip = true
+
+                if (currentInteractBlock === ventDoor) yCamOffset = 165
+                if (currentInteractBlock === ventDoorTop) yCamOffset = 130
+
+                setTimeout(() => {
+                    if (blackoutOpacity > 0) blackoutOpacity -= 0.03
+                    else {
+                        locked = false 
+                        teleporting = false
+                    }
+                }, 500)
+            }
+            document.getElementById('blackout-screen').style.opacity = blackoutOpacity
+        }
     }
 }
 
+
 function interact() {
-    if (currentInteractBlock.tag = 'ladder' && vineUnlocked) {
-        player.position.x = (ladderVine.position.x + ladderVine.size.width/2) - player.width/2
+    if (currentInteractBlock.type === 'ladder') {
         locked = true
         climbing = true
+        if (currentInteractBlock === ladderVine) player.position.x = (ladderVine.position.x + ladderVine.size.width/2) - player.width/2
+    }
+    else if (currentInteractBlock.type === 'door') {
+        locked = true
+        teleporting = true
+        if (currentInteractBlock === ventDoor) {
+            teleportTargetX = 2458
+            teleportTargetY = 499
+        }
+        if (currentInteractBlock === ventDoorTop) {
+            teleportTargetX = 1750
+            teleportTargetY = 1835
+        }
     }
 }
 
@@ -294,6 +379,9 @@ function checkresize() {
 }
 document.getElementById('btn').onclick = () => {
     vineUnlocked = true
+}
+document.getElementById('btn3').onclick = () => {
+    ventUnlocked = true
 }
 document.getElementById('btn2').onclick = () => {
     if (!paused) {
