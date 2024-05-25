@@ -4,14 +4,20 @@ const ctx = canvas.getContext('2d')
 
 const zoomFactor = 1.85
 
+const scaledCanvas = {
+    width: canvas.width / zoomFactor,
+    height: canvas.height / zoomFactor
+}
+
 let paused = false
 
 let outsideBeaker = false
+let outsideBeakerVignetteToggle = false
 
 let camFocus = false
 let camFocusTargetX
 let camFocusTargetY
-let yCamOffset = 130
+let yCamOffset = 70
 
 let canInteract = false
 let interactOpacity = 0
@@ -25,14 +31,15 @@ let teleportTargetY
 
 let blackoutOpacity = 0
 
+let counterOverlayOpacity = 0.8
+
+let visionRadius = 200
+let overlayOpacity = 0
+let vignetteOpacity = 0.9
+
 // unlocks
 let vineUnlocked = false
 let ventUnlocked = false
-
-const scaledCanvas = {
-    width: canvas.width / zoomFactor,
-    height: canvas.height / zoomFactor
-}
 
 // check if keys need to be released and stuff
 const keys = {
@@ -70,6 +77,16 @@ const background = new Sprite({
     },
     imageSrc: './assets/images/lab-background-final.png' // this is a placeholder lol, change later
 })
+
+// under counter overlay
+const counterOverlay = {
+    position: {
+        x: 0,
+        y: 1344,
+    },
+    width: 1904,
+    height: 576,
+}
 
 // beaker overlay
 const beakerOverlay = new Sprite({
@@ -180,9 +197,9 @@ function animate() {
     ctx.save()
     ctx.scale(zoomFactor, zoomFactor)
     ctx.translate(camera.position.x, camera.position.y)
-    
-    foreground.update()
 
+    foreground.update()
+    
     if (vineUnlocked) grownPlant.update()
     if (ventUnlocked) ventOpen.update()
     
@@ -208,6 +225,10 @@ function animate() {
     else {
         player.draw()
     }
+
+    drawCounterOverlay()
+
+    drawVignette()
 
     ctx.restore()
 }
@@ -270,6 +291,7 @@ function lockPlayer() {
         player.updateCamBox()
         player.applyYVelocity()
         player.updateAnims()
+        player.checkBelow()
         vineTop.draw()
 
         if (player.velocity.y !== 0) Sprite.prototype.update.call(player)
@@ -283,7 +305,7 @@ function lockPlayer() {
         if (climbing) {
             player.velocity.y = 0
             if (keys.w.pressed) {
-                if (player.position.y > vineTop.position.y - player.height)
+                if ((player.position.y > vineTop.position.y - player.height && currentInteractBlock === ladderVine) || (player.position.y > counterShelf.position.y - player.height && currentInteractBlock === pipeLadder))
                     player.velocity.y = -2
                 else { // top of the ladder
                     keys.w.climbCD = true
@@ -299,7 +321,7 @@ function lockPlayer() {
                 }
             }
             else if (keys.s.pressed) {
-                if (player.position.y + player.height + 2 < groundMiddle.position.y)
+                if ((player.position.y + player.height + 2 < groundMiddle.position.y && currentInteractBlock === ladderVine) || (player.position.y + player.height + 2 < groundBottom.position.y && currentInteractBlock === pipeLadder))
                     player.velocity.y = 2
                 else { // bottom of the ladder
                     keys.w.climbCD = true
@@ -329,8 +351,18 @@ function lockPlayer() {
                 player.position.y = teleportTargetY
                 player.flip = true
 
-                if (currentInteractBlock === ventDoor) yCamOffset = 165
-                if (currentInteractBlock === ventDoorTop) yCamOffset = 130
+                if (currentInteractBlock === ventDoor) {
+                    yCamOffset = 165
+                    visionRadius = 900
+                    vignetteOpacity = 0.3
+                    overlayOpacity = 0
+                }
+                if (currentInteractBlock === ventDoorTop) {
+                    yCamOffset = 165
+                    visionRadius = 350
+                    vignetteOpacity = 0.9
+                    overlayOpacity = 0.5
+                }
 
                 setTimeout(() => {
                     if (blackoutOpacity > 0) blackoutOpacity -= 0.03
@@ -345,25 +377,58 @@ function lockPlayer() {
     }
 }
 
-
 function interact() {
     if (currentInteractBlock.type === 'ladder') {
         locked = true
         climbing = true
         if (currentInteractBlock === ladderVine) player.position.x = (ladderVine.position.x + ladderVine.size.width/2) - player.width/2
+        if (currentInteractBlock === pipeLadder) player.position.x = (pipeLadder.position.x + pipeLadder.size.width/2) - player.width/2
     }
     else if (currentInteractBlock.type === 'door') {
         locked = true
         teleporting = true
         if (currentInteractBlock === ventDoor) {
-            teleportTargetX = 2458
-            teleportTargetY = 499
+            if (!ventUnlocked) {
+                locked = false
+                teleporting = false
+
+                // do stuff
+                ventUnlocked = true
+            }
+            else {
+                teleportTargetX = 2458
+                teleportTargetY = 499
+            }
         }
         if (currentInteractBlock === ventDoorTop) {
             teleportTargetX = 1750
             teleportTargetY = 1835
         }
     }
+}
+
+// vignette
+function drawVignette() {
+    const gradient = ctx.createRadialGradient(
+        player.position.x + player.width / 2, player.position.y + player.height / 2, player.width / 2, 
+        player.position.x + player.width / 2, player.position.y + player.height / 2, visionRadius
+    )
+
+    gradient.addColorStop(0, `rgba(0, 0, 0, ${overlayOpacity})`)
+    gradient.addColorStop(1, `rgba(0, 0, 0, ${vignetteOpacity})`)
+
+    // Fill the canvas with the gradient
+    ctx.fillStyle = gradient
+
+    const targetX = Math.abs(camera.position.x)
+    const targetY = Math.abs(camera.position.y)
+    ctx.fillRect(targetX - 200, targetY - 200, scaledCanvas.width + 400, scaledCanvas.height + 400)
+}
+
+// draw counter overlay
+function drawCounterOverlay() {
+    ctx.fillStyle = `rgba(0, 0, 0, ${counterOverlayOpacity})`
+    ctx.fillRect(counterOverlay.position.x, counterOverlay.position.y, counterOverlay.width, counterOverlay.height)
 }
 
 // determine how the game size should be like (depending on the window size)
@@ -377,6 +442,7 @@ function checkresize() {
     scaledCanvas.width = canvas.width / zoomFactor
     scaledCanvas.height = canvas.height / zoomFactor
 }
+
 document.getElementById('btn').onclick = () => {
     vineUnlocked = true
 }

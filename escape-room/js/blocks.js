@@ -20,7 +20,7 @@ const groundMiddle = new CollisionBlock({
     },
     size: {
         width: 2016,
-        height: 5,
+        height: 64,
     }
 })
 const groundBottom = new CollisionBlock({
@@ -103,6 +103,36 @@ const vineTop = new CollisionBlock({
         height: 32,
     }
 })
+const counterShelf = new CollisionBlock({
+    position: {
+        x: 608,
+        y: 1600,
+    },
+    size: {
+        width: 768,
+        height: 16,
+    }
+})
+const counterShelfLeft = new CollisionBlock({
+    position: {
+        x: 576,
+        y: 1344,
+    },
+    size: {
+        width: 32,
+        height: 272,
+    }
+})
+const counterShelfRight = new CollisionBlock({
+    position: {
+        x: 1376,
+        y: 1344,
+    },
+    size: {
+        width: 32,
+        height: 272,
+    }
+})
 
 // interactable places
 const ladderVine = new Interactable({
@@ -137,4 +167,15 @@ const ventDoorTop = new Interactable({
         height: 280,
     },
     type: 'door',
+})
+const pipeLadder = new Interactable({
+    position: {
+        x: 1104,
+        y: 1442,
+    },
+    size: {
+        width: 24,
+        height: 488,
+    },
+    type: 'ladder',
 })

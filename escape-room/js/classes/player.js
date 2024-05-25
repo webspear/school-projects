@@ -76,8 +76,14 @@ class Player extends Sprite {
         // check for collisions with interact blocks
         this.checkForInteractablesCollisions()
 
+        // check if the player is in the area below, change y camera offset is true
+        this.checkBelow()
+
         // check if exiting beaker
         this.checkOutsideBeaker()
+
+        // check if the player is under the counter
+        this.checkUnderCounter()
     }
 
     checkHorizontalCollisions() {
@@ -145,7 +151,11 @@ class Player extends Sprite {
                 this.position.y + this.height >= interactable.position.y &&
                 this.position.y <= interactable.position.y + interactable.size.height
             ) {
-                if (!((vineUnlocked && interactable === ladderVine) || (ventUnlocked && interactable === ventDoor) || (ventUnlocked && interactable === ventDoorTop))) return
+                if (!(
+                    (vineUnlocked && interactable === ladderVine) || 
+                    (interactable === ventDoor) || 
+                    (ventUnlocked && interactable === ventDoorTop) || 
+                    (interactable === pipeLadder))) return
                 willInteract = true
                 currentInteractBlock = interactable
                 
@@ -183,11 +193,39 @@ class Player extends Sprite {
     }
 
     checkOutsideBeaker() {
-        if (this.position.x + this.width < beakerLeft.position.x || this.position.x > beakerRight.position.x + beakerRight.size.width) {
-            outsideBeaker = true
+        if (this.position.x + this.width < beakerLeft.position.x || this.position.x > beakerRight.position.x + beakerRight.size.width) outsideBeaker = true
+        if (outsideBeaker) {
             beakerLeft.collideable = false
             beakerBottom.collideable = false
             beakerRight.collideable = false
+
+            if (!outsideBeakerVignetteToggle) {
+                if (visionRadius <= 900) visionRadius += 20
+                if (vignetteOpacity >= 0.6) vignetteOpacity -= 0.01
+            }
+            if (visionRadius >= 900 && vignetteOpacity <= 0.6) outsideBeakerVignetteToggle = true
         }
+    }
+    
+    checkUnderCounter() {
+        if (outsideBeaker && outsideBeakerVignetteToggle) {
+            if (this.position.x < 1904 && this.position.y > 1344) {
+                if (visionRadius >= 350) visionRadius -= 20
+                if (vignetteOpacity <= 0.9) vignetteOpacity += 0.01
+                if (overlayOpacity <= 0.5) overlayOpacity += 0.02
+                if (counterOverlayOpacity > 0) counterOverlayOpacity -= 0.01
+            }
+            else if (this.position.y > 1344) {
+                if (visionRadius <= 900) visionRadius += 20
+                if (vignetteOpacity >= 0.6) vignetteOpacity -= 0.01
+                if (overlayOpacity >= 0) overlayOpacity -= 0.01
+                if (counterOverlayOpacity < 0.8) counterOverlayOpacity += 0.1
+            }
+        }
+    }
+
+    checkBelow() {
+        if (this.position.y > 1664) yCamOffset = 165
+        else if (player.position.y > 584) yCamOffset = 70
     }
 }
