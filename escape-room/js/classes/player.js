@@ -1,4 +1,4 @@
-class Player extends Sprite {
+class Player extends Sprite{
     constructor({position, gravity, collisionBlocks, interactables, imageSrc, frameRate, type, animations}) {
         super({imageSrc, frameRate, type})
         this.position = position
@@ -9,6 +9,9 @@ class Player extends Sprite {
         this.width = 70
         this.height = 85
         this.gravity = gravity
+
+        this.speedMultiplier = 1
+        this.pushing = false
 
         this.flip = false
 
@@ -42,7 +45,9 @@ class Player extends Sprite {
         else if (camera.position.x - (targetX + camera.position.x) * smoothness < -2525 - this.width/2 + scaledCanvas.width) // ??? the hell
             camera.position.x = -2525 - this.width/2 + scaledCanvas.width
         else camera.position.x -= (targetX + camera.position.x) * smoothness
-        camera.position.y -= (targetY + camera.position.y) * smoothness
+        if (camera.position.y - (targetY + camera.position.y) * smoothness > 0)
+            camera.position.y = 0
+        else camera.position.y -= (targetY + camera.position.y) * smoothness
     }
 
     applyYVelocity() {
@@ -76,7 +81,11 @@ class Player extends Sprite {
         // check for collisions with interact blocks
         this.checkForInteractablesCollisions()
 
-        // check if the player is in the area below, change y camera offset is true
+        // manage collisions with the box
+        this.checkForBoxVerticalCollisions()
+        this.pushBox()
+
+        // check if the player is in the area below, change y camera offset if true
         this.checkBelow()
 
         // check if exiting beaker
@@ -141,7 +150,7 @@ class Player extends Sprite {
         }
     }
 
-    checkForInteractablesCollisions() {
+    checkForInteractablesCollisions() { // same thing as collision blocks, but no collision
         let willInteract = false
         for (let i = 0; i < interactables.length; i++) {
             const interactable = this.interactables[i]
@@ -151,36 +160,78 @@ class Player extends Sprite {
                 this.position.y + this.height >= interactable.position.y &&
                 this.position.y <= interactable.position.y + interactable.size.height
             ) {
-                if (!(
-                    (vineUnlocked && interactable === ladderVine) || 
-                    (interactable === ventDoor) || 
-                    (ventUnlocked && interactable === ventDoorTop) || 
-                    (interactable === pipeLadder))) return
                 willInteract = true
                 currentInteractBlock = interactable
-                
+                if ((currentInteractBlock === wirePickup && wireUnlocked) || (currentInteractBlock === ladderWire && !wireUnlockedDeployed) || (currentInteractBlock === deployWire && (!wireUnlocked || wireUnlockedDeployed))) willInteract = false
             }
         }
         if (willInteract) canInteract = true
         else canInteract = false
     }
 
+    checkForBoxVerticalCollisions() {
+        // check if collision exists 
+        if (this.position.x <= box.position.x + box.width &&
+            this.position.x + this.width >= box.position.x &&
+            this.position.y + this.height >= box.position.y &&
+            this.position.y <= box.position.y + box.height
+        ) {
+            if (this.velocity.y > 0) {
+                this.velocity.y = 0 // reset gravity
+                this.position.y = box.position.y - this.height - 0.01
+                keys.jump.jumped = false
+                this.pushing = false
+            }
+        }
+    }
+
+    pushBox() {
+        if (this.position.x <= box.position.x + box.width &&
+            this.position.x + this.width >= box.position.x &&
+            this.position.y + this.height >= box.position.y &&
+            this.position.y <= box.position.y + box.height
+        ) {
+            if (this.position.x - box.width < plantTop.position.x + plantTop.size.width && this.velocity.x < 0) {
+                box.position.x = plantTop.position.x + plantTop.size.width
+                this.position.x = box.position.x + box.width + 0.01
+                this.pushing = false
+                footsteps.buffer = 20
+            }
+            else if (this.velocity.x < 0) {
+                this.speedMultiplier = 0.4
+                box.position.x = this.position.x - box.width
+                this.pushing = true
+                footsteps.buffer = 40
+            }
+            else if (this.velocity.x > 0) {
+                this.speedMultiplier = 0.4
+                box.position.x = this.position.x + this.width
+                this.pushing = true
+                footsteps.buffer = 40
+            }
+        }
+        else {
+            this.speedMultiplier = 1
+        }
+    }
+
     updateAnims() {
         if (!climbing) {
             if (this.velocity.x !== 0) {
                 this.switchSprite('Walk')
-                if (player.velocity.y <= 0 && keys.jump.jumped) player.switchSprite('Jump_Walk')
-                else if (player.velocity.y > 0) player.switchSprite('Fall_Walk')
+                if (this.velocity.y === 0 && !locked) footsteps.play()
+                if (this.pushing) this.switchSprite('Push')
+                if (this.velocity.y <= 0 && keys.jump.jumped) this.switchSprite('Jump_Walk')
+                else if (this.velocity.y > 0) this.switchSprite('Fall_Walk')
             }
             else {
                 this.switchSprite('Idle')
-                if (player.velocity.y <= 0 && keys.jump.jumped) player.switchSprite('Jump_Idle')
-                else if (player.velocity.y > 0) player.switchSprite('Fall_Idle')
+                if (this.velocity.y <= 0 && keys.jump.jumped) this.switchSprite('Jump_Idle')
+                else if (this.velocity.y > 0) this.switchSprite('Fall_Idle')
             }
         }
         
-        if (climbing && player.velocity.y !== 0) {
-            console.log('hello')
+        if (climbing && this.velocity.y !== 0) {
             this.switchSprite('Climb')
         }
     }
@@ -212,7 +263,7 @@ class Player extends Sprite {
             if (this.position.x < 1904 && this.position.y > 1344) {
                 if (visionRadius >= 350) visionRadius -= 20
                 if (vignetteOpacity <= 0.9) vignetteOpacity += 0.01
-                if (overlayOpacity <= 0.5) overlayOpacity += 0.02
+                if (overlayOpacity <= 0.3) overlayOpacity += 0.02
                 if (counterOverlayOpacity > 0) counterOverlayOpacity -= 0.01
             }
             else if (this.position.y > 1344) {
@@ -225,7 +276,16 @@ class Player extends Sprite {
     }
 
     checkBelow() {
-        if (this.position.y > 1664) yCamOffset = 165
-        else if (player.position.y > 584) yCamOffset = 70
+        if (this.position.y > 1664) yCamOffset = 150
+        else if (this.position.y > 584) yCamOffset = 70
     }
+
+    // checkAbove() {
+    //     if (this.position.y < 632) {
+
+    //     }
+    //     else {
+
+    //     }
+    // }
 }

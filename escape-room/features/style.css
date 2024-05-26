@@ -1,0 +1,18 @@
+canvas{
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+#canvas{
+    z-index: 1;
+}
+
+#overlayCanvas{
+    z-index: 2;
+}
+
+#lineCanvas{
+    z-index: 3;
+}

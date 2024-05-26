@@ -6,74 +6,31 @@
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <style>
-        body {
-            background-color: white;
-            margin: 0;
-            box-sizing: border-box;
-            user-select: none;
-            cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
-        }
-        @font-face {
-            font-family: ending;
-            src: url("./assets/fonts/Perfect\ DOS\ VGA\ 437.ttf");
-        }
-        #canvas {
-            position: absolute;
-            margin: 0;
-            top: 0;
-            left: 0;
-        }
-        #interact-btn {
-            position: absolute;
-            margin: 0;
-            z-index: 5;
-            font-family: ending;
-            left: 50%;
-            top: 90%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-        }
-        #blackout-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            margin: 0;
-            z-index: 90;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            background-color: black;
-        }
-        #btn {
-            position: absolute;
-            z-index: 98;
-        }
-        #btn2 {
-            position: absolute;
-            top: 30px;
-            z-index: 99;
-        }
-        #btn3 {
-            position: absolute;
-            top: 60px;
-            z-index: 99;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!--start overlay to accomodate autoplay policies-->
+    <!-- <div id="start-overlay">START GAME</button></div> -->
+
     <canvas id="canvas"></canvas>
     <div id="blackout-screen"></div>
+    <div id="inventory"></div>
+    <div id="cryptex"></div>
     <h1 id="interact-btn">[E] to interact</h1>
     <button id="btn">test</button>
     <button id="btn2">cam test</button>
     <button id="btn3">test</button>
 
+    <script src="./features/Inventory.js"></script>
+    <script src="./features/Cryptex.js"></script>
     <script src="./js/event_listeners.js"></script>
     <script src="./js/classes/sprite.js"></script>
+    <script src="./js/classes/sound.js"></script>
     <script src="./js/classes/player.js"></script>
     <script src="./js/classes/collision.js"></script>
     <script src="./js/blocks.js"></script>
+    <script src="./js/sounds.js"></script>
+    <script src="./js/sprites.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -133,6 +133,36 @@ const counterShelfRight = new CollisionBlock({
         height: 272,
     }
 })
+const boundaryMiddle = new CollisionBlock({
+    position: {
+        x: 2040,
+        y: 1088,
+    },
+    size: {
+        width: 16,
+        height: 256,
+    }
+})
+const plantTop = new CollisionBlock({
+    position: {
+        x: 1296,
+        y: 416,
+    },
+    size: {
+        width: 136,
+        height: 168,
+    }
+})
+const fallenBook = new CollisionBlock({
+    position: {
+        x: 1064,
+        y: 512,
+    },
+    size: {
+        width: 232,
+        height: 72,
+    }
+})
 
 // interactable places
 const ladderVine = new Interactable({
@@ -143,6 +173,39 @@ const ladderVine = new Interactable({
     size: {
         width: 32,
         height: 400,
+    },
+    type: 'ladder',
+})
+const wirePickup = new Interactable({
+    position: {
+        x: 1704,
+        y: 1176,
+    },
+    size: {
+        width: 128,
+        height: 104,
+    },
+    type: 'puzzle',
+})
+const deployWire = new Interactable({
+    position: {
+        x: 1912,
+        y: 1200,
+    },
+    size: {
+        width: 72,
+        height: 80,
+    },
+    type: 'puzzle',
+})
+const ladderWire = new Interactable({
+    position: {
+        x: 1984,
+        y: 1200,
+    },
+    size: {
+        width: 32,
+        height: 720,
     },
     type: 'ladder',
 })
@@ -179,3 +242,124 @@ const pipeLadder = new Interactable({
     },
     type: 'ladder',
 })
+const fuseBox = new Interactable({
+    position: {
+        x: 1504,
+        y: 1728,
+    },
+    size: {
+        width: 96,
+        height: 192,
+    },
+    type: 'puzzle',
+})
+const vaultDoor = new Interactable({
+    position: {
+        x: 232,
+        y: 1792,
+    },
+    size: {
+        width: 64,
+        height: 128,
+    },
+    type: 'puzzle',
+})
+const vaultKeypad = new Interactable({
+    position: {
+        x: 80,
+        y: 1768,
+    },
+    size: {
+        width: 80,
+        height: 136,
+    },
+    type: 'puzzle',
+})
+const booksBelow = new Interactable({
+    position: {
+        x: 1208,
+        y: 1368,
+    },
+    size: {
+        width: 168,
+        height: 232,
+    },
+    type: 'puzzle',
+})
+const noteBottom = new Interactable({
+    position: {
+        x: 736,
+        y: 1808,
+    },
+    size: {
+        width: 96,
+        height: 112,
+    },
+    type: 'puzzle',
+})
+const noteMiddle = new Interactable({
+    position: {
+        x: 720,
+        y: 1120,
+    },
+    size: {
+        width: 96,
+        height: 160,
+    },
+    type: 'puzzle',
+})
+const noteTop = new Interactable({
+    position: {
+        x: 424,
+        y: 418,
+    },
+    size: {
+        width: 96,
+        height: 208,
+    },
+    type: 'puzzle',
+})
+const binderTop = new Interactable({
+    position: {
+        x: 664,
+        y: 352,
+    },
+    size: {
+        width: 328,
+        height: 232,
+    },
+    type: 'puzzle',
+})
+const telescope = new Interactable({
+    position: {
+        x: 96,
+        y: 400,
+    },
+    size: {
+        width: 224,
+        height: 184,
+    },
+    type: 'puzzle',
+})
+const boiler = new Interactable({
+    position: {
+        x: 48,
+        y: 1152,
+    },
+    size: {
+        width: 112,
+        height: 128,
+    },
+    type: 'puzzle',
+})
+
+// pushable box
+const box = {
+    position: {
+        x: 1768,
+        y: 488,
+    },
+    width: 112,
+    height: 96,
+    imageSrc: './assets/images/box.png'
+}

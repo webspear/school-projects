@@ -2,12 +2,31 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
+const parent = document.getElementById('inventory');
+const inv = new Inventory(parent, {}, 12);
+inv.hide()
+
 const zoomFactor = 1.85
 
 const scaledCanvas = {
     width: canvas.width / zoomFactor,
     height: canvas.height / zoomFactor
 }
+
+// determine how the game size should be like (depending on the window size)
+window.addEventListener(onload, checkresize())
+$(window).resize(function() {checkresize()})
+
+function checkresize() {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    
+    scaledCanvas.width = canvas.width / zoomFactor
+    scaledCanvas.height = canvas.height / zoomFactor
+}
+
+let titleSequence = false
+let endSequence = false
 
 let paused = false
 
@@ -38,6 +57,8 @@ let overlayOpacity = 0
 let vignetteOpacity = 0.9
 
 // unlocks
+let wireUnlocked = false
+let wireUnlockedDeployed = false
 let vineUnlocked = false
 let ventUnlocked = false
 
@@ -62,22 +83,6 @@ const keys = {
     },
 }
 
-//bg img
-const foreground = new Sprite({
-    position: {
-        x: 0,
-        y: 0,
-    },
-    imageSrc: './assets/images/lab-foreground-final.png' // this is a placeholder lol, change later
-})
-const background = new Sprite({
-    position: {
-        x: -256,
-        y: 0,
-    },
-    imageSrc: './assets/images/lab-background-final.png' // this is a placeholder lol, change later
-})
-
 // under counter overlay
 const counterOverlay = {
     position: {
@@ -88,45 +93,19 @@ const counterOverlay = {
     height: 576,
 }
 
-// beaker overlay
-const beakerOverlay = new Sprite({
-    position: {
-        x: 1464,
-        y: 1096,
-    },
-    imageSrc: './assets/images/beaker-overlay.png'
-})
-// grown plant
-const grownPlant = new Sprite({
-    position: {
-        x: 456,
-        y: 880,
-    },
-    imageSrc: './assets/images/plant-grown.png'
-})
-// open vent
-const ventOpen = new Sprite({
-    position: {
-        x: 1688,
-        y: 1736,
-    },
-    imageSrc: './assets/images/vent-open.png'
-})
-
 // camera
 const camera = {
     position: {
-        x: 1,
-        y: -2560 + scaledCanvas.height + 1600, // 2560 is the height of the background image (change later)
+        x: -1350 + (scaledCanvas.width/2),
+        y: -1030 + (scaledCanvas.height/2), // 2560 is the height of the background image (change later)
     },
-
 }
 
 // the player
 const player = new Player({
     position: {
-        x: 1500,
-        y: 1100,
+        x: 1510,
+        y: 1091,
     },
     gravity: 1, // change gravity as see fit
 
@@ -175,9 +154,39 @@ const player = new Player({
             frameRate: 1,
             frameBuffer: 1,
         },
+        Push: {
+            imageSrc: './assets/images/anims/push.png',
+            frameRate: 2,
+            frameBuffer: 20,
+        },
     },
 
 })
+
+// items
+const item = {
+    wire: new Item({url: './assets/images/items/wire.png'}, 'wire', 'desc', inv, 1)
+}
+
+// screen changing
+// document.getElementById('start-overlay').onclick = () => {
+//             console.log(document.getElementById('start-overlay').style.opacity)
+//     function fade() {
+//         if (document.getElementById('start-overlay').style.opacity > 0) {
+//             document.getElementById('start-overlay').style.opacity -= 0.01
+//             setTimeout(() => {fade()}, 10);
+//         }
+//     }
+//     fade()
+
+//     setTimeout(() => {
+//         // bg music
+//         menuTheme.play()
+//         menuTheme.loop = true
+
+//         document.getElementById('start-overlay').style.visibility = 'hidden'
+//     }, 0)
+// }
 
 // make the game work
 function animate() {
@@ -191,6 +200,9 @@ function animate() {
     ctx.scale(zoomFactor, zoomFactor)
     ctx.translate(camera.position.x * 0.8, camera.position.y * 1)
     background.update()
+
+    showHoverBack()
+
     ctx.restore()
 
     // zoom
@@ -200,11 +212,19 @@ function animate() {
 
     foreground.update()
     
+    if (!wireUnlocked) wireItem.update()
+    if (wireUnlockedDeployed) wireDeployed.update()
     if (vineUnlocked) grownPlant.update()
     if (ventUnlocked) ventOpen.update()
+
+    drawBox()
+    
+    drawCounterOverlay()
+
+    showHover()
     
     if (!paused && !locked) {
-        drawObjects()
+        // drawObjects()
 
         if (outsideBeaker) beakerOverlay.update()
 
@@ -225,8 +245,6 @@ function animate() {
     else {
         player.draw()
     }
-
-    drawCounterOverlay()
 
     drawVignette()
 
@@ -250,10 +268,10 @@ function playerMovement() {
     player.velocity.x = 0
     if (keys.d.pressed && keys.a.pressed) player.velocity.x = 0
     else if (keys.d.pressed) {
-        player.velocity.x = 4
+        player.velocity.x = 4 * player.speedMultiplier
     }
     else if (keys.a.pressed) {
-        player.velocity.x = -4
+        player.velocity.x = -4 * player.speedMultiplier
     }
     if (keys.jump.inAir) {
         if (!keys.jump.jumped && !keys.w.climbCD) {
@@ -287,12 +305,20 @@ function animateCam() {
 function lockPlayer() {
     player.draw()
 
-    if (!paused) {
+    if (titleSequence) {
+        beakerOverlay.update()
+
+    }
+
+    else if (!paused) {
         player.updateCamBox()
         player.applyYVelocity()
         player.updateAnims()
         player.checkBelow()
-        vineTop.draw()
+        player.checkUnderCounter()
+        beakerOverlay.update()
+        
+        canInteract = false
 
         if (player.velocity.y !== 0) Sprite.prototype.update.call(player)
 
@@ -305,8 +331,10 @@ function lockPlayer() {
         if (climbing) {
             player.velocity.y = 0
             if (keys.w.pressed) {
-                if ((player.position.y > vineTop.position.y - player.height && currentInteractBlock === ladderVine) || (player.position.y > counterShelf.position.y - player.height && currentInteractBlock === pipeLadder))
-                    player.velocity.y = -2
+                climbingFootsteps.play()
+
+                if ((player.position.y > groundMiddle.position.y - player.height && currentInteractBlock === ladderWire) || (player.position.y > vineTop.position.y - player.height && currentInteractBlock === ladderVine) || (player.position.y > counterShelf.position.y - player.height && currentInteractBlock === pipeLadder))
+                    player.velocity.y = -3
                 else { // top of the ladder
                     keys.w.climbCD = true
                     locked = false
@@ -321,8 +349,10 @@ function lockPlayer() {
                 }
             }
             else if (keys.s.pressed) {
-                if ((player.position.y + player.height + 2 < groundMiddle.position.y && currentInteractBlock === ladderVine) || (player.position.y + player.height + 2 < groundBottom.position.y && currentInteractBlock === pipeLadder))
-                    player.velocity.y = 2
+                climbingFootsteps.play()
+
+                if ((player.position.y + player.height + 3 < groundBottom.position.y && currentInteractBlock === ladderWire) || (player.position.y + player.height + 3 < groundMiddle.position.y && currentInteractBlock === ladderVine) || (player.position.y + player.height + 3 < groundBottom.position.y && currentInteractBlock === pipeLadder))
+                    player.velocity.y = 3
                 else { // bottom of the ladder
                     keys.w.climbCD = true
                     locked = false
@@ -345,6 +375,11 @@ function lockPlayer() {
             vineTop.draw()
             Sprite.prototype.update.call(player)
 
+            player.velocity.x = 0
+            player.velocity.y = 0
+
+            canInteract = false
+
             if (blackoutOpacity <= 1 && player.position.x !== teleportTargetX) blackoutOpacity += 0.02
             else {
                 player.position.x = teleportTargetX
@@ -358,7 +393,7 @@ function lockPlayer() {
                     overlayOpacity = 0
                 }
                 if (currentInteractBlock === ventDoorTop) {
-                    yCamOffset = 165
+                    yCamOffset = 150
                     visionRadius = 350
                     vignetteOpacity = 0.9
                     overlayOpacity = 0.5
@@ -379,16 +414,22 @@ function lockPlayer() {
 
 function interact() {
     if (currentInteractBlock.type === 'ladder') {
-        locked = true
-        climbing = true
-        if (currentInteractBlock === ladderVine) player.position.x = (ladderVine.position.x + ladderVine.size.width/2) - player.width/2
-        if (currentInteractBlock === pipeLadder) player.position.x = (pipeLadder.position.x + pipeLadder.size.width/2) - player.width/2
+        if ((currentInteractBlock === ladderVine && vineUnlocked) || (currentInteractBlock === pipeLadder) || (currentInteractBlock === ladderWire)) {
+            player.position.x = (currentInteractBlock.position.x + currentInteractBlock.size.width/2) - player.width/2
+            locked = true
+            climbing = true
+        }
+        if (currentInteractBlock === ladderVine && !vineUnlocked) {
+            interaction.play()
+            
+        }
     }
     else if (currentInteractBlock.type === 'door') {
         locked = true
         teleporting = true
         if (currentInteractBlock === ventDoor) {
             if (!ventUnlocked) {
+                interaction.play()
                 locked = false
                 teleporting = false
 
@@ -396,15 +437,89 @@ function interact() {
                 ventUnlocked = true
             }
             else {
+                panel.play()
                 teleportTargetX = 2458
                 teleportTargetY = 499
             }
         }
         if (currentInteractBlock === ventDoorTop) {
+            panel.play()
             teleportTargetX = 1750
             teleportTargetY = 1835
         }
     }
+    else if (currentInteractBlock.type === 'puzzle') {
+        if (currentInteractBlock === wirePickup) {
+            pickup.play()
+            wireUnlocked = true
+            inv.addItem(item.wire)
+        }
+        if (currentInteractBlock === deployWire) {
+            interaction.play()
+            wireUnlockedDeployed = true
+            inv.removeItem(item.wire)
+        }
+        if (currentInteractBlock === fuseBox) {
+            panel.play()
+            console.log('fuse box')
+        }
+        if (currentInteractBlock === vaultDoor) {
+            interaction.play()
+            console.log('vault door')
+        }
+        if (currentInteractBlock === vaultKeypad) {
+            interaction.play()
+            console.log('vault keypad')
+        }
+        if (currentInteractBlock === booksBelow) {
+            interaction.play()
+            console.log('books below')
+        }
+        if (currentInteractBlock === noteBottom) {
+            paper.play()
+            console.log('note bottom')
+        }
+        if (currentInteractBlock === noteTop) {
+            paper.play()
+            console.log('note top')
+        }
+        if (currentInteractBlock === noteMiddle) {
+            paper.play()
+            console.log('note middle')
+        }
+        if (currentInteractBlock === binderTop) {
+            interaction.play()
+            console.log('binder top')
+        }
+        if (currentInteractBlock === telescope) {
+            interaction.play()
+            console.log('telescope')
+        }
+        if (currentInteractBlock === boiler) {
+            interaction.play()
+            console.log('boiler')
+        }
+    }
+}
+
+// draw hover effect
+function showHover() {
+    if (!canInteract) return
+    if ((currentInteractBlock === fuseBox || currentInteractBlock === vaultDoor || currentInteractBlock === binderTop)) 
+        hoverLayer1.update()
+    if ((currentInteractBlock === vaultKeypad || currentInteractBlock === booksBelow || currentInteractBlock === boiler)) 
+        hoverLayer2.update()
+    if (((currentInteractBlock === ladderVine && !vineUnlocked) || currentInteractBlock === wirePickup || currentInteractBlock === ventDoor || currentInteractBlock === ventDoorTop || currentInteractBlock === noteBottom || currentInteractBlock === telescope)) 
+        hoverLayer3.update()
+    if ((currentInteractBlock === deployWire))
+        hoverLayer4.update()
+
+    // change text
+
+}
+function showHoverBack() {
+    if (canInteract && (currentInteractBlock === noteMiddle || currentInteractBlock === noteTop)) 
+        hoverLayerBack.update()
 }
 
 // vignette
@@ -431,23 +546,18 @@ function drawCounterOverlay() {
     ctx.fillRect(counterOverlay.position.x, counterOverlay.position.y, counterOverlay.width, counterOverlay.height)
 }
 
-// determine how the game size should be like (depending on the window size)
-window.addEventListener(onload, checkresize())
-$(window).resize(function() {checkresize()})
-
-function checkresize() {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-    
-    scaledCanvas.width = canvas.width / zoomFactor
-    scaledCanvas.height = canvas.height / zoomFactor
+// draw pushable box
+function drawBox() {
+    const image = new Image()
+    image.src = box.imageSrc
+    if (!image) return
+    ctx.drawImage(image, box.position.x, box.position.y, box.width, box.height)
+    ctx.drawImage(image, box.position.x, box.position.y, box.width, box.height)
 }
 
 document.getElementById('btn').onclick = () => {
     vineUnlocked = true
-}
-document.getElementById('btn3').onclick = () => {
-    ventUnlocked = true
+    locked = true
 }
 document.getElementById('btn2').onclick = () => {
     if (!paused) {
