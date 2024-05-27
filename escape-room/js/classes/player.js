@@ -250,6 +250,19 @@ class Player extends Sprite{
             beakerBottom.collideable = false
             beakerRight.collideable = false
 
+            // start the game theme
+            gameTheme.play()
+            gameTheme.loop = true
+
+            // start a dialogue
+            setTimeout(() => {
+                if (!dialoguingBeakerExit) {
+                    locked = true
+                    dialoguing = true
+                    dialoguingBeakerExit = true
+                }
+            }, 1000);
+
             if (!outsideBeakerVignetteToggle) {
                 if (visionRadius <= 900) visionRadius += 20
                 if (vignetteOpacity >= 0.6) vignetteOpacity -= 0.01
@@ -279,13 +292,4 @@ class Player extends Sprite{
         if (this.position.y > 1664) yCamOffset = 150
         else if (this.position.y > 584) yCamOffset = 70
     }
-
-    // checkAbove() {
-    //     if (this.position.y < 632) {
-
-    //     }
-    //     else {
-
-    //     }
-    // }
 }

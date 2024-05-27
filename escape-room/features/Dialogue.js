@@ -1,4 +1,4 @@
-class Dialogue{
+class Dialogue {
     constructor(dialogues, timeDelay, autoSkip, sfx, parent, callback) {
         this.dialogues = dialogues; // list of dialogues [{name:"name, text:"text"}]
         this.timeDelay = timeDelay; // time delay per letter
@@ -9,22 +9,23 @@ class Dialogue{
         this.callback = callback; // callback function on completion
 
         this.currentDialogue = 0; // current "chapter"
-        this.currentText = 0;   // current letter
+        this.currentText = 0; // current letter
         this.isTyping = false; // is letter appearing "typing"
         this.isAuto = false; // is auto skipping
+        this.isFinished = false; // is dialogue finished
 
         // main wrapper
-        this.dialogueElement = document.createElement('div');
-        this.dialogueElement.classList.add('dialogueWrapper');
+        this.dialogueElement = document.createElement("div");
+        this.dialogueElement.classList.add("dialogueWrapper");
 
         // name box
-        this.nameBox = document.createElement('div');
-        this.nameBox.classList.add('nameBox');
+        this.nameBox = document.createElement("div");
+        this.nameBox.classList.add("nameBox");
         this.dialogueElement.appendChild(this.nameBox);
 
         // text box
-        this.textBox = document.createElement('div');
-        this.textBox.classList.add('textBox');
+        this.textBox = document.createElement("div");
+        this.textBox.classList.add("textBox");
         this.dialogueElement.appendChild(this.textBox);
 
         this.parent.appendChild(this.dialogueElement);
@@ -32,11 +33,11 @@ class Dialogue{
         this.init();
     }
 
-    init(){
+    init() {
         const styles = `
         .dialogueWrapper{
             position: absolute;
-            top: 50%;
+            top: 85%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 50%;
@@ -46,15 +47,17 @@ class Dialogue{
             justify-content: center;
             align-items: center;
             gap: 10px;
+            z-index: 91;
+            opacity: 0;
         }
         
         .nameBox{
-            width: fit-content;
+            width: 100%;
             height: 20%;
             justify-content: center;
             align-items: center;
             font-size: 2em;
-            text-align: center;
+            text-align: left;
         }
         
         .textBox{
@@ -62,10 +65,12 @@ class Dialogue{
             height: 80%;
             justify-content: center;
             align-items: center;
-            font-size: 1em;
-            border: 1px solid black;
+            font-size: 3em;
+            border: 5px solid black;
             overflow-y: auto;
             padding: 10px;
+            background-color: rgb(255, 255, 255, 0.5);
+            text-align: center;
         }
         
         .nextArrow{
@@ -78,7 +83,7 @@ class Dialogue{
             right: 0;
             
         }
-        `
+        `;
 
         this.styleSheet = document.createElement("style");
         this.styleSheet.innerText = styles;
@@ -99,16 +104,18 @@ class Dialogue{
         `;
 
         this.updateText(0);
-        this.textBox.addEventListener('click', this.next.bind(this));
+        this.textBox.addEventListener("click", this.next.bind(this));
     }
 
-    updateText(timeStamp){
+    updateText(timeStamp) {
         this.dT = timeStamp - this.lastTime;
         if (this.dT > this.timeDelay) {
             this.lastTime = timeStamp;
             if (this.isTyping) {
                 this.nameBox.innerHTML = this.dialogues[this.currentDialogue].name;
-                this.textBox.innerHTML = this.dialogues[this.currentDialogue].text.substring(0, this.currentText);
+                this.textBox.innerHTML = this.dialogues[
+                    this.currentDialogue
+                    ].text.substring(0, this.currentText);
 
                 // auto scroll to the bottom
                 this.textBox.scrollTop = this.textBox.scrollHeight;
@@ -121,14 +128,16 @@ class Dialogue{
                 this.sfx.play();
 
                 // check for end of chapter
-                if (this.currentText > this.dialogues[this.currentDialogue].text.length) {
+                if (
+                    this.currentText > this.dialogues[this.currentDialogue].text.length
+                ) {
                     this.isTyping = false;
                     // reset time delay
                     this.timeDelay = this.oldTimeDelay;
 
                     this.currentDialogue++;
                     // add arrows
-                    if (this.currentDialogue < this.dialogues.length){
+                    if (this.currentDialogue < this.dialogues.length) {
                         this.textBox.innerHTML += this.arrowHtml;
                         this.textBox.scrollTop = this.textBox.scrollHeight;
                     }
@@ -139,9 +148,7 @@ class Dialogue{
                     }
                     // check for end of dialogue since next() is not called
                     if (this.currentDialogue >= this.dialogues.length) {
-                        console.log('End of dialogue');
-                        this.callback();
-                        return;
+                        this.isFinished = true;
                     }
                 }
             }
@@ -150,48 +157,57 @@ class Dialogue{
     }
 
     // Methods
-    startFromOrigin(){ // call this method to start the dialogue
+    startFromOrigin() {
+        // call this method to start the dialogue
         this.isTyping = true;
         this.currentText = 0;
+        this.dialogueElement.style.opacity = 1
     }
 
-    stop(){ // call this method to stop the dialogue
+    stop() {
+        // call this method to stop the dialogue
         this.isTyping = false;
     }
 
-    resume(){ // resume
+    resume() {
+        // resume
         this.isTyping = true;
     }
 
-    reset(){ // reset to the first dialogue
+    reset() {
+        // reset to the first dialogue
         this.currentDialogue = 0;
         this.currentText = 0;
         this.isTyping = false;
         this.isAuto = false;
     }
 
-    destroy(){ // remove the dialogue
+    destroy() {
+        // remove the dialogue
         this.parent.removeChild(this.dialogueElement);
         document.head.removeChild(this.styleSheet);
     }
 
     // Event Handlers
-    next(){
+    next() {
+        if (this.isFinished) {
+            this.callback();
+            return;
+        }
         // Skip user input if auto skip is enabled
-        if (this.isAuto){
+        if (this.isAuto) {
             return;
         }
 
         // Check if dialogue is at the end
         if (this.currentDialogue >= this.dialogues.length) {
-            console.log('End of dialogue');
-            this.callback();
+            this.isFinished = true;
             return;
         }
 
         // Divide time delay by 2 if user clicks while typing
-        if (this.isTyping){
-            this.timeDelay = this.timeDelay/2;
+        if (this.isTyping) {
+            this.timeDelay = this.timeDelay / 2;
             return;
         }
 

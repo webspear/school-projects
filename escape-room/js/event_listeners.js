@@ -1,5 +1,6 @@
 // key events
 window.addEventListener('keydown', (event) => {
+    if (titleSequence && dialoguing) return
     switch (event.key) {
         case 'w':
             keys.w.pressed = true

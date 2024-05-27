@@ -1,10 +1,10 @@
-
 body {
     background-color: white;
     margin: 0;
     box-sizing: border-box;
     user-select: none;
     cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    font-family: ending;
 }
 @font-face {
     font-family: ending;
@@ -21,10 +21,67 @@ body {
     text-align: center;
     color: white;
     font-family: ending;
-    font-size: 10vmin;
+    font-size: 5vmin;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+#menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    width: 50%;
+    z-index: 99;
+}
+#title {
+    height: 40vmin;
+    width: max-content;
+    transform: translateX(-45%);
+}
+#start-button {
+    margin-top: 10%;
+    font-size: 8vmin;
+    width: fit-content;
+    color: white;
+}
+#credit-button {
+    margin-top: 1%;
+    font-size: 3vmin;
+    width: fit-content;
+    color: white;
+}
+#credits {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    position: absolute;
+    top: 10%;
+    left: -100%;
+    width: 50%;
+    z-index: 99;
+}
+#credit-title {
+    font-size: 10vmin;
+    color: white;
+    width: fit-content;
+    margin-bottom: 5%;
+}
+.credit-txt {
+    margin-top: 2%;
+    font-size: 4vmin;
+    width: fit-content;
+    color: white;
+}
+#close-credit-button {
+    margin-top: 10%;
+    font-size: 3vmin;
+    width: fit-content;
+    color: white;
 }
 #canvas {
     position: absolute;
@@ -38,9 +95,11 @@ body {
     z-index: 5;
     font-family: ending;
     left: 50%;
-    top: 90%;
+    top: 10%;
     transform: translate(-50%, -50%);
     opacity: 0;
+    background-color: rgb(255, 255, 255, 0.5);
+    border: 5px solid black;
 }
 #blackout-screen {
     position: absolute;
@@ -66,4 +125,18 @@ body {
     position: absolute;
     top: 60px;
     z-index: 99;
+}
+
+/* animation */
+@keyframes slideOut {
+    0% {left: 10%;}
+    100% {left: -100%;}
+}
+@keyframes slideIn {
+    0% {left: -100%;}
+    100% {left: 10%;}
+}
+@keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
 }

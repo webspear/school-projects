@@ -9,18 +9,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!--start overlay to accomodate autoplay policies-->
-    <!-- <div id="start-overlay">START GAME</button></div> -->
+    <!--start overlay to wait for all elements to laod-->
+    <div id="start-overlay">loading...</button></div>
 
     <canvas id="canvas"></canvas>
+
+    <!-- menu -->
+    <div id="menu">
+        <img src="./assets/images/title-card.png" alt="" id="title">
+        <h1 id="start-button">START</h1>
+        <h1 id="credit-button">CREDITS</h1>
+    </div>
+    <!-- credits -->
+    <div id="credits">
+        <h1 id="credit-title">MADE BY</h1>
+        <h1 class="credit-txt">Jean Lin</h1>
+        <h1 class="credit-txt">Jiacheng Liu</h1>
+        <h1 class="credit-txt">Justin Yang</h1>
+        <h1 class="credit-txt">(it's the JJJ! :P)</h1>
+        <h1 id="close-credit-button">BACK</h1>
+    </div>
+
     <div id="blackout-screen"></div>
     <div id="inventory"></div>
+    <div id="dialogue"></div>
     <div id="cryptex"></div>
     <h1 id="interact-btn">[E] to interact</h1>
-    <button id="btn">test</button>
-    <button id="btn2">cam test</button>
-    <button id="btn3">test</button>
 
+    <script src="./features/Dialogue.js"></script>
     <script src="./features/Inventory.js"></script>
     <script src="./features/Cryptex.js"></script>
     <script src="./js/event_listeners.js"></script>
@@ -28,6 +44,7 @@
     <script src="./js/classes/sound.js"></script>
     <script src="./js/classes/player.js"></script>
     <script src="./js/classes/collision.js"></script>
+    <script src="./js/dialogues.js"></script>
     <script src="./js/blocks.js"></script>
     <script src="./js/sounds.js"></script>
     <script src="./js/sprites.js"></script>

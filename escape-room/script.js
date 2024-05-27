@@ -25,10 +25,13 @@ function checkresize() {
     scaledCanvas.height = canvas.height / zoomFactor
 }
 
-let titleSequence = false
+let titleSequence = true
 let endSequence = false
 
 let paused = false
+
+let locked = true
+let dialoguing = false
 
 let outsideBeaker = false
 let outsideBeakerVignetteToggle = false
@@ -41,7 +44,6 @@ let yCamOffset = 70
 let canInteract = false
 let interactOpacity = 0
 let currentInteractBlock
-let locked = false
 let climbing = false
 
 let teleporting = false
@@ -168,25 +170,106 @@ const item = {
     wire: new Item({url: './assets/images/items/wire.png'}, 'wire', 'desc', inv, 1)
 }
 
+// wait for all elemetns to laod
+let loaded = false
+window.addEventListener('load', () => {
+    loaded = true
+
+    // change title screen
+    document.getElementById('start-overlay').innerHTML = 'Press any key to start'
+})
+function loadingAnim() {
+    setTimeout(() => {
+        if (!loaded) document.getElementById('start-overlay').textContent = 'loading.'
+        setTimeout(() => {
+            if (!loaded) document.getElementById('start-overlay').textContent = 'loading..'
+            setTimeout(() => {
+                if (!loaded) document.getElementById('start-overlay').textContent = 'loading...'
+                loadingAnim()
+            }, 500);
+        }, 500);
+    }, 500);
+}
+loadingAnim()
+
 // screen changing
-// document.getElementById('start-overlay').onclick = () => {
-//             console.log(document.getElementById('start-overlay').style.opacity)
-//     function fade() {
-//         if (document.getElementById('start-overlay').style.opacity > 0) {
-//             document.getElementById('start-overlay').style.opacity -= 0.01
-//             setTimeout(() => {fade()}, 10);
-//         }
-//     }
-//     fade()
+window.addEventListener('keydown', () => {
+    if (loaded && titleSequence) {
+        document.getElementById('start-overlay').style.animation = 'fadeOut 1s linear forwards'
 
-//     setTimeout(() => {
-//         // bg music
-//         menuTheme.play()
-//         menuTheme.loop = true
+        setTimeout(() => {
+            // bg music
+            menuTheme.play()
+            menuTheme.loop = true
 
-//         document.getElementById('start-overlay').style.visibility = 'hidden'
-//     }, 0)
-// }
+            document.getElementById('start-overlay').style.visibility = 'hidden'
+        }, 1000)
+    }
+})
+
+// hover effect
+document.getElementById('start-button').onmouseover = () => {
+    document.getElementById('start-button').textContent = '> START'
+}
+document.getElementById('start-button').onmouseout = () => {
+    document.getElementById('start-button').textContent = 'START'
+}
+document.getElementById('credit-button').onmouseover = () => {
+    document.getElementById('credit-button').textContent = '> CREDITS'
+}
+document.getElementById('credit-button').onmouseout = () => {
+    document.getElementById('credit-button').textContent = 'CREDITS'
+}
+document.getElementById('close-credit-button').onmouseover = () => {
+    document.getElementById('close-credit-button').textContent = '< BACK'
+}
+document.getElementById('close-credit-button').onmouseout = () => {
+    document.getElementById('close-credit-button').textContent = 'BACK'
+}
+
+const menu = document.getElementById('menu')
+const credits = document.getElementById('credits')
+document.getElementById('credit-button').onclick = () => {
+    menuButton.play()
+
+    // slide in the credits, slide out the menu
+    menu.style.animation = 'slideOut 1s ease-out forwards'
+    setTimeout(() => {
+        credits.style.animation = 'slideIn 1s ease-out forwards'
+    }, 400);
+}
+document.getElementById('close-credit-button').onclick = () => {
+    menuButton.play()
+
+    // slide in the credits, slide out the menu
+    credits.style.animation = 'slideOut 1s ease-out forwards'
+    setTimeout(() => {
+        menu.style.animation = 'slideIn 1s ease-out forwards'
+    }, 400);
+}
+
+document.getElementById('start-button').onclick = () => {
+    menuButton.play()
+    locked = false
+    titleSequence = false
+    player.velocity.x = 0
+    player.velocity.y = 0
+
+    function lowerVolume() {
+        if (menuTheme.volume <= 0.05) {
+            // volume already 0
+            menuTheme.pause()
+            menuTheme.currentTime = 0
+        } 
+        else {
+            menuTheme.volume -= 0.05
+            setTimeout(lowerVolume, 50)
+        }
+    }
+    lowerVolume()
+
+    menu.style.animation = 'slideOut 1s ease-out forwards'
+}
 
 // make the game work
 function animate() {
@@ -198,7 +281,7 @@ function animate() {
     // slower background to add depth
     ctx.save()
     ctx.scale(zoomFactor, zoomFactor)
-    ctx.translate(camera.position.x * 0.8, camera.position.y * 1)
+    ctx.translate(camera.position.x * 0.8, camera.position.y)
     background.update()
 
     showHoverBack()
@@ -243,6 +326,7 @@ function animate() {
         lockPlayer()
     }
     else {
+        beakerOverlay.update()
         player.draw()
     }
 
@@ -306,8 +390,21 @@ function lockPlayer() {
     player.draw()
 
     if (titleSequence) {
+        player.updateAnims()
+        Sprite.prototype.update.call(player)
         beakerOverlay.update()
+    }
 
+    else if (dialoguing) {
+        player.updateAnims()
+        Sprite.prototype.update.call(player)
+        beakerOverlay.update()
+        player.updateCamBox()
+        if (document.getElementById('interact-btn').style.opacity >= 0) 
+            interactOpacity -= 0.05
+        document.getElementById('interact-btn').style.opacity = interactOpacity
+
+        startDialogue()
     }
 
     else if (!paused) {
@@ -372,7 +469,6 @@ function lockPlayer() {
         if (teleporting) {
             player.updateCamBox()
             player.updateAnims()
-            vineTop.draw()
             Sprite.prototype.update.call(player)
 
             player.velocity.x = 0
@@ -409,6 +505,14 @@ function lockPlayer() {
             }
             document.getElementById('blackout-screen').style.opacity = blackoutOpacity
         }
+    }
+}
+
+// dialogue
+function startDialogue() {
+    if (!dialogueBeakerOnce) {
+        dialogueBeaker.startFromOrigin()
+        dialogueBeakerOnce = true
     }
 }
 
@@ -449,11 +553,6 @@ function interact() {
         }
     }
     else if (currentInteractBlock.type === 'puzzle') {
-        if (currentInteractBlock === wirePickup) {
-            pickup.play()
-            wireUnlocked = true
-            inv.addItem(item.wire)
-        }
         if (currentInteractBlock === deployWire) {
             interaction.play()
             wireUnlockedDeployed = true
@@ -498,6 +597,18 @@ function interact() {
         if (currentInteractBlock === boiler) {
             interaction.play()
             console.log('boiler')
+        }
+    }
+    else if (currentInteractBlock.type === 'item') {
+        pickup.play()
+        inv.toggle()
+        setTimeout(() => {
+            inv.toggle()
+        }, 1500);
+
+        if (currentInteractBlock === wirePickup) {
+            wireUnlocked = true
+            inv.addItem(item.wire)
         }
     }
 }
@@ -553,18 +664,4 @@ function drawBox() {
     if (!image) return
     ctx.drawImage(image, box.position.x, box.position.y, box.width, box.height)
     ctx.drawImage(image, box.position.x, box.position.y, box.width, box.height)
-}
-
-document.getElementById('btn').onclick = () => {
-    vineUnlocked = true
-    locked = true
-}
-document.getElementById('btn2').onclick = () => {
-    if (!paused) {
-        paused = true
-        camFocus = true
-
-        camFocusTargetX = 0
-        camFocusTargetY = 0
-    }
 }

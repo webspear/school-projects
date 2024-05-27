@@ -185,7 +185,7 @@ const wirePickup = new Interactable({
         width: 128,
         height: 104,
     },
-    type: 'puzzle',
+    type: 'item',
 })
 const deployWire = new Interactable({
     position: {
