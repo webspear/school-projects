@@ -20,10 +20,10 @@ class FuseBox {
             this.image.style.left = '50%';
             this.image.style.transform = 'translate(-50%, -50%)';
             this.image.height = '700';
-            this.image.style.zIndex = this.dropZone.element.style.zIndex-1;
-
+            this.image.style.zIndex = 100;
+            this.dropZone.element.style.zIndex = 101;
         }
-        this.dropZone = new DropZone(this.width, this.height, this.x, this.y, this.parentDiv, this.checkForItem.bind(this));
+        this.dropZone = new DropZone(this.width, this.height, window.innerWidth/2-this.width, window.innerHeight/2-this.height, this.parentDiv, this.checkForItem.bind(this));
     }
 
     checkForItem(){

@@ -41,8 +41,8 @@ class Inventory{
         }
         .hotbarSlot{
           position: relative;
-          width: 50px;
-          height: 50px;
+          width: 75px;
+          height: 75px;
           border: 5px solid black;
           margin: 2px;
           transition: transform 200ms;
@@ -327,7 +327,7 @@ class DropZone{
             position: relative;
             border: 5px solid rgb(99, 99, 102);
             border-radius: 10px;
-            background-color: #FFFFFF;
+            background-color: transparent;
             pointer-events: none;
              transition: border-style 0.5s, border-color 0.5s;
         }
