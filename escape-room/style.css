@@ -112,6 +112,32 @@ body {
     opacity: 0;
     background-color: black;
 }
+#note {
+    position: absolute;
+    margin: 0;
+    z-index: 10;
+    font-family: ending;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+    width: 500px;
+    height: 500px;
+    background-color: rgb(216, 207, 38);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#cryptex {
+    visibility: hidden;
+}
+#electrical {
+    visibility: hidden;
+}
+#vault-door {
+    /* visibility: hidden; */
+}
 
 /* animation */
 @keyframes slideOut {

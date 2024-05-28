@@ -167,7 +167,8 @@ class Player extends Sprite{
                     (currentInteractBlock === ladderWire && !wireUnlockedDeployed) || 
                     (currentInteractBlock === deployWire && (!wireUnlocked || wireUnlockedDeployed)) ||
                     (currentInteractBlock === fusePickup && fuseUnlocked) ||
-                    (currentInteractBlock === flowerPickup && flowerUnlocked)
+                    (currentInteractBlock === flowerPickup && flowerUnlocked) ||
+                    (currentInteractBlock === vaultKeypad && (cryptexDone || !powerUnlocked))
                 ) 
                     willInteract = false
             }
@@ -219,6 +220,7 @@ class Player extends Sprite{
         }
         else {
             this.speedMultiplier = 1
+            this.pushing = false
         }
     }
 

@@ -21,6 +21,7 @@ class Vent {
                 height: ${this.height}px;
                 transform: translate(-50%, -50%);
                 z-index: 100;
+                visibility: hidden;
             }
         `
         this.styleSheet = document.createElement('style');
@@ -56,15 +57,16 @@ class Vent {
 
     handleClick(e){
         const {layerX, layerY} = e;
-        const closestPt = this.getClosestPoint(layerX, layerY);
+        const closestPt = this.getClosestPoint(layerX + 250, layerY + 250);
         if (closestPt === null) return;
         this.pts.splice(this.pts.indexOf(closestPt), 1);
         this.redraw();
+        interaction.play()
     }
 
     getClosestPoint(x, y) {
         let closestPt = null;
-        const maxDist = 75;
+        const maxDist = 250;
         for (const pt of this.pts){
             const dist = Math.hypot(pt.x - x, pt.y - y);
             if (dist < maxDist){

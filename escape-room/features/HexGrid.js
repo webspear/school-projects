@@ -1,5 +1,5 @@
-export default class HexGrid{
-    constructor(radius, xOffset, yOffset, isEditable, parentDiv, width, height, style, callback, goodPattern){
+class HexGrid{
+    constructor(radius, xOffset, yOffset, isEditable, parentDiv, width, height, style, callback, goodPattern, isTransparent = false){
         this.radius = radius;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
@@ -16,6 +16,7 @@ export default class HexGrid{
         this.isDrawing = false;
         this.callback = callback;
         this.goodPattern = goodPattern;
+        this.isTransparent = isTransparent;
         this.init();
     }
 
@@ -43,8 +44,10 @@ export default class HexGrid{
         this.overlayCtx = overlayCanvas.getContext('2d');
         this.lineCtx = lineCanvas.getContext('2d');
 
-        this.ctx.fillStyle = this.style.bgColor;
-        this.ctx.fillRect(0, 0, this.width, this.height);
+        if (!this.isTransparent) {
+            this.ctx.fillStyle = this.style.bgColor;
+            this.ctx.fillRect(0, 0, this.width, this.height);
+        }
         this.lineCtx.strokeStyle = this.style.lineColor;
         this.lineCtx.lineWidth = this.style.lineWidth;
         this.lineCtx.lineCap = this.style.lineCap;
@@ -69,13 +72,13 @@ export default class HexGrid{
     }
 
     // the hex grid
-    generateHexGrid(radius = this.radius, xOffset = this.xOffset, yOffset = this.yOffset){
-        this.nColumns = Math.floor(this.bgCanvas.width / (radius * 2))+1;
-        this.nRows = Math.floor(this.bgCanvas.height / (radius * 2))-1;
+    generateHexGrid(radius = this.radius, xOffset = this.xOffset, yOffset = this.yOffset) {
+        this.nColumns = Math.floor(this.bgCanvas.width / (radius * 2)) + 1;
+        this.nRows = Math.floor(this.bgCanvas.height / (radius * 2)) - 1;
 
         for (let i = 0; i < this.nColumns; i++) {
             for (let j = 0; j < this.nRows; j++) {
-                let x = xOffset + i * Math.sqrt(3)*radius ;
+                let x = xOffset + i * Math.sqrt(3) * radius;
                 let y = yOffset + j * radius * 3;
                 this.generateHexPoint(radius, x, y, 3);
             }

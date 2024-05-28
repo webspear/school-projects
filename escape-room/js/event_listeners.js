@@ -1,6 +1,6 @@
 // key events
 window.addEventListener('keydown', (event) => {
-    if (!titleSequence && !dialoguing) {
+    if (!titleSequence && !dialoguing && !doingPuzzle) {
         switch (event.key) {
             case 'w':
                 keys.w.pressed = true
@@ -30,6 +30,12 @@ window.addEventListener('keydown', (event) => {
             case 'Tab':
                 inv.toggle()
                 break
+        }
+    }
+    else if (doingPuzzle) {
+        switch (event.key) {
+            case 'e':
+                closePuzzle()
         }
     }
     

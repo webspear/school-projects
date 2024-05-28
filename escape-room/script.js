@@ -7,6 +7,8 @@ const inventory = document.getElementById('inventory');
 const inv = new Inventory(inventory, {}, 6);
 inv.hide()
 
+const interactBtn = document.getElementById('interact-btn')
+
 const zoomFactor = 1.85
 
 const scaledCanvas = {
@@ -47,6 +49,8 @@ let interactOpacity = 0
 let currentInteractBlock
 let climbing = false
 
+let doingPuzzle = false
+
 let teleporting = false
 let teleportTargetX
 let teleportTargetY
@@ -66,6 +70,8 @@ let flowerUnlocked = false
 let wireUnlockedDeployed = false
 let vineUnlocked = false
 let ventUnlocked = false
+let powerUnlocked = false
+let cryptexDone = false
 
 // check if keys need to be released and stuff
 const keys = {
@@ -183,6 +189,41 @@ const item = {
 const ventParent = document.getElementById('vent')
 
 const vent = new Vent(ventParent, () => {
+    vent.ventCanvas.style.visibility = 'hidden'
+    ventUnlocked = true
+    locked = false
+    doingPuzzle = false
+    interactBtn.textContent = '[E] to interact'
+});
+
+const cryptexParent = document.getElementById('cryptex');
+const goodAnswer = [1, 9, 9, 4];
+const cryptex = new Cryptex(cryptexParent, 5, goodAnswer, () => {
+    setTimeout(() => {
+        cryptex.destroy();
+        locked = false
+        doingPuzzle = false
+        cryptexDone = true
+        interactBtn.textContent = '[E] to interact'
+    }, 500);
+});
+
+const vaultDoorParent = document.getElementById('vault-door')
+// const vault = new SpinnyVault(vaultDoorParent, 100, 100, './features/public/images/cross-iso.jpg', 5, ()=>{
+//     console.log('callback');
+// });
+
+// const grid = new HexGrid(100, 50, 50, true, document.body, window.innerWidth, window.innerHeight, {bgColor: '#181825', dotColor: '#fff', lineColor: '#fff', lineWidth: 5, lineCap: 'round', dotRadius: 3, goodDotColor: '#00ff00', badDotColor: '#ff0000'});
+
+const electrical = new ElectricalPuzzle(document.getElementById('electrical'), 500, 500, {
+    wireWidth: 10,
+    wireHeight: 40,
+    bgColor: 'black'
+}, ()=>{
+    console.log('callback');
+});
+
+const fuseBoxPuzzle = new FuseBox(document.getElementById('fusebox'), 500, 500, 100, 100, item, ()=>{
     console.log('callback');
 });
 
@@ -427,6 +468,18 @@ function lockPlayer() {
         beakerOverlay.update()
     }
 
+    else if (doingPuzzle) {
+        player.velocity.x = 0
+        player.updateAnims()
+        Sprite.prototype.update.call(player)
+
+        player.velocity.y += player.gravity
+        player.applyYVelocity()
+        player.checkVerticalCollisions()
+        
+        player.updateCamBox()
+    }
+
     else if (dialoguing) {
         player.velocity.x = 0
         player.updateAnims()
@@ -570,11 +623,12 @@ function interact() {
         if (currentInteractBlock === ventDoor) {
             if (!ventUnlocked) {
                 interaction.play()
-                locked = false
                 teleporting = false
+                doingPuzzle = true
 
-                // do stuff
-                ventUnlocked = true
+                interactBtn.textContent = '[E] to close'
+
+                vent.ventCanvas.style.visibility = 'visible'
             }
             else {
                 panel.play()
@@ -589,14 +643,23 @@ function interact() {
         }
     }
     else if (currentInteractBlock.type === 'puzzle') {
+        locked = true
+        doingPuzzle = true
+        interactBtn.textContent = '[E] to close'
+
         if (currentInteractBlock === deployWire) {
+            locked = false
+            doingPuzzle = false
             interaction.play()
             wireUnlockedDeployed = true
             inv.removeItem(item.wire)
+            interactBtn.textContent = '[E] to interact'
         }
         if (currentInteractBlock === fuseBox) {
             panel.play()
-            console.log('fuse box')
+            powerUnlocked = true
+            locked = false
+            doingPuzzle = false
         }
         if (currentInteractBlock === vaultDoor) {
             interaction.play()
@@ -604,7 +667,8 @@ function interact() {
         }
         if (currentInteractBlock === vaultKeypad) {
             interaction.play()
-            console.log('vault keypad')
+
+            document.getElementById('cryptex').style.visibility = 'visible'
         }
         if (currentInteractBlock === booksBelow) {
             interaction.play()
@@ -620,7 +684,11 @@ function interact() {
         }
         if (currentInteractBlock === noteMiddle) {
             paper.play()
-            console.log('note middle')
+
+            document.getElementById('note').style.visibility = 'visible'
+            document.getElementById('note-txt-1').textContent = 'I moved the growth potion because it seems as though its fumes can lead to uncontrolled growth. Potential safety hazard?'
+            document.getElementById('note-txt-2').textContent = 'PS: Is the code still Josh\'s birth year? If so, please change ASAP'
+            document.getElementById('note-txt-3').textContent = '- Marcus'
         }
         if (currentInteractBlock === binderTop) {
             interaction.play()
@@ -655,6 +723,15 @@ function interact() {
             inv.addItem(item.flower)
         }
     }
+}
+function closePuzzle() {
+    interactBtn.textContent = '[E] to interact'
+    locked = false
+    doingPuzzle = false
+
+    vent.ventCanvas.style.visibility = 'hidden'
+    document.getElementById('note').style.visibility = 'hidden'
+    document.getElementById('cryptex').style.visibility = 'hidden'
 }
 
 // draw hover effect
