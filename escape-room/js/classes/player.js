@@ -168,7 +168,9 @@ class Player extends Sprite{
                     (currentInteractBlock === deployWire && (!wireUnlocked || wireUnlockedDeployed)) ||
                     (currentInteractBlock === fusePickup && fuseUnlocked) ||
                     (currentInteractBlock === flowerPickup && flowerUnlocked) ||
-                    (currentInteractBlock === vaultKeypad && (cryptexDone || !powerUnlocked))
+                    (currentInteractBlock === vaultKeypad && (cryptexDone || !powerUnlocked)) ||
+                    (currentInteractBlock === fuseBox && powerUnlocked) ||
+                    (currentInteractBlock === vaultDoor && vaultDone)
                 ) 
                     willInteract = false
             }

@@ -56,8 +56,8 @@ class Vent {
     }
 
     handleClick(e){
-        const {layerX, layerY} = e;
-        const closestPt = this.getClosestPoint(layerX + 250, layerY + 250);
+        const {offsetX, offsetY} = e;
+        const closestPt = this.getClosestPoint(offsetX, offsetY);
         if (closestPt === null) return;
         this.pts.splice(this.pts.indexOf(closestPt), 1);
         this.redraw();
@@ -66,7 +66,7 @@ class Vent {
 
     getClosestPoint(x, y) {
         let closestPt = null;
-        const maxDist = 250;
+        const maxDist = 50;
         for (const pt of this.pts){
             const dist = Math.hypot(pt.x - x, pt.y - y);
             if (dist < maxDist){

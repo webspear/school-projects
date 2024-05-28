@@ -38,6 +38,8 @@ class Inventory{
           transform: translate(0,-50%);
           margin:10px;
           transition: left 200ms;
+          z-index: 200;
+          keyboard-events: none;
         }
         .hotbarSlot{
           position: relative;
@@ -47,10 +49,11 @@ class Inventory{
           margin: 2px;
           transition: transform 200ms;
           background-color: transparent;
+          z-index: 199;
         }
         .hotbarSlot:hover{
           transform: scale(1.3);
-          z-index: 20;
+          // z-index: 200;
         }
         `
         this.styleSheet = document.createElement("style");
@@ -70,13 +73,21 @@ class Inventory{
         const currIndex = this.items.length - 1;
         this.slotElements[currIndex].element.innerHTML = item.img;
         this.slotElements[currIndex].item = item;
+        this.normalize();
     }
 
     removeItem(item){
         const index = this.items.indexOf(item);
         if (index > -1) {
+            // if (!index) return;
             this.items[index] = null;
             this.slotElements[index].element.innerHTML = "";
+            // this.slotElements[index].dragElement.innerHTML = "";
+            // console.log(this.slotElements[index].dragElement);
+            // if (this.slotElements[index].dragElement){
+            //     this.slotElements[index].dragElement.remove();
+            //     this.slotElements[index].dragElement = null;
+            // }
         }
         this.normalize();
     }
@@ -236,13 +247,18 @@ class Draggable{
 
             this.unhighlightDropZones();
             document.removeEventListener('mousemove', this.handleMouseMove, true);
+            // remove the scale css on hover
+            // this.dragElement.style.transition = '';
 
             const rect = this.dragElement.getBoundingClientRect();
             const targetRect = dropZone[0].object.element.getBoundingClientRect();
             const finalCoord = {
-                x: targetRect.x + targetRect.width / 2 - rect.width / 2,
+                x: targetRect.x + targetRect.width / 2 - rect.width / 2 ,
                 y: targetRect.y + targetRect.height / 2 - rect.height / 2
             };
+
+            this.dragElement.style.left = finalCoord.x  + 'px'; // finalCoord.x - (rect.width / 2)
+            this.dragElement.style.top = finalCoord.y + 'px';
 
             dropZone[0].object.items.push(this.item);
             setTimeout(() => {
@@ -335,5 +351,10 @@ class DropZone{
         const styleSheet = document.createElement("style");
         styleSheet.innerText = styles;
         document.head.appendChild(styleSheet);
+    }
+    destroy(){
+        this.element.remove();
+        this.element.innerHTML = '';
+        Draggable.dropZones = Draggable.dropZones.filter(e => e !== this);
     }
 }

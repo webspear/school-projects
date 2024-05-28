@@ -71,7 +71,7 @@ class SpinnyVault{
         this.img.style.width = '25%';
         // this.img.style.height = '25%';
         this.img.style.position = 'absolute';
-        this.img.style.top = '23vh';
+        this.img.style.top = '20%';
         this.img.style.left = '50%';
         // this.img.style.transform = 'translate(-50%, -50%)';
         this.parent.appendChild(this.img);
@@ -192,6 +192,8 @@ class SpinnyVault{
 
     resize(){
         this.img.style.transform = `translate(-50%, -50%)`;
+        this.img.style.left = '50%';
+        // this.img.style.top = '100px';
         const rect = this.img.getBoundingClientRect();
         this.img.style.left = `${rect.left}px`;
         this.img.style.top = `${rect.top}px`;

@@ -71,7 +71,9 @@ let wireUnlockedDeployed = false
 let vineUnlocked = false
 let ventUnlocked = false
 let powerUnlocked = false
+let fuseDone = false
 let cryptexDone = false
+let vaultDone = false
 
 // check if keys need to be released and stuff
 const keys = {
@@ -197,7 +199,7 @@ const vent = new Vent(ventParent, () => {
 });
 
 const cryptexParent = document.getElementById('cryptex');
-const goodAnswer = [1, 9, 9, 4];
+const goodAnswer = [1, 9, 8, 4];
 const cryptex = new Cryptex(cryptexParent, 5, goodAnswer, () => {
     setTimeout(() => {
         cryptex.destroy();
@@ -205,30 +207,104 @@ const cryptex = new Cryptex(cryptexParent, 5, goodAnswer, () => {
         doingPuzzle = false
         cryptexDone = true
         interactBtn.textContent = '[E] to interact'
+
+        // add items
+        if (vaultDone) {
+            inv.addItem(item.crystal)
+            inv.addItem(item.gem)
+            inv.addItem(item.rock)
+            inv.addItem(item.growth)
+
+            pickup.play()
+            inv.show()
+            setTimeout(() => {
+                inv.hide()
+            }, 1500);
+        }
     }, 500);
 });
 
 const vaultDoorParent = document.getElementById('vault-door')
-const vault = new SpinnyVault(vaultDoorParent, 100, 100, './features/public/images/theWehl.png', 5, ()=>{
-    console.log('callback');
+const vault = new SpinnyVault(vaultDoorParent, 100, 100, './features/public/images/theWehl.png', 3, ()=>{
+    setTimeout(() => {
+        vault.destroy()
+        vaultDoorParent.style.visibility = 'hidden'
+        vaultDone = true
+        locked = false
+        doingPuzzle = false
+        interactBtn.textContent = '[E] to interact'
+
+        // add items
+        if (cryptexDone) {
+            inv.addItem(item.crystal)
+            inv.addItem(item.gem)
+            inv.addItem(item.rock)
+            inv.addItem(item.growth)
+
+            pickup.play()
+            inv.show()
+            setTimeout(() => {
+                inv.hide()
+            }, 1500);
+        }
+    }, 500)
 });
 vault.parent.style.zIndex = '100'
+const telescopeParent = document.getElementById('telescope')
+const grid = new HexGrid(100, 50, 50, true, telescopeParent, window.innerWidth, window.innerHeight, {bgColor: '#181825', dotColor: '#fff', lineColor: '#fff', lineWidth: 5, lineCap: 'round', dotRadius: 3, goodDotColor: '#00ff00', badDotColor: '#ff0000'}, () => {
+    console.log("CALLBACK");
+}, "deqawad", false);
+telescopeParent.style.position = 'absolute'
 
-// const grid = new HexGrid(100, 50, 50, true, document.body, window.innerWidth, window.innerHeight, {bgColor: '#181825', dotColor: '#fff', lineColor: '#fff', lineWidth: 5, lineCap: 'round', dotRadius: 3, goodDotColor: '#00ff00', badDotColor: '#ff0000'});
+telescopeParent.style.visibility = 'hidden'
+telescopeParent.style.pointerEvents = 'none'
+grid.disableMouse();
+
+
+
+
+
+const boilerParent = document.getElementById('boiler')
+const crafting = new Crafting(inv, [item.rock, item.crystal, item.gem, item.flower], ()=>{
+    setTimeout(() => {
+        crafting.destroy()
+        crafting.parentDiv.style.visibility = 'hidden'
+        interactBtn.textContent = '[E] to interact'
+
+        function fadeToBlack() {
+            document.getElementById('blackout-screen').style.opacity -= 0.05
+            setTimeout(() => {fadeToBlack()}, 50)
+        }
+        fadeToBlack()
+    }, 500)
+}, 4, 100, 100, boilerParent)
 
 const electrical = new ElectricalPuzzle(document.getElementById('electrical'), 500, 500, {
     wireWidth: 10,
     wireHeight: 40,
     bgColor: 'black'
 }, ()=>{
-    console.log('callback');
+    setTimeout(() => {
+        electrical.parentDiv.style.visibility = 'hidden'
+        powerUnlocked = true
+        locked = false
+        doingPuzzle = false
+        interactBtn.textContent = '[E] to interact'
+    }, 500)
 });
 electrical.parentDiv.style.visibility = 'hidden'
 
-const fuseBoxPuzzle = new FuseBox(document.getElementById('fusebox'), 500, 500, 100, 100, item, ()=>{
-    console.log('callback');
+const fuseBoxPuzzle = new FuseBox(document.getElementById('fusebox'), 500, 500, 100, 100, item.fuse, ()=>{
+    setTimeout(() => {
+        fuseBoxPuzzle.parentDiv.style.visibility = 'hidden'
+        fuseBoxPuzzle.destroy()
+        fuseDone = true
+        electrical.parentDiv.style.visibility = 'visible'
+    }, 500)
 });
 fuseBoxPuzzle.parentDiv.style.visibility = 'hidden'
+
+// const craftingPUzzle = new CraftingPuzzle(document.getElementById('crafting'), 500, 500, 100, 100, item.growth, item.rock, item.crystal, item.gem, ()=>{
 
 const image = new Image()
 image.src = box.imageSrc
@@ -617,7 +693,16 @@ function interact() {
         }
         if (currentInteractBlock === ladderVine && !vineUnlocked) {
             interaction.play()
-            
+
+            if (vaultDone && cryptexDone) {
+                vineUnlocked = true
+                inv.removeItem(item.growth)
+            }
+        }
+        else if (currentInteractBlock === ladderVine && vineUnlocked) {
+            climbing = true
+            locked = true
+            player.position.x = (currentInteractBlock.position.x + currentInteractBlock.size.width/2) - player.width/2
         }
     }
     else if (currentInteractBlock.type === 'door') {
@@ -660,13 +745,19 @@ function interact() {
         }
         if (currentInteractBlock === fuseBox) {
             panel.play()
-            powerUnlocked = true
-            locked = false
-            doingPuzzle = false
+
+            if (!fuseDone) {
+                fuseBoxPuzzle.parentDiv.style.visibility = 'visible'
+                inv.show()
+            }
+            else {
+                electrical.parentDiv.style.visibility = 'visible'
+            }
         }
         if (currentInteractBlock === vaultDoor) {
             interaction.play()
-            console.log('vault door')
+
+            document.getElementById('vault-door').style.visibility = 'visible'
         }
         if (currentInteractBlock === vaultKeypad) {
             interaction.play()
@@ -680,10 +771,19 @@ function interact() {
         if (currentInteractBlock === noteBottom) {
             paper.play()
             console.log('note bottom')
+
+            document.getElementById('note').style.visibility = 'visible'
+            document.getElementById('note-txt-1').textContent = 'The electrical box was acting up recently. I think it\'s the fuses. I\'ll leave the spare in the shelves.'
+            document.getElementById('note-txt-2').textContent = 'The vault is connected, though, so you won\'t be able to open it.'
+            document.getElementById('note-txt-3').textContent = '- Josh'
         }
         if (currentInteractBlock === noteTop) {
             paper.play()
-            console.log('note top')
+
+            document.getElementById('note').style.visibility = 'visible'
+        document.getElementById('note-txt-1').textContent = 'Looks like the telescope is fixed again!'
+            document.getElementById('note-txt-2').textContent = 'Maybe the sky will yield an answer to my search for an universal antidote?'
+            document.getElementById('note-txt-3').textContent = '- Maria'
         }
         if (currentInteractBlock === noteMiddle) {
             paper.play()
@@ -703,14 +803,16 @@ function interact() {
         }
         if (currentInteractBlock === boiler) {
             interaction.play()
-            console.log('boiler')
+
+            inv.show()
+            boilerParent.style.visibility = 'visible'
         }
     }
     else if (currentInteractBlock.type === 'item') {
         pickup.play()
-        inv.toggle()
+        inv.show()
         setTimeout(() => {
-            inv.toggle()
+            inv.hide()
         }, 1500);
 
         if (currentInteractBlock === wirePickup) {
@@ -735,6 +837,10 @@ function closePuzzle() {
     vent.ventCanvas.style.visibility = 'hidden'
     document.getElementById('note').style.visibility = 'hidden'
     document.getElementById('cryptex').style.visibility = 'hidden'
+    fuseBoxPuzzle.parentDiv.style.visibility = 'hidden'
+    electrical.parentDiv.style.visibility = 'hidden'
+    document.getElementById('vault-door').style.visibility = 'hidden'
+    boilerParent.style.visibility = 'hidden'
 }
 
 // draw hover effect

@@ -18,6 +18,7 @@ class HexGrid{
         this.goodPattern = goodPattern;
         this.isTransparent = isTransparent;
         this.init();
+        this.isDrawable = false;
     }
 
     init(){
@@ -25,16 +26,23 @@ class HexGrid{
         canvasElement.width = this.width;
         canvasElement.height = this.height;
         this.bgCanvas = canvasElement;
+        this.bgCanvas.style.pointerEvents = 'none';
 
         const overlayCanvas = document.createElement('canvas');
         overlayCanvas.width = this.width;
         overlayCanvas.height = this.height;
         this.overlayCanvas = overlayCanvas;
+        overlayCanvas.style.position = 'absolute';
+        overlayCanvas.style.top = 0;
+        overlayCanvas.style.left = 0;
 
         const lineCanvas = document.createElement('canvas');
         lineCanvas.width = this.width;
         lineCanvas.height = this.height;
         this.lineCanvas = lineCanvas;
+        lineCanvas.style.position = 'absolute';
+        lineCanvas.style.top = 0;
+        lineCanvas.style.left = 0;
 
         this.parentDiv.appendChild(canvasElement);
         this.parentDiv.appendChild(overlayCanvas);
@@ -44,10 +52,10 @@ class HexGrid{
         this.overlayCtx = overlayCanvas.getContext('2d');
         this.lineCtx = lineCanvas.getContext('2d');
 
-        if (!this.isTransparent) {
+        // if (!this.isTransparent) {
             this.ctx.fillStyle = this.style.bgColor;
             this.ctx.fillRect(0, 0, this.width, this.height);
-        }
+        // }
         this.lineCtx.strokeStyle = this.style.lineColor;
         this.lineCtx.lineWidth = this.style.lineWidth;
         this.lineCtx.lineCap = this.style.lineCap;
@@ -243,6 +251,8 @@ class HexGrid{
 
     // Handlers
     handleDrag(e){
+        if (!this.isDrawable) return;
+        console.log(e);
         if (this.isDrawing){
             this.isDrawing = false;
             this.lineCanvas.removeEventListener("mousemove", this.mousemoveListener, true);
@@ -270,5 +280,18 @@ class HexGrid{
                 break;
             }
         }
+    }
+
+    enableMouse(){
+        this.isDrawable = true;
+        // this.parentDiv.style.zIndex = 100;
+        // this.bgCanvas.style.pointerEvents = 'auto';
+    }
+
+    disableMouse(){
+        this.isDrawable = false;
+
+        // this.parentDiv.style.zIndex = -100;
+        // this.bgCanvas.style.pointerEvents = 'none';
     }
 }

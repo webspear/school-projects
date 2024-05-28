@@ -31,7 +31,7 @@ class Cryptex {
         this.bgImage.src = './features/public/images/cryptx-pzl.png';
         this.bgImage.onload = () => {
             this.ctx.drawImage(this.bgImage, 0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.font = '30px Arial';
+            this.ctx.font = '30px ending';
             this.ctx.fillStyle = 'black';
             this.ctx.fillText('0', 119, 240);
             this.answer[0] = 0;
@@ -79,6 +79,15 @@ class Cryptex {
             this.answer[3] = this.answer[3] + 1;
         } else if (closestPt === this.pts[7]){
             this.answer[3] = this.answer[3] - 1;
+        }
+
+        for (const i of this.answer){
+            if (i < 0){
+                this.answer[this.answer.indexOf(i)] = 9;
+            }
+            if (i > 9){
+                this.answer[this.answer.indexOf(i)] = 0;
+            }
         }
 
         this.redraw();

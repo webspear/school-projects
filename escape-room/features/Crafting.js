@@ -1,6 +1,4 @@
-import Inventory from "./Inventory.js";
-import {DropZone} from "./Inventory.js";
-export default class Crafting{
+class Crafting{
     constructor(inventory, recipe, callback, nSlots, width, height, parent) {
         this.inventory = inventory;
         this.recipe = recipe;
@@ -9,6 +7,7 @@ export default class Crafting{
         this.width = width;
         this.height = height;
         this.parent = parent;
+        this.nSlots = nSlots;
 
         this.dropZones = [];
         this.mainContainer = document.createElement('div');
@@ -18,7 +17,7 @@ export default class Crafting{
     }
 
     init(){
-        const points = this.generatePoints(400, window.innerWidth/2, window.innerHeight/2, 5);
+        const points = this.generatePoints(400, window.innerWidth/2, window.innerHeight/2, this.nSlots);
 
         for (const e of points){
             const dropZone = new DropZone(this.width, this.height, e.x-this.width, e.y-this.height, this.mainContainer, this.checkForRecipe.bind(this));

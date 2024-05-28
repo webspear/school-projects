@@ -111,6 +111,7 @@ body {
     height: 100%;
     opacity: 0;
     background-color: black;
+    /*pointer-events: none;*/
 }
 #note {
     position: absolute;
@@ -133,7 +134,10 @@ body {
     visibility: hidden;
 }
 #vault-door {
-     /*visibility: hidden;*/
+     visibility: hidden;
+}
+#boiler {
+    visibility: hidden;
 }
 
 /* animation */

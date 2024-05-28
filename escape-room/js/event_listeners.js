@@ -28,6 +28,7 @@ window.addEventListener('keydown', (event) => {
                 else paused = false
                 break
             case 'Tab':
+                event.preventDefault();
                 inv.toggle()
                 break
         }
