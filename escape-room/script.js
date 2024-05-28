@@ -18,7 +18,7 @@ const scaledCanvas = {
 
 // determine how the game size should be like (depending on the window size)
 window.addEventListener(onload, checkresize())
-$(window).resize(function() {checkresize()})
+window.addEventListener('resize', checkresize())
 
 function checkresize() {
     canvas.width = window.innerWidth
@@ -209,9 +209,10 @@ const cryptex = new Cryptex(cryptexParent, 5, goodAnswer, () => {
 });
 
 const vaultDoorParent = document.getElementById('vault-door')
-// const vault = new SpinnyVault(vaultDoorParent, 100, 100, './features/public/images/cross-iso.jpg', 5, ()=>{
-//     console.log('callback');
-// });
+const vault = new SpinnyVault(vaultDoorParent, 100, 100, './features/public/images/theWehl.png', 5, ()=>{
+    console.log('callback');
+});
+vault.parent.style.zIndex = '100'
 
 // const grid = new HexGrid(100, 50, 50, true, document.body, window.innerWidth, window.innerHeight, {bgColor: '#181825', dotColor: '#fff', lineColor: '#fff', lineWidth: 5, lineCap: 'round', dotRadius: 3, goodDotColor: '#00ff00', badDotColor: '#ff0000'});
 
@@ -222,10 +223,12 @@ const electrical = new ElectricalPuzzle(document.getElementById('electrical'), 5
 }, ()=>{
     console.log('callback');
 });
+electrical.parentDiv.style.visibility = 'hidden'
 
 const fuseBoxPuzzle = new FuseBox(document.getElementById('fusebox'), 500, 500, 100, 100, item, ()=>{
     console.log('callback');
 });
+fuseBoxPuzzle.parentDiv.style.visibility = 'hidden'
 
 const image = new Image()
 image.src = box.imageSrc

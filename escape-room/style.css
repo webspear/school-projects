@@ -132,11 +132,8 @@ body {
 #cryptex {
     visibility: hidden;
 }
-#electrical {
-    visibility: hidden;
-}
 #vault-door {
-    /* visibility: hidden; */
+     /*visibility: hidden;*/
 }
 
 /* animation */

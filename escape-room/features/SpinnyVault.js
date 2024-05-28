@@ -19,6 +19,13 @@ class SpinnyVault{
     }
 
     init(){
+        this.parent.style.zIndex = 200;
+        this.parent.style.position = 'absolute';
+        this.parent.style.top = "50%";
+        this.parent.style.left = "50%";
+        this.parent.style.transform = "translate(-50%, -50%)";
+        this.parent.style.width = '100%';
+        this.parent.style.height = '100%';
         this.bgImage = document.createElement('img');
         this.bgImage.src = './features/public/images/vault-pzl.png';
         this.bgImage.style.width = '50%';
@@ -28,7 +35,7 @@ class SpinnyVault{
         this.bgImage.style.left = '50%';
         this.bgImage.style.transform = 'translate(-50%, -50%)';
         this.bgImage.useMap = '#image-map';
-        this.bgImage.zIndex = 10;
+        this.bgImage.zIndex = 101;
         this.parent.appendChild(this.bgImage);
 
         this.mapResizerJS = document.createElement('script');
@@ -53,6 +60,7 @@ class SpinnyVault{
         this.mapArea.shape = 'rect';
         this.mainMap.appendChild(this.mapArea);
         this.mapArea.addEventListener('click', this.clickHandler.bind(this));
+        this.mapArea.style.zIndex = 102;
 
         this.mainWrapper = document.createElement('div');
         this.mainWrapper.classList.add('spinnyVaultWrapper');
