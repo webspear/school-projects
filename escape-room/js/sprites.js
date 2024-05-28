@@ -90,3 +90,19 @@ const ventOpen = new Sprite({
     },
     imageSrc: './assets/images/vent-open.png'
 })
+// fuse item
+const fuseItem = new Sprite({
+    position: {
+        x: 2024,
+        y: 536,
+    },
+    imageSrc: './assets/images/fuse-item.png'
+})
+// flower item
+const flowerItem = new Sprite({
+    position: {
+        x: 680,
+        y: 1480,
+    },
+    imageSrc: './assets/images/items/flower.png'
+})

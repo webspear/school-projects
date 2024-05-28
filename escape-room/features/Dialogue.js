@@ -30,6 +30,10 @@ class Dialogue {
 
         this.parent.appendChild(this.dialogueElement);
         this.lastTime = 0;
+
+        this.dialogueElement.style.zIndex = -100;
+
+        this.next = this.next.bind(this);
         this.init();
     }
 
@@ -47,6 +51,7 @@ class Dialogue {
             justify-content: center;
             align-items: center;
             gap: 10px;
+            user-select: none;
             z-index: 91;
             opacity: 0;
         }
@@ -56,7 +61,7 @@ class Dialogue {
             height: 20%;
             justify-content: center;
             align-items: center;
-            font-size: 2em;
+            font-size: 3em;
             text-align: left;
         }
         
@@ -65,7 +70,7 @@ class Dialogue {
             height: 80%;
             justify-content: center;
             align-items: center;
-            font-size: 3em;
+            font-size: 2.5em;
             border: 5px solid black;
             overflow-y: auto;
             padding: 10px;
@@ -102,9 +107,6 @@ class Dialogue {
             <rect x="45" y="19" width="9" height="9"/>
         </svg>
         `;
-
-        this.updateText(0);
-        this.textBox.addEventListener("click", this.next.bind(this));
     }
 
     updateText(timeStamp) {
@@ -123,9 +125,11 @@ class Dialogue {
                 // increment the current letter
                 this.currentText++;
 
-                this.sfx.pause();
-                this.sfx.currentTime = 0;
-                this.sfx.play();
+                try {
+                    this.sfx.pause();
+                    this.sfx.currentTime = 0;
+                    this.sfx.play();
+                } catch (e) {}
 
                 // check for end of chapter
                 if (
@@ -159,9 +163,12 @@ class Dialogue {
     // Methods
     startFromOrigin() {
         // call this method to start the dialogue
+        this.dialogueElement.style.zIndex = 100;
+        this.dialogueElement.style.opacity = 1;
         this.isTyping = true;
         this.currentText = 0;
-        this.dialogueElement.style.opacity = 1
+        this.updateText(0);
+        this.textBox.addEventListener("click", this.next);
     }
 
     stop() {
@@ -186,10 +193,13 @@ class Dialogue {
         // remove the dialogue
         this.parent.removeChild(this.dialogueElement);
         document.head.removeChild(this.styleSheet);
+        this.sfx.pause();
+        this.sfx.currentTime = 0;
     }
 
     // Event Handlers
     next() {
+        console.log("next");
         if (this.isFinished) {
             this.callback();
             return;

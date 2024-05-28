@@ -162,7 +162,14 @@ class Player extends Sprite{
             ) {
                 willInteract = true
                 currentInteractBlock = interactable
-                if ((currentInteractBlock === wirePickup && wireUnlocked) || (currentInteractBlock === ladderWire && !wireUnlockedDeployed) || (currentInteractBlock === deployWire && (!wireUnlocked || wireUnlockedDeployed))) willInteract = false
+                if (
+                    (currentInteractBlock === wirePickup && wireUnlocked) || 
+                    (currentInteractBlock === ladderWire && !wireUnlockedDeployed) || 
+                    (currentInteractBlock === deployWire && (!wireUnlocked || wireUnlockedDeployed)) ||
+                    (currentInteractBlock === fusePickup && fuseUnlocked) ||
+                    (currentInteractBlock === flowerPickup && flowerUnlocked)
+                ) 
+                    willInteract = false
             }
         }
         if (willInteract) canInteract = true
@@ -260,6 +267,7 @@ class Player extends Sprite{
                     locked = true
                     dialoguing = true
                     dialoguingBeakerExit = true
+                    dialogueBeaker.startFromOrigin()
                 }
             }, 1000);
 
