@@ -1,36 +1,38 @@
 // key events
 window.addEventListener('keydown', (event) => {
-    if (titleSequence && dialoguing) return
-    switch (event.key) {
-        case 'w':
-            keys.w.pressed = true
-            if (!keys.jump.inAir && !keys.w.climbCD && player.velocity.y <= 0) keys.jump.inAir = true
-            break
-        case ' ':
-            if (!keys.jump.inAir && player.velocity.y <= 0) keys.jump.inAir = true
-            break
-        case 'a':
-            keys.a.pressed = true
-            break
-        case 'd':
-            keys.d.pressed = true
-            break
-        case 's':
-            keys.s.pressed = true
-            break
-        case 'e':
-            if (canInteract) {
-                interact()
-            }
-            break
-        case 'Escape':
-            if (!paused) paused = true
-            else paused = false
-            break
-        case 'Tab':
-            inv.toggle()
-            break
+    if (!titleSequence && !dialoguing) {
+        switch (event.key) {
+            case 'w':
+                keys.w.pressed = true
+                if (!keys.jump.inAir && !keys.w.climbCD && player.velocity.y <= 0) keys.jump.inAir = true
+                break
+            case ' ':
+                if (!keys.jump.inAir && player.velocity.y <= 0) keys.jump.inAir = true
+                break
+            case 'a':
+                keys.a.pressed = true
+                break
+            case 'd':
+                keys.d.pressed = true
+                break
+            case 's':
+                keys.s.pressed = true
+                break
+            case 'e':
+                if (canInteract) {
+                    interact()
+                }
+                break
+            case 'Escape':
+                if (!paused) paused = true
+                else paused = false
+                break
+            case 'Tab':
+                inv.toggle()
+                break
+        }
     }
+    
 })
 
 window.addEventListener('keyup', (event) => {

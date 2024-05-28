@@ -112,20 +112,6 @@ body {
     opacity: 0;
     background-color: black;
 }
-#btn {
-    position: absolute;
-    z-index: 98;
-}
-#btn2 {
-    position: absolute;
-    top: 30px;
-    z-index: 99;
-}
-#btn3 {
-    position: absolute;
-    top: 60px;
-    z-index: 99;
-}
 
 /* animation */
 @keyframes slideOut {

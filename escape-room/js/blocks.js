@@ -176,17 +176,6 @@ const ladderVine = new Interactable({
     },
     type: 'ladder',
 })
-const wirePickup = new Interactable({
-    position: {
-        x: 1704,
-        y: 1176,
-    },
-    size: {
-        width: 128,
-        height: 104,
-    },
-    type: 'item',
-})
 const deployWire = new Interactable({
     position: {
         x: 1912,
@@ -363,3 +352,38 @@ const box = {
     height: 96,
     imageSrc: './assets/images/box.png'
 }
+
+// items
+const wirePickup = new Interactable({
+    position: {
+        x: 1704,
+        y: 1176,
+    },
+    size: {
+        width: 128,
+        height: 104,
+    },
+    type: 'item',
+})
+const fusePickup = new Interactable({
+    position: {
+        x: 2024,
+        y: 536,
+    },
+    size: {
+        width: 160,
+        height: 48,
+    },
+    type: 'item',
+})
+const flowerPickup = new Interactable({
+    position: {
+        x: 680,
+        y: 1480,
+    },
+    size: {
+        width: 128,
+        height: 120,
+    },
+    type: 'item',
+})

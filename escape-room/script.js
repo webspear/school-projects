@@ -1,9 +1,10 @@
 // setting it up
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
+ctx.imageSmoothingEnabled = false
 
-const parent = document.getElementById('inventory');
-const inv = new Inventory(parent, {}, 12);
+const inventory = document.getElementById('inventory');
+const inv = new Inventory(inventory, {}, 6);
 inv.hide()
 
 const zoomFactor = 1.85
@@ -60,6 +61,8 @@ let vignetteOpacity = 0.9
 
 // unlocks
 let wireUnlocked = false
+let fuseUnlocked = false
+let flowerUnlocked = false
 let wireUnlockedDeployed = false
 let vineUnlocked = false
 let ventUnlocked = false
@@ -167,8 +170,24 @@ const player = new Player({
 
 // items
 const item = {
-    wire: new Item({url: './assets/images/items/wire.png'}, 'wire', 'desc', inv, 1)
+    wire: new Item({url: './assets/images/items/wire.png'}, 'wire', 'desc', inv, 1),
+    fuse: new Item({url: './assets/images/items/fuse.png'}, 'fuse', 'desc', inv, 1),
+    crystal: new Item({url: './assets/images/items/crystal.png'}, 'crystal', 'desc', inv, 1),
+    flower: new Item({url: './assets/images/items/flower.png'}, 'flower', 'desc', inv, 1),
+    gem: new Item({url: './assets/images/items/gem.png'}, 'wire', 'gem', inv, 1),
+    growth: new Item({url: './assets/images/items/growth-potion.png'}, 'growth', 'desc', inv, 1),
+    rock: new Item({url: './assets/images/items/rock.png'}, 'rock', 'desc', inv, 1),
 }
+
+// vent puzzle
+const ventParent = document.getElementById('vent')
+
+const vent = new Vent(ventParent, () => {
+    console.log('callback');
+});
+
+const image = new Image()
+image.src = box.imageSrc
 
 // wait for all elemetns to laod
 let loaded = false
@@ -194,7 +213,14 @@ loadingAnim()
 
 // screen changing
 window.addEventListener('keydown', () => {
-    if (loaded && titleSequence) {
+    fadeLoadingScreen()
+})
+window.addEventListener('click', () => {
+    fadeLoadingScreen()
+})
+let stopMenutheme = false
+function fadeLoadingScreen() {
+    if (loaded && titleSequence && !stopMenutheme) {
         document.getElementById('start-overlay').style.animation = 'fadeOut 1s linear forwards'
 
         setTimeout(() => {
@@ -205,7 +231,7 @@ window.addEventListener('keydown', () => {
             document.getElementById('start-overlay').style.visibility = 'hidden'
         }, 1000)
     }
-})
+}
 
 // hover effect
 document.getElementById('start-button').onmouseover = () => {
@@ -250,17 +276,14 @@ document.getElementById('close-credit-button').onclick = () => {
 
 document.getElementById('start-button').onclick = () => {
     menuButton.play()
-    locked = false
-    titleSequence = false
-    player.velocity.x = 0
-    player.velocity.y = 0
+    stopMenutheme = true
 
+    // lower volume
     function lowerVolume() {
         if (menuTheme.volume <= 0.05) {
             // volume already 0
             menuTheme.pause()
-            menuTheme.currentTime = 0
-        } 
+        }
         else {
             menuTheme.volume -= 0.05
             setTimeout(lowerVolume, 50)
@@ -269,6 +292,18 @@ document.getElementById('start-button').onclick = () => {
     lowerVolume()
 
     menu.style.animation = 'slideOut 1s ease-out forwards'
+    
+    player.velocity.x = 0
+    player.velocity.y = 0
+
+    camFocus = true
+    camFocusTargetX = player.position.x + player.width/2 - scaledCanvas.width/2
+    camFocusTargetY = player.position.y + player.height/2 - scaledCanvas.height/2 - yCamOffset
+
+    setTimeout(() => {
+        dialogueStart.startFromOrigin()
+    }, 3000);
+
 }
 
 // make the game work
@@ -299,6 +334,8 @@ function animate() {
     if (wireUnlockedDeployed) wireDeployed.update()
     if (vineUnlocked) grownPlant.update()
     if (ventUnlocked) ventOpen.update()
+    if (!fuseUnlocked) fuseItem.update()
+    if (!flowerUnlocked) flowerItem.update()
 
     drawBox()
     
@@ -319,15 +356,15 @@ function animate() {
 
         interactTxtAnim()
     }
-    else if (camFocus) {
-        animateCam()
-    }
     else if (locked) {
         lockPlayer()
     }
     else {
         beakerOverlay.update()
         player.draw()
+    }
+    if (camFocus) {
+        animateCam()
     }
 
     drawVignette()
@@ -376,14 +413,9 @@ function interactTxtAnim() {
 }
 
 function animateCam() {
-    const smoothness = 0.1
+    const smoothness = 0.02
     camera.position.x -= (camFocusTargetX + camera.position.x) * smoothness
     camera.position.y -= (camFocusTargetY + camera.position.y) * smoothness
-
-    setTimeout(() => {
-        camFocus = false
-        paused = false
-    }, 2000)
 }
 
 function lockPlayer() {
@@ -396,15 +428,19 @@ function lockPlayer() {
     }
 
     else if (dialoguing) {
+        player.velocity.x = 0
         player.updateAnims()
         Sprite.prototype.update.call(player)
+
+        player.velocity.y += player.gravity
+        player.applyYVelocity()
+        player.checkVerticalCollisions()
+
         beakerOverlay.update()
         player.updateCamBox()
         if (document.getElementById('interact-btn').style.opacity >= 0) 
             interactOpacity -= 0.05
         document.getElementById('interact-btn').style.opacity = interactOpacity
-
-        startDialogue()
     }
 
     else if (!paused) {
@@ -610,6 +646,14 @@ function interact() {
             wireUnlocked = true
             inv.addItem(item.wire)
         }
+        if (currentInteractBlock === fusePickup) {
+            fuseUnlocked = true
+            inv.addItem(item.fuse)
+        }
+        if (currentInteractBlock === flowerPickup) {
+            flowerUnlocked = true
+            inv.addItem(item.flower)
+        }
     }
 }
 
@@ -618,11 +662,11 @@ function showHover() {
     if (!canInteract) return
     if ((currentInteractBlock === fuseBox || currentInteractBlock === vaultDoor || currentInteractBlock === binderTop)) 
         hoverLayer1.update()
-    if ((currentInteractBlock === vaultKeypad || currentInteractBlock === booksBelow || currentInteractBlock === boiler)) 
+    if ((currentInteractBlock === vaultKeypad || currentInteractBlock === booksBelow || currentInteractBlock === boiler || currentInteractBlock === fusePickup)) 
         hoverLayer2.update()
     if (((currentInteractBlock === ladderVine && !vineUnlocked) || currentInteractBlock === wirePickup || currentInteractBlock === ventDoor || currentInteractBlock === ventDoorTop || currentInteractBlock === noteBottom || currentInteractBlock === telescope)) 
         hoverLayer3.update()
-    if ((currentInteractBlock === deployWire))
+    if (currentInteractBlock === deployWire || currentInteractBlock === flowerPickup)
         hoverLayer4.update()
 
     // change text
@@ -659,9 +703,6 @@ function drawCounterOverlay() {
 
 // draw pushable box
 function drawBox() {
-    const image = new Image()
-    image.src = box.imageSrc
     if (!image) return
-    ctx.drawImage(image, box.position.x, box.position.y, box.width, box.height)
     ctx.drawImage(image, box.position.x, box.position.y, box.width, box.height)
 }
