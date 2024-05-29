@@ -1,5 +1,5 @@
 class HexGrid{
-    constructor(radius, xOffset, yOffset, isEditable, parentDiv, width, height, style, callback, goodPattern, isTransparent = false){
+    constructor(radius, xOffset, yOffset, isEditable, parentDiv, width, height, style, callback, goodPattern, isTransparent = true){
         this.radius = radius;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
@@ -28,6 +28,11 @@ class HexGrid{
         this.bgCanvas = canvasElement;
         this.bgCanvas.style.pointerEvents = 'none';
 
+        const bgImage = document.createElement('img')
+        bgImage.width = window.innerWidth
+        bgImage.height = window.innerHeight
+        bgImage.src = './assets/images/hex-grid-bg.png'
+
         const overlayCanvas = document.createElement('canvas');
         overlayCanvas.width = this.width;
         overlayCanvas.height = this.height;
@@ -44,6 +49,7 @@ class HexGrid{
         lineCanvas.style.top = 0;
         lineCanvas.style.left = 0;
 
+        this.parentDiv.appendChild(bgImage);
         this.parentDiv.appendChild(canvasElement);
         this.parentDiv.appendChild(overlayCanvas);
         this.parentDiv.appendChild(lineCanvas);
@@ -52,10 +58,10 @@ class HexGrid{
         this.overlayCtx = overlayCanvas.getContext('2d');
         this.lineCtx = lineCanvas.getContext('2d');
 
-        // if (!this.isTransparent) {
+        if (!this.isTransparent) {
             this.ctx.fillStyle = this.style.bgColor;
             this.ctx.fillRect(0, 0, this.width, this.height);
-        // }
+        }
         this.lineCtx.strokeStyle = this.style.lineColor;
         this.lineCtx.lineWidth = this.style.lineWidth;
         this.lineCtx.lineCap = this.style.lineCap;

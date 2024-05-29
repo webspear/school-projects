@@ -52,7 +52,6 @@ class Dialogue {
             align-items: center;
             gap: 10px;
             user-select: none;
-            z-index: 91;
             opacity: 0;
         }
         
@@ -163,7 +162,7 @@ class Dialogue {
     // Methods
     startFromOrigin() {
         // call this method to start the dialogue
-        this.dialogueElement.style.zIndex = 100;
+        this.dialogueElement.style.zIndex = 1000;
         this.dialogueElement.style.opacity = 1;
         this.isTyping = true;
         this.currentText = 0;

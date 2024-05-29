@@ -163,6 +163,16 @@ const fallenBook = new CollisionBlock({
         height: 72,
     }
 })
+const tubeTemp = new CollisionBlock({
+    position: {
+        x: 352,
+        y: 784,
+    },
+    size: {
+        width: 8,
+        height: 176,
+    }
+})
 
 // interactable places
 const ladderVine = new Interactable({

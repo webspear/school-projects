@@ -36,7 +36,7 @@ window.addEventListener('keydown', (event) => {
     else if (doingPuzzle) {
         switch (event.key) {
             case 'e':
-                closePuzzle()
+                if (!endSequence) closePuzzle()
         }
     }
     

@@ -74,6 +74,7 @@ let powerUnlocked = false
 let fuseDone = false
 let cryptexDone = false
 let vaultDone = false
+let otherItems = 0
 
 // check if keys need to be released and stuff
 const keys = {
@@ -211,7 +212,6 @@ const cryptex = new Cryptex(cryptexParent, 5, goodAnswer, () => {
         // add items
         if (vaultDone) {
             inv.addItem(item.crystal)
-            inv.addItem(item.gem)
             inv.addItem(item.rock)
             inv.addItem(item.growth)
 
@@ -237,7 +237,6 @@ const vault = new SpinnyVault(vaultDoorParent, 100, 100, './features/public/imag
         // add items
         if (cryptexDone) {
             inv.addItem(item.crystal)
-            inv.addItem(item.gem)
             inv.addItem(item.rock)
             inv.addItem(item.growth)
 
@@ -250,33 +249,52 @@ const vault = new SpinnyVault(vaultDoorParent, 100, 100, './features/public/imag
     }, 500)
 });
 vault.parent.style.zIndex = '100'
+
 const telescopeParent = document.getElementById('telescope')
 const grid = new HexGrid(100, 50, 50, true, telescopeParent, window.innerWidth, window.innerHeight, {bgColor: '#181825', dotColor: '#fff', lineColor: '#fff', lineWidth: 5, lineCap: 'round', dotRadius: 3, goodDotColor: '#00ff00', badDotColor: '#ff0000'}, () => {
-    console.log("CALLBACK");
-}, "deqawad", false);
-telescopeParent.style.position = 'absolute'
+    setTimeout(() => {
+        telescopeParent.style.zIndex = '0'
+        telescopeParent.style.visibility = 'hidden'
+        document.getElementById('grid-txt').style.visibility = 'hidden'
+        telescopeParent.style.pointerEvents = 'none'
+        locked = false
+        doingPuzzle = false
+        grid.disableMouse()
+        
+        inv.addItem(item.gem)
+        otherItems++
 
+        pickup.play()
+        inv.show()
+        setTimeout(() => {
+            inv.hide()
+        }, 1500);
+    }, 500);
+}, "dedwd", false);
+
+telescopeParent.style.position = 'absolute'
 telescopeParent.style.visibility = 'hidden'
 telescopeParent.style.pointerEvents = 'none'
 grid.disableMouse();
 
-
-
-
-
 const boilerParent = document.getElementById('boiler')
-const crafting = new Crafting(inv, [item.rock, item.crystal, item.gem, item.flower], ()=>{
-    setTimeout(() => {
-        crafting.destroy()
-        crafting.parentDiv.style.visibility = 'hidden'
-        interactBtn.textContent = '[E] to interact'
-
-        function fadeToBlack() {
-            document.getElementById('blackout-screen').style.opacity -= 0.05
-            setTimeout(() => {fadeToBlack()}, 50)
+const crafting = new Crafting(inv, [item.rock.name, item.crystal.name, item.gem.name, item.flower.name], ()=>{
+    for (const item of inv.slotElements) {
+        console.log(item)
+        if (item.dragElement) {
+            item.dragElement.style.visibility = 'hidden'
         }
-        fadeToBlack()
-    }, 500)
+    }
+    inv.hide()
+    setTimeout(() => {
+        interactBtn.style.opacity = 0
+
+        setTimeout(() => {
+            final.startFromOrigin()
+        }, 3000);
+
+        document.getElementById('fade-to-black').style.visibility = 'visible'
+    }, 1000)
 }, 4, 100, 100, boilerParent)
 
 const electrical = new ElectricalPuzzle(document.getElementById('electrical'), 500, 500, {
@@ -295,6 +313,13 @@ const electrical = new ElectricalPuzzle(document.getElementById('electrical'), 5
 electrical.parentDiv.style.visibility = 'hidden'
 
 const fuseBoxPuzzle = new FuseBox(document.getElementById('fusebox'), 500, 500, 100, 100, item.fuse, ()=>{
+    for (const item of inv.slotElements) {
+        console.log(item)
+        if (item.dragElement) {
+            item.dragElement.style.visibility = 'hidden'
+        }
+    }
+    inv.hide()
     setTimeout(() => {
         fuseBoxPuzzle.parentDiv.style.visibility = 'hidden'
         fuseBoxPuzzle.destroy()
@@ -424,6 +449,14 @@ document.getElementById('start-button').onclick = () => {
         dialogueStart.startFromOrigin()
     }, 3000);
 
+}
+
+document.getElementById('controls-btn').onclick = () => {
+    locked = false
+    titleSequence = false
+    camFocus = false
+
+    document.getElementById('controls').style.animation = 'slideOut 1s ease-out forwards'
 }
 
 // make the game work
@@ -765,8 +798,9 @@ function interact() {
             document.getElementById('cryptex').style.visibility = 'visible'
         }
         if (currentInteractBlock === booksBelow) {
-            interaction.play()
-            console.log('books below')
+            paper.play()
+
+            document.getElementById('book').style.visibility = 'visible'
         }
         if (currentInteractBlock === noteBottom) {
             paper.play()
@@ -774,7 +808,7 @@ function interact() {
 
             document.getElementById('note').style.visibility = 'visible'
             document.getElementById('note-txt-1').textContent = 'The electrical box was acting up recently. I think it\'s the fuses. I\'ll leave the spare in the shelves.'
-            document.getElementById('note-txt-2').textContent = 'The vault is connected, though, so you won\'t be able to open it.'
+            document.getElementById('note-txt-2').textContent = 'The vault is connected to it, though, so you won\'t be able to open it when it\'s missing a fuse'
             document.getElementById('note-txt-3').textContent = '- Josh'
         }
         if (currentInteractBlock === noteTop) {
@@ -794,17 +828,25 @@ function interact() {
             document.getElementById('note-txt-3').textContent = '- Marcus'
         }
         if (currentInteractBlock === binderTop) {
-            interaction.play()
-            console.log('binder top')
+            paper.play()
+            
+            document.getElementById('binder').style.visibility = 'visible'
         }
         if (currentInteractBlock === telescope) {
             interaction.play()
-            console.log('telescope')
+
+            telescopeParent.style.visibility = 'visible'
+            document.getElementById('grid-txt').style.visibility = 'visible'
+            telescopeParent.style.pointerEvents = 'auto'
+            telescopeParent.style.zIndex = '120'
+            grid.enableMouse()
         }
         if (currentInteractBlock === boiler) {
             interaction.play()
 
             inv.show()
+            interactBtn.style.opacity = 0
+            endSequence = true
             boilerParent.style.visibility = 'visible'
         }
     }
@@ -826,6 +868,7 @@ function interact() {
         if (currentInteractBlock === flowerPickup) {
             flowerUnlocked = true
             inv.addItem(item.flower)
+            otherItems++
         }
     }
 }
@@ -836,11 +879,24 @@ function closePuzzle() {
 
     vent.ventCanvas.style.visibility = 'hidden'
     document.getElementById('note').style.visibility = 'hidden'
+    document.getElementById('binder').style.visibility = 'hidden'
+    document.getElementById('book').style.visibility = 'hidden'
     document.getElementById('cryptex').style.visibility = 'hidden'
     fuseBoxPuzzle.parentDiv.style.visibility = 'hidden'
     electrical.parentDiv.style.visibility = 'hidden'
     document.getElementById('vault-door').style.visibility = 'hidden'
     boilerParent.style.visibility = 'hidden'
+    telescopeParent.style.visibility = 'hidden'
+    document.getElementById('grid-txt').style.visibility = 'hidden'
+    telescopeParent.style.pointerEvents = 'none'
+    telescopeParent.style.zIndex = '0'
+    grid.disableMouse()
+    inv.hide()
+
+    const elements = document.querySelectorAll('.dragElements')
+    elements.forEach((e) => {
+        e.style.visibility = 'hidden'
+    })
 }
 
 // draw hover effect

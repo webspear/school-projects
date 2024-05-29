@@ -68,6 +68,9 @@ class Player extends Sprite{
         // movement
         this.position.x += this.velocity.x
 
+        // check for tube temp
+        this.checkTube()
+
         // check for horizontal collision
         this.checkHorizontalCollisions()
 
@@ -93,6 +96,7 @@ class Player extends Sprite{
 
         // check if the player is under the counter
         this.checkUnderCounter()
+
     }
 
     checkHorizontalCollisions() {
@@ -170,7 +174,7 @@ class Player extends Sprite{
                     (currentInteractBlock === flowerPickup && flowerUnlocked) ||
                     (currentInteractBlock === vaultKeypad && (cryptexDone || !powerUnlocked)) ||
                     (currentInteractBlock === fuseBox && powerUnlocked) ||
-                    (currentInteractBlock === vaultDoor && vaultDone)
+                    (currentInteractBlock === vaultDoor && (vaultDone || !powerUnlocked))
                 ) 
                     willInteract = false
             }
@@ -303,5 +307,29 @@ class Player extends Sprite{
     checkBelow() {
         if (this.position.y > 1664) yCamOffset = 150
         else if (this.position.y > 584) yCamOffset = 70
+    }
+
+    checkTube() {
+        if (otherItems != 2) {
+            if (this.position.x <= tubeTemp.position.x + tubeTemp.size.width &&
+                this.position.y + this.height >= tubeTemp.position.y &&
+                this.position.y <= tubeTemp.position.y + tubeTemp.size.height) {
+                if (!tubeTempOnce) {
+                    tubeTempOnce = true
+                    const tubeTempBlock = new Dialogue(tubeTempBlockTxt, 80, false, './features/public/audio/click.ogg', dialogue, () => {
+                        tubeTempBlock.destroy()
+                        locked = false
+                        dialoguing = false
+                    });
+                    tubeTempBlock.startFromOrigin()
+                    locked = true
+                    dialoguing = true
+                }
+            }
+            else if (this.position.x > tubeTemp.position.x + tubeTemp.size.width + 280) {
+                tubeTempOnce = false
+            }
+        }
+        else tubeTemp.collideable = false
     }
 }

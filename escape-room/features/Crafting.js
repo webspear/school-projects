@@ -17,7 +17,7 @@ class Crafting{
     }
 
     init(){
-        const points = this.generatePoints(400, window.innerWidth/2, window.innerHeight/2, this.nSlots);
+        const points = this.generatePoints(250, window.innerWidth/2, window.innerHeight/2, this.nSlots);
 
         for (const e of points){
             const dropZone = new DropZone(this.width, this.height, e.x-this.width, e.y-this.height, this.mainContainer, this.checkForRecipe.bind(this));

@@ -178,6 +178,7 @@ class Draggable{
         tempElement.id = "dragElement-" + tempElement.id;
         this.dragElement = tempElement.cloneNode(true);
         this.dragElement.style.position = 'absolute';
+        this.dragElement.classList.add('dragElement');
         this.dragElement.style.left = e.clientX+10+'px';
         this.dragElement.style.top = e.clientY+10+'px';
         document.body.appendChild(this.dragElement);

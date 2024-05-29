@@ -31,6 +31,19 @@
         <h1 class="credit-txt">(it's the JJJ! :P)</h1>
         <h1 id="close-credit-button">BACK</h1>
     </div>
+    <!-- controls manual -->
+    <div id="controls">
+        <h1 id="controls-title">CONTROLS</h1>
+        <p id="controls-txt">
+            Use A and D to move left and right <br><br>
+            Press W or Space to jump <br><br>
+            On a ladder, use W and S to go up and down <br><br>
+            Press TAB to open the inventory <br><br>
+            Press ESC to pause <br><br>
+            Finally, press E to interact <br><br>
+        </p>
+        <h1 id="controls-btn">PROCEED</h1>
+    </div>
 
     <div id="blackout-screen"></div>
     <div id="inventory"></div>
@@ -41,13 +54,37 @@
     <div id="electrical"></div>
     <div id="fusebox"></div>
     <div id="telescope"></div>
-    <div id="boiler"></div>
+    <h1 id="grid-txt">[Click once (without holding down) on the first point of the shape, draw the shape, then click again on the final point]</h1>
+    <div id="boiler">
+        <img src="./assets/images/crafting-pzl.gif" alt="" id="boiler-bg">
+    </div>
+    <div id="binder">
+        <img src="./assets/images/binder-note.png" alt="">
+        <p id="binder-txt">
+            Name: Josh Burnham <br>
+            Occupation: Scientist <br>
+            Rank: Senior Scientist <br> <br> 
+            Blood Type: A <br>
+            Birth Date: Febuary 17, 1984 (Age 40) <br><br>
+            Additional notes: <br>
+            - Likes chocolate milk
+        </p>
+    </div>
+    <div id="book">
+        <img src="./assets/images/astro-book-pzl.png" alt="">
+        <p id="book-txt">
+            Don't tell Marcia, but I found by pure luck the pattern for the telescope!<br><br>
+            I wrote it down for anyone curious, but please, hide it from her. This is for stealing my chocolate milk last week...
+        </p>
+    </div>
     <div id="note">
         <h1 id="note-txt-1">I moved the growth potion because it seems as though its fumes can lead to uncontrolled growth. Potential safety hazard?</h1>
         <h1 id="note-txt-2">PS: Is the code still Josh's birth year? If so, please change ASAP</h1>
         <h1 id="note-txt-3">-Marcus</h1>
     </div>
     <h1 id="interact-btn">[E] to interact</h1>
+
+    <div id="fade-to-black"></div>
 
     <script src="./features/Dialogue.js"></script>
     <script src="./features/FuseBox.js"></script>
