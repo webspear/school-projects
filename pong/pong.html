@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong!</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.svg">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <!-- menu -->
+    <div id="menu">
+        <h1 id="main-title">PONG!</h1>
+        <h1 id="play-btn">PLAY</h1>
+        <h1 id="options-btn">OPTIONS</h1>
+        <h1 id="controls-btn">CONTROLS</h1>
+    </div>
+
+    <!-- options menu -->
+    <div id="options">
+        <h1 id="options-title">OPTIONS</h1>
+        <div id="volume">
+            <label for="volume-slider">VOLUME:</label>
+            <label for="volume-slider" id="volume-ind">100</label>
+            <input type="range" min="0" max="100" value="100" class="slider" id="volume-slider">
+        </div>
+        <div id="fs">
+            <label for="fs-checkbox">FULLSCREEN:</label>
+            <input type="checkbox" min="1" max="100" value="50" class="checkbox" id="fs-checkbox">
+        </div>
+        <div id="speed">
+            <label for="speed-checkbox">SPEED INCREASE:</label>
+            <input type="checkbox" min="1" max="100" value="50" class="checkbox" id="speed-checkbox">
+        </div>
+        <div id="color">
+            <label for="colors">COLOR:</label>
+            <select name="colors" id="colors">
+                <option value="white" selected>WHITE</option>
+                <option value="blue">BLUE</option>
+                <option value="yellow">YELLOW</option>
+                <option value="green">GREEN</option>
+                <option value="red">RED</option>
+            </select>
+        </div>
+        <h1 id="options-back">BACK</h1>
+    </div>
+
+    <!-- controls screen -->
+    <div id="controls">
+        <h1 id="controls-title">CONTROLS</h1>
+        <h1 id="controls-player1">W / S to move player 1.</h1>
+        <h1 id="controls-player2">Up arrow / Down arrow to move player 2.</h1>
+        <h1 id="controls-pause">ESC to pause during game.</h1>
+        <h1 id="controls-back">BACK</h1>
+    </div>
+
+    <!-- game selection menu -->
+    <div id="game-select">
+        <div id="game-options">
+            <h1 id="vs-player">PLAYER VS PLAYER</h1>
+            <h1 id="vs-cpu-easy">PLAYER VS CPU EASY</h1>
+            <h1 id="vs-cpu-med">PLAYER VS CPU MEDIUM</h1>
+            <h1 id="vs-cpu-hard">PLAYER VS CPU HARD</h1>
+            <h1 id="vs-survival">SURVIVAL</h1>
+        </div>
+        <h1 id="game-desc"></h1>
+    </div>
+
+    <!-- canvas -->
+    <canvas id="canvas" width="1000" height="700"></canvas>
+
+    <!-- game status -->
+    <h1 id="game-status">Player 1 Scored!</h1>
+
+    <!-- end screen menu -->
+    <div id="end-screen">
+        <div id="end-wrapper">
+            <h1 id="end-title">title</h1>
+            <h1 id="end-stats">STATS</h1>
+            <h1 id="end-desc-1">end desc 2</h1>
+            <h1 id="end-desc-2">end desc 3</h1>
+            <h1 id="end-button-1">PLAY AGAIN</h1>
+            <h1 id="end-button-2">BACK TO MENU</h1>
+        </div>
+
+    </div>
+
+    <script src="classes/player.js"></script>
+    <script src="classes/ball.js"></script>
+    <script src="classes/ghostBall.js"></script>
+    <script src="event listeners.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
