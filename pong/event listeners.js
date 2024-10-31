@@ -47,6 +47,9 @@ window.addEventListener('keydown', (event) => {
                 if (!paused) {
                     paused = true
 
+                    game.player1.velocity = 0
+                    game.player2.velocity = 0
+
                     gameStatus.style.visibility = 'visible'
                     gameStatus.textContent = 'PAUSED'
                 }

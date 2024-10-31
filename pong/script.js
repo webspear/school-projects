@@ -226,12 +226,12 @@ const game = {
                     gameStatus.textContent = 'GO!'
                     go.play()
                     paused = false
-                    preventPause = false
 
                     // start survival countdown
                     if (difficulty == difficulties.survival) survivalScore()
 
                     setTimeout(() => {
+                        preventPause = false
                         gameStatus.style.visibility = 'hidden'
                     }, 1000);
                 }, 1000);
