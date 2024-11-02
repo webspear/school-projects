@@ -64,6 +64,15 @@ window.addEventListener('keydown', (event) => {
 })
 
 // volume
+document.getElementById('music-slider').oninput = () => {
+    music.volume = document.getElementById('music-slider').value / 100
+    
+    document.getElementById('music-ind').textContent = document.getElementById('music-slider').value
+}
+document.getElementById('music-slider').onmouseup = () => {
+    select.currentTime = 0
+    select.play()
+}
 document.getElementById('volume-slider').oninput = () => {
     sounds.forEach(e => {
         e.volume = document.getElementById('volume-slider').value / 100
@@ -92,6 +101,28 @@ document.getElementById('fs-checkbox').addEventListener('click', () => {
 document.getElementById('fs-checkbox').onmouseover = () => {
     hover.currentTime = 0
     hover.play()
+}
+
+// game scale
+document.getElementById('scale-slider').oninput = () => {
+    if (document.getElementById('orientation-btn').textContent == 'HORIZONTAL') {
+        canvas.height = 700 * document.getElementById('scale-slider').value/100
+        canvas.width = 1000 * document.getElementById('scale-slider').value/100
+    }
+    else {
+        canvas.height = 1000 * document.getElementById('scale-slider').value/100
+        canvas.width = 700 * document.getElementById('scale-slider').value/100
+    }
+    game.player2.position.x = canvas.width - 70
+
+    function financial(x) {
+        return Number.parseFloat(x).toFixed(2);
+    }
+    document.getElementById('scale-ind').textContent = financial(document.getElementById('scale-slider').value/100) + 'x'
+}
+document.getElementById('scale-slider').onmouseup = () => {
+    select.currentTime = 0
+    select.play()
 }
 
 // gradual speed increase
@@ -127,6 +158,33 @@ document.getElementById("colors").onclick = () => {
 document.getElementById("colors").onmouseover = () => {
     hover.currentTime = 0
     hover.play()
+}
+
+// paddle size
+document.getElementById('size-slider').oninput = () => {
+    paddleSize = document.getElementById('size-slider').value
+    game.player1.height = document.getElementById('size-slider').value
+    game.player2.height = document.getElementById('size-slider').value
+
+    document.getElementById('size-ind').textContent = document.getElementById('size-slider').value + 'px'
+}
+document.getElementById('size-slider').onmouseup = () => {
+    select.currentTime = 0
+    select.play()
+}
+
+// ball starting angle
+document.getElementById('angle-slider').oninput = () => {
+    game.ball.direction = document.getElementById('angle-slider').value - 90
+    if (game.ball.direction < 0) {
+        game.ball.direction += 360
+    }
+
+    document.getElementById('angle-ind').style.transform = 'rotate(' + game.ball.direction + 'deg)'
+}
+document.getElementById('angle-slider').onmouseup = () => {
+    select.currentTime = 0
+    select.play()
 }
 
 // button events
@@ -170,6 +228,24 @@ document.getElementById('controls-back').onmouseover = () => {
 document.getElementById('controls-back').onmouseout = () => {
     mouseOut(document.getElementById('controls-back'))
 }
+document.getElementById('help-btn').onmouseover = () => {
+    mouseOver(document.getElementById('help-btn'))
+    hover.currentTime = 0
+    hover.play()
+}
+document.getElementById('help-btn').onmouseout = () => {
+    mouseOut(document.getElementById('help-btn'))
+}
+document.getElementById('help-back').onmouseover = () => {
+    mouseOver(document.getElementById('help-back'))
+    hover.currentTime = 0
+    hover.play()
+}
+document.getElementById('help-back').onmouseout = () => {
+    mouseOut(document.getElementById('help-back'))
+}
+
+// game options menu
 document.getElementById('vs-player').onmouseover = () => {
     mouseOver(document.getElementById('vs-player'))
     document.getElementById('game-desc').textContent = 'Play against your friend! A player vs. player experience.'
@@ -220,6 +296,26 @@ document.getElementById('vs-survival').onmouseout = () => {
     mouseOut(document.getElementById('vs-survival'))
     document.getElementById('game-desc').textContent = ''
 }
+
+// game mods menu
+document.getElementById('orientation-btn').onmouseover = () => {
+    mouseOver(document.getElementById('orientation-btn'))
+    hover.currentTime = 0
+    hover.play()
+}
+document.getElementById('orientation-btn').onmouseout = () => {
+    mouseOut(document.getElementById('orientation-btn'))
+}
+document.getElementById('mods-proceed').onmouseover = () => {
+    mouseOver(document.getElementById('mods-proceed'))
+    hover.currentTime = 0
+    hover.play()
+}
+document.getElementById('mods-proceed').onmouseout = () => {
+    mouseOut(document.getElementById('mods-proceed'))
+}
+
+// end screen menu
 document.getElementById('end-button-1').onmouseover = () => {
     mouseOver(document.getElementById('end-button-1'))
     hover.currentTime = 0
@@ -238,6 +334,12 @@ document.getElementById('end-button-2').onmouseout = () => {
     hover.currentTime = 0
 }
 
+
+// click events
+document.getElementById('start-overlay').onclick = () => {
+    document.getElementById('start-overlay').style.visibility = 'hidden'
+    music.play()
+}
 document.getElementById('play-btn').onclick = () => {
     player1Score = 0
     player2Score = 0
@@ -260,6 +362,18 @@ document.getElementById('options-back').onclick = () => {
     select.currentTime = 0
     select.play()
 }
+document.getElementById('help-btn').onclick = () => {
+    document.getElementById('menu').style.visibility = 'hidden'
+    document.getElementById('help').style.visibility = 'visible'
+    select.currentTime = 0
+    select.play()
+}
+document.getElementById('help-back').onclick = () => {
+    document.getElementById('help').style.visibility = 'hidden'
+    document.getElementById('menu').style.visibility = 'visible'
+    select.currentTime = 0
+    select.play()
+}
 document.getElementById('controls-btn').onclick = () => {
     document.getElementById('menu').style.visibility = 'hidden'
     document.getElementById('controls').style.visibility = 'visible'
@@ -275,62 +389,64 @@ document.getElementById('controls-back').onclick = () => {
 
 document.getElementById('vs-player').onclick = () => {
     document.getElementById('game-select').style.visibility = 'hidden'
-    document.getElementById('canvas').style.visibility = 'visible'
+    document.getElementById('game-mods').style.visibility = 'visible'
     select.currentTime = 0
     select.play()
     playerCount = 2
-    if (!updateToggle) {
-        game.update()
-        updateToggle = true
-    }
-    game.roundStart()
 }
 document.getElementById('vs-cpu-easy').onclick = () => {
     document.getElementById('game-select').style.visibility = 'hidden'
-    document.getElementById('canvas').style.visibility = 'visible'
+    document.getElementById('game-mods').style.visibility = 'visible'
     select.currentTime = 0
     select.play()
     playerCount = 1
     difficulty = difficulties.easy
-    if (!updateToggle) {
-        game.update()
-        updateToggle = true
-    }
-    game.roundStart()
 }
 document.getElementById('vs-cpu-med').onclick = () => {
     document.getElementById('game-select').style.visibility = 'hidden'
-    document.getElementById('canvas').style.visibility = 'visible'
+    document.getElementById('game-mods').style.visibility = 'visible'
     select.currentTime = 0
     select.play()
     playerCount = 1
     difficulty = difficulties.medium
-    if (!updateToggle) {
-        game.update()
-        updateToggle = true
-    }
-    game.roundStart()
 }
 document.getElementById('vs-cpu-hard').onclick = () => {
     document.getElementById('game-select').style.visibility = 'hidden'
-    document.getElementById('canvas').style.visibility = 'visible'
+    document.getElementById('game-mods').style.visibility = 'visible'
     select.currentTime = 0
     select.play()
     playerCount = 1
     difficulty = difficulties.hard
-    if (!updateToggle) {
-        game.update()
-        updateToggle = true
-    }
-    game.roundStart()
 }
 document.getElementById('vs-survival').onclick = () => {
     document.getElementById('game-select').style.visibility = 'hidden'
-    document.getElementById('canvas').style.visibility = 'visible'
+    document.getElementById('game-mods').style.visibility = 'visible'
+    document.getElementById('speed-label').textContent = 'SPEED INCREASE (DISABLED):'
     select.currentTime = 0
     select.play()
     playerCount = 1
     difficulty = difficulties.survival
+}
+document.getElementById('orientation-btn').onclick = () => {
+    if (document.getElementById('orientation-btn').textContent == 'HORIZONTAL') {
+        document.getElementById('orientation-btn').textContent = 'VERTICAL'
+        canvas.style.transform = 'translate(-50%, -50%) rotate(90deg)'
+        canvas.height = 1000
+        canvas.width = 700
+    }
+    else {
+        document.getElementById('orientation-btn').textContent = 'HORIZONTAL'
+        canvas.style.transform = 'translate(-50%, -50%)'
+        canvas.height = 700
+        canvas.width = 1000
+    }
+    game.player2.position.x = canvas.width - 70
+}
+document.getElementById('mods-proceed').onclick = () => {
+    document.getElementById('game-mods').style.visibility = 'hidden'
+    document.getElementById('canvas').style.visibility = 'visible'
+    select.currentTime = 0
+    select.play()
     if (!updateToggle) {
         game.update()
         updateToggle = true
@@ -352,6 +468,7 @@ document.getElementById('end-button-2').onclick = () => {
     document.getElementById('menu').style.visibility = 'visible'
     document.getElementById('canvas').style.visibility = 'hidden'
     document.getElementById('end-screen').style.visibility = 'hidden'
+    document.getElementById('speed-label').textContent = 'SPEED INCREASE:'
     select.currentTime = 0
     select.play()
 }

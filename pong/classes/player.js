@@ -2,7 +2,7 @@ class Player{
     constructor({position}) {
         this.position = position
         this.width = 20
-        this.height = 100
+        this.height = paddleSize
         this.velocity = 0
         this.speed = 10
         players.push(this)

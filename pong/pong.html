@@ -11,12 +11,19 @@
 
 </head>
 <body>
+    <!-- start overlay to circumvent autoplay on browsers -->
+    <div id="start-overlay">
+        START GAME
+        <h1 id="start-txt">CLICK ANYWHERE TO START</h1>
+    </div>
+
     <!-- menu -->
     <div id="menu">
         <h1 id="main-title">PONG!</h1>
         <h1 id="play-btn">PLAY</h1>
         <h1 id="options-btn">OPTIONS</h1>
         <h1 id="controls-btn">CONTROLS</h1>
+        <h1 id="help-btn">HOW TO PLAY</h1>
     </div>
 
     <!-- options menu -->
@@ -27,23 +34,14 @@
             <label for="volume-slider" id="volume-ind">100</label>
             <input type="range" min="0" max="100" value="100" class="slider" id="volume-slider">
         </div>
+        <div id="music">
+            <label for="music-slider">MUSIC:</label>
+            <label for="music-slider" id="music-ind">50</label>
+            <input type="range" min="0" max="100" value="50" class="slider" id="music-slider">
+        </div>
         <div id="fs">
             <label for="fs-checkbox">FULLSCREEN:</label>
             <input type="checkbox" min="1" max="100" value="50" class="checkbox" id="fs-checkbox">
-        </div>
-        <div id="speed">
-            <label for="speed-checkbox">SPEED INCREASE:</label>
-            <input type="checkbox" min="1" max="100" value="50" class="checkbox" id="speed-checkbox">
-        </div>
-        <div id="color">
-            <label for="colors">COLOR:</label>
-            <select name="colors" id="colors">
-                <option value="white" selected>WHITE</option>
-                <option value="blue">BLUE</option>
-                <option value="yellow">YELLOW</option>
-                <option value="green">GREEN</option>
-                <option value="red">RED</option>
-            </select>
         </div>
         <h1 id="options-back">BACK</h1>
     </div>
@@ -51,10 +49,17 @@
     <!-- controls screen -->
     <div id="controls">
         <h1 id="controls-title">CONTROLS</h1>
-        <h1 id="controls-player1">W / S to move player 1.</h1>
-        <h1 id="controls-player2">Up arrow / Down arrow to move player 2.</h1>
+        <h1 id="controls-player1">W / S to move player 1 (The player at the left or top).</h1>
+        <h1 id="controls-player2">Up arrow / Down arrow to move player 2 (The player at the right or bottom).</h1>
         <h1 id="controls-pause">ESC to pause during game.</h1>
         <h1 id="controls-back">BACK</h1>
+    </div>
+
+    <!-- how to play -->
+     <div id="help">
+        <h1 id="help-title">HOW TO PLAY</h1>
+        <h1 id="help-txt">In Pong, two players control paddles to hit a ball back and forth across the screen, trying to prevent it from passing their side. Each player scores a point when the opponent misses. The paddles move vertically, and the ball bounces off them and the top and bottom edges of the screen.</h1>
+        <h1 id="help-back">BACK</h1>
     </div>
 
     <!-- game selection menu -->
@@ -64,10 +69,51 @@
             <h1 id="vs-cpu-easy">PLAYER VS CPU EASY</h1>
             <h1 id="vs-cpu-med">PLAYER VS CPU MEDIUM</h1>
             <h1 id="vs-cpu-hard">PLAYER VS CPU HARD</h1>
-            <h1 id="vs-survival">SURVIVAL</h1>
+            <h1 id="vs-survival">SURVIVAL - SPECIAL GAMEMODE</h1>
         </div>
         <h1 id="game-desc"></h1>
     </div>
+
+    <!-- game options -->
+     <div id="game-mods">
+        <h1 id="mods-title">GAME OPTIONS</h1>
+        <div id="mods-wrapper">
+            <div id="orientation">
+                <h1 id="orientation-title">GAME ORIENTATION:</h1>
+                <h1 id="orientation-btn">HORIZONTAL</h1>
+            </div>
+            <div id="scale">
+                <label for="scale-slider">GAME SCALE:</label>
+                <label for="scale-slider" id="scale-ind">1.00x</label>
+                <input type="range" min="80" max="120" value="100" class="slider" id="scale-slider">
+            </div>
+            <div id="speed">
+                <label for="speed-checkbox" id="speed-label">SPEED INCREASE:</label>
+                <input type="checkbox" min="1" max="100" value="50" class="checkbox" id="speed-checkbox">
+            </div>
+            <div id="color">
+                <label for="colors">COLOR:</label>
+                <select name="colors" id="colors">
+                    <option value="white" selected>WHITE</option>
+                    <option value="blue">BLUE</option>
+                    <option value="yellow">YELLOW</option>
+                    <option value="green">GREEN</option>
+                    <option value="red">RED</option>
+                </select>
+            </div>
+            <div id="size">
+                <label for="size-slider">PADDLE LENGTH:</label>
+                <label for="size-slider" id="size-ind">100px</label>
+                <input type="range" min="50" max="150" value="100" class="slider" id="size-slider">
+            </div>
+            <div id="angle">
+                <label for="angle-slider" id="angle-label">BALL STARTING ANGLE:</label>
+                <span id="angle-ind">&#8594;</span>
+                <input type="range" min="0" max="180" value="135" class="slider" id="angle-slider">
+            </div>
+        </div>
+        <h1 id="mods-proceed">START GAME</h1>
+     </div>
 
     <!-- canvas -->
     <canvas id="canvas" width="1000" height="700"></canvas>
@@ -85,7 +131,6 @@
             <h1 id="end-button-1">PLAY AGAIN</h1>
             <h1 id="end-button-2">BACK TO MENU</h1>
         </div>
-
     </div>
 
     <script src="classes/player.js"></script>

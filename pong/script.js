@@ -27,6 +27,7 @@ let player2Score = 0
 let lastPlayerScore = 1
 let gradualSpeedIncrease = false
 let color = 'white'
+let paddleSize = 100
 
 // ball settings
 let CPUTarget = canvas.height/2
@@ -63,6 +64,12 @@ const go = new Audio()
 go.src = 'assets/sounds/go.mp3'
 
 const sounds = [bounce, hover, lose, point, select, win, tick, go]
+
+// background music
+const music = new Audio()
+music.src = 'assets/sounds/music.mp3'
+music.volume = 0.5
+music.loop = true
 
 const game = {
     // instances
