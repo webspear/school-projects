@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js'
 import Exp from './exp.js'
 import {gameState} from '../main.js'
 import { dmg } from '../main.js'

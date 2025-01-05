@@ -3,12 +3,12 @@ body {
     background-color: rgb(179, 179, 179);
     overflow: hidden;
     user-select: none;
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    cursor: url("./public/images/cursor.png"), auto;
     font-family: ending;
 }
 @font-face {
     font-family: ending;
-    src: url("./fonts/Perfect\ DOS\ VGA\ 437.ttf");
+    src: url("./public/fonts/Perfect\ DOS\ VGA\ 437.ttf");
 }
 h1 {
     margin: 0;
@@ -158,14 +158,14 @@ img {
     margin: auto;
     margin-right: 0;
     margin-left: 0;
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    cursor: url("./public/images/cursor.png"), auto;
 }
 .slider::-webkit-slider-thumb {
     appearance: none;
     width: 10px;
     height: 25px;
     background: rgb(255, 255, 255);
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    cursor: url("./public/images/cursor.png"), auto;
 }
 #fs {
     margin: auto;
@@ -185,7 +185,7 @@ img {
     display: flex;
     align-items: center;
     outline: none;
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    cursor: url("./public/images/cursor.png"), auto;
 }
 .checkbox:after {
     content: "";
@@ -205,7 +205,7 @@ img {
     margin: auto;
     margin-top: 60px;
     font-size: 50px;
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    cursor: url("./public/images/cursor.png"), auto;
     margin-left: 0;
 }
 #options-back:hover {
@@ -334,7 +334,7 @@ img {
     border-radius: 0;
     background: linear-gradient(to right, #0856ff 0%, rgb(215, 234, 255) 0%);
     outline: none;
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    cursor: url("./public/images/cursor.png"), auto;
     border: black solid 4px;
     transition: 100ms;
 }
@@ -378,7 +378,7 @@ img {
     border-radius: 0;
     background: linear-gradient(to right, #2bb148 100%, rgb(215, 255, 220) 0%);
     outline: none;
-    cursor: url("https://i.imgur.com/Kd5pVCJ.png"), auto;
+    cursor: url("./public/images/cursor.png"), auto;
     border: black solid 4px;
 }
 #hp-bar::-webkit-slider-thumb {
@@ -568,6 +568,11 @@ img {
 #end-title {
     margin: 20px auto;
     font-size: 7em;
+    margin-bottom: 0;
+}
+#endless-score {
+    margin: 0px auto;
+    font-size: 1.5em;
 }
 #end-stats-txt {
     margin: 15px auto;

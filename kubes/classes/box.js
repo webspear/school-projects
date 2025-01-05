@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js'
 
 class Box extends THREE.Mesh {
     constructor({width, height, depth, color = '#00ff00', position = {x:0, y:0, z:0}}) {

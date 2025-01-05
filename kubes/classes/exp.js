@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js'
 import {gameState} from '../main.js'
 import { expa } from '../main.js'
 import { levelup } from '../main.js'
@@ -98,12 +98,12 @@ class Exp extends THREE.Mesh {
     levelUp(player) {
         // set attributes for cards
         const attributes = [
-            {id: 0, img: './images/hp.png', pos: '+3 Health', neg: '-5% Speed'},
-            {id: 1, img: './images/atk-dmg.png', pos: '+20% Atk Damage', neg: '-3% EXP Gain'},
-            {id: 2, img: './images/atk-speed.png', pos: '+20% Atk Speed', neg: '-2% Crit Chance'},
-            {id: 3, img: './images/speed.png', pos: '+20% Speed', neg: '-1 Health'},
-            {id: 4, img: './images/crit.png', pos: '+10% Crit Chance', neg: '-5% Atk Speed'},
-            {id: 5, img: './images/exp.png', pos: '+20% EXP Gain', neg: '-3% Atk Damage'},
+            {id: 0, img: './public/images/hp.png', pos: '+3 Health', neg: '-5% Speed'},
+            {id: 1, img: './public/images/atk-dmg.png', pos: '+20% Atk Damage', neg: '-3% EXP Gain'},
+            {id: 2, img: './public/images/atk-speed.png', pos: '+20% Atk Speed', neg: '-2% Crit Chance'},
+            {id: 3, img: './public/images/speed.png', pos: '+20% Speed', neg: '-1 Health'},
+            {id: 4, img: './public/images/crit.png', pos: '+10% Crit Chance', neg: '-5% Atk Speed'},
+            {id: 5, img: './public/images/exp.png', pos: '+20% EXP Gain', neg: '-3% Atk Damage'},
         ]
 
         while (gameState.selectedObjects.length < 3) {

@@ -1,8 +1,9 @@
-import * as THREE from 'three'
-import Bullet from './bullet'
-import { gameState } from '../main'
-import { hurt } from '../main'
-import { shoot } from '../main'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js'
+import Bullet from './bullet.js'
+import { gameState } from '../main.js'
+import { hurt } from '../main.js'
+import { shoot } from '../main.js'
+import { end } from '../main.js'
 
 class Player extends THREE.Mesh {
     constructor({width, height, depth, color = '#71a9ff', velocity = {x:0, y:0, z:0}, position = {x:0, y:0, z:0}}) {
@@ -144,6 +145,13 @@ class Player extends THREE.Mesh {
                         document.getElementById('end-speed').textContent = document.getElementById('speed-txt').textContent
                         document.getElementById('end-crit').textContent = document.getElementById('crit-txt').textContent
                         document.getElementById('end-exp-stats').textContent = document.getElementById('exp-stats-txt').textContent
+
+                        if (gameState.endlessMode) {
+                            document.getElementById('endless-score').textContent = 'SURVIVED ' + gameState.waveMultiplier +' WAVE'
+                        }
+                        else {
+                            document.getElementById('endless-score').textContent = ' '
+                        }
                     }
                 }
             }

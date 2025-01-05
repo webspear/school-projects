@@ -1,13 +1,13 @@
-import {renderer} from "./main"
-import {gameState} from "./main"
-import {startGame} from "./main"
-import {keys} from "./main"
-import {hover} from "./main"
-import {select} from "./main"
-import {menu} from "./main"
-import {music} from "./main"
+import {renderer} from "./main.js"
+import {gameState} from "./main.js"
+import {startGame} from "./main.js"
+import {keys} from "./main.js"
+import {hover} from "./main.js"
+import {select} from "./main.js"
+import {menu} from "./main.js"
+import {music} from "./main.js"
 
-import {sounds} from "./main"
+import {sounds} from "./main.js"
 
 export function setupEventListeners() {
     window.addEventListener('keydown', (event) => {
@@ -296,7 +296,7 @@ export function setupEventListeners() {
         gameState.endlessMode = true
 
         fadeOutMusic(1000)
-        
+
         music.play()
 
         setTimeout(() => {

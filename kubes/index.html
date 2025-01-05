@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KUBES</title>
-    <link rel="icon" type="image/x-icon" href="./favicon.svg">
+    <link rel="icon" type="image/x-icon" href="./public/favicon.svg">
 
     <link rel="stylesheet" href="./style.css">
 </head>
@@ -24,7 +24,7 @@
         <h1 id="controls-btn">CONTROLS</h1>
         <h1 id="help-btn">HOW TO PLAY</h1>
     </div>
-    <img src="./images/menu-icon.png" alt="" id="menu-icon">
+    <img src="./public/images/menu-icon.png" alt="" id="menu-icon">
 
     <!-- options menu -->
     <div id="options">
@@ -75,7 +75,7 @@
         <div id="hp-container">
             <div id="hp-txt-container">
                 <h1 id="hp-txt">HEALTH</h1>
-                <img src="./images/hp-icon.png" alt="" id="hp-icon">
+                <img src="./public/images/hp-icon.png" alt="" id="hp-icon">
             </div>
             <h1 id="hp-prog">20/20</h1>
             <div id="hp-bar"></div>
@@ -102,7 +102,7 @@
             </div>
             
             <div id="upg-1" class="upg-card">
-                <img id="upg-img-1" src="./images/atk-speed.png" alt="" class="upg-img">
+                <img id="upg-img-1" src="./public/images/atk-speed.png" alt="" class="upg-img">
                 <h1 id="pos-txt-1" class="upg-pos">Atk speed</h1>
                 <h1 id="neg-txt-1" class="upg-neg">Health</h1>
             </div>
@@ -123,8 +123,8 @@
             <h1 id="wave-announcer-title">WAVE 1</h1>
             <h1 id="wave-announcer-txt">ENEMY SIZE MULTIPLIER: 1x</h1>
             <h1 id="wave-announcer-ct">TOTAL ENEMIES THIS WAVE: 10</h1>
-            <img class="wave-icon" id="wave-icon-1" src="./images/wave-icon.png" alt="">
-            <img class="wave-icon" id="wave-icon-2" src="./images/wave-icon.png" alt="">
+            <img class="wave-icon" id="wave-icon-1" src="./public/images/wave-icon.png" alt="">
+            <img class="wave-icon" id="wave-icon-2" src="./public/images/wave-icon.png" alt="">
         </div>
 
         <!-- pause menu -->
@@ -145,6 +145,7 @@
         <!-- end menu -->
         <div id="end-menu">
             <h1 id="end-title">VICTORY</h1>
+            <h1 id="endless-score">SURVIVED 1 WAVE</h1>
             <h1 id="end-stats-txt">PLAYER STATS:</h1>
             <div id="end-stats">
                 <h1 id="end-hp-stats" class="stat">MAX HEALTH: 20</h1>
@@ -159,6 +160,9 @@
         </div>
     </div>
 
+    <script type="module" src="">
+        import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js"
+    </script>
     <script type="module" src="main.js"></script>
 </body>
 </html>

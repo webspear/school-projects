@@ -1,6 +1,6 @@
-import * as THREE from 'three'
-import Stats from 'stats.js'
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js'
+// import Stats from 'stats.js'
+// import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
 
 // event listerners
 import {setupEventListeners} from './event-listeners.js'
@@ -51,32 +51,32 @@ export let gameState = {
 
 // audio
 export const hover = new Audio()
-hover.src = './audio/hover.mp3'
+hover.src = './public/audio/hover.mp3'
 export const select = new Audio()
-select.src = './audio/select.mp3'
+select.src = './public/audio/select.mp3'
 export const crit = new Audio()
-crit.src = './audio/crit.mp3'
+crit.src = './public/audio/crit.mp3'
 export const dmg = new Audio()
-dmg.src = './audio/dmg.mp3'
+dmg.src = './public/audio/dmg.mp3'
 export const end = new Audio()
-end.src = './audio/end.mp3'
+end.src = './public/audio/end.mp3'
 export const expa = new Audio()
-expa.src = './audio/exp.wav'
+expa.src = './public/audio/exp.wav'
 export const hurt = new Audio()
-hurt.src = './audio/hurt.wav'
+hurt.src = './public/audio/hurt.wav'
 export const levelup = new Audio()
-levelup.src = './audio/level-up.mp3'
+levelup.src = './public/audio/level-up.mp3'
 export const shoot = new Audio()
-shoot.src = './audio/shoot.wav'
+shoot.src = './public/audio/shoot.wav'
 
 export const sounds = [hover, select, crit, dmg, end, expa, hurt, levelup, shoot]
 
 export const menu = new Audio()
-menu.src = './audio/menu.mp3'
+menu.src = './public/audio/menu.mp3'
 menu.volume = 0.5
 menu.loop = true
 export const music = new Audio()
-music.src = './audio/music.mp3'
+music.src = './public/audio/music.mp3'
 music.volume = 0.5
 music.loop = true
 
@@ -330,7 +330,7 @@ function animate() {
 			gameState.transition = true
 
 			setTimeout(() => {
-				if (gameState.waveMultiplier >= 5 && !gameState.endlessMode){ // ends at wave 5 (def 5)
+				if (gameState.waveMultiplier >= 1 && !gameState.endlessMode){ // ends at wave 5 (def 5)
 					end.currentTime = 0
 					end.play()
 
@@ -352,6 +352,8 @@ function animate() {
 					document.getElementById('end-menu').style.top = '50%'
 
 					document.getElementById('end-title').textContent = 'VICTORY'
+
+					document.getElementById('endless-score').textContent = ' '
 
 					// update end stats
 					document.getElementById('end-hp-stats').textContent = document.getElementById('hp-stats-txt').textContent

@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js'
 
 class Bullet extends THREE.Mesh {
     constructor({color = '#ffff00', velocity = {x:0, y:0, z:0}, position, target}) {
@@ -19,7 +19,7 @@ class Bullet extends THREE.Mesh {
         this.trailGeometry.setAttribute('position', new THREE.BufferAttribute(this.trailPositions, 3))
 
         const textureLoader = new THREE.TextureLoader()
-        const trailTexture = textureLoader.load('../textures/gradient-texture.png')
+        const trailTexture = textureLoader.load('./public/textures/gradient-texture.png')
 
         this.trailMaterial = new THREE.LineBasicMaterial({
             color,
