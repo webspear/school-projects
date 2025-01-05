@@ -212,43 +212,43 @@ export function setupEventListeners() {
         menu.play()
     }
     document.getElementById('play-btn').onclick = () => {
-        document.getElementById('menu').style.left = '-50%'
+        document.getElementById('menu').style.left = '-60%'
         document.getElementById('game-select').style.left = '5%'
         select.currentTime = 0
         select.play()
     }
     document.getElementById('options-btn').onclick = () => {
-        document.getElementById('menu').style.left = '-50%'
+        document.getElementById('menu').style.left = '-60%'
         document.getElementById('options').style.left = '5%'
         select.currentTime = 0
         select.play()
     }
     document.getElementById('options-back').onclick = () => {
-        document.getElementById('options').style.left = '-50%'
+        document.getElementById('options').style.left = '-60%'
         document.getElementById('menu').style.left = '5%'
         select.currentTime = 0
         select.play()
     }
     document.getElementById('help-btn').onclick = () => {
-        document.getElementById('menu').style.left = '-50%'
+        document.getElementById('menu').style.left = '-60%'
         document.getElementById('help').style.left = '5%'
         select.currentTime = 0
         select.play()
     }
     document.getElementById('help-back').onclick = () => {
-        document.getElementById('help').style.left = '-50%'
+        document.getElementById('help').style.left = '-60%'
         document.getElementById('menu').style.left = '5%'
         select.currentTime = 0
         select.play()
     }
     document.getElementById('controls-btn').onclick = () => {
-        document.getElementById('menu').style.left = '-50%'
+        document.getElementById('menu').style.left = '-60%'
         document.getElementById('controls').style.left = '5%'
         select.currentTime = 0
         select.play()
     }
     document.getElementById('controls-back').onclick = () => {
-        document.getElementById('controls').style.left = '-50%'
+        document.getElementById('controls').style.left = '-60%'
         document.getElementById('menu').style.left = '5%'
         select.currentTime = 0
         select.play()
@@ -271,7 +271,7 @@ export function setupEventListeners() {
     }
 
     document.getElementById('vs-player').onclick = () => {
-        document.getElementById('game-select').style.left = '-50%'
+        document.getElementById('game-select').style.left = '-60%'
         document.getElementById('menu-icon').style.left = '150%'
         select.currentTime = 0
         select.play()
@@ -289,7 +289,7 @@ export function setupEventListeners() {
         
     }
     document.getElementById('vs-cpu-easy').onclick = () => {
-        document.getElementById('game-select').style.left = '-50%'
+        document.getElementById('game-select').style.left = '-60%'
         document.getElementById('menu-icon').style.left = '150%'
         select.currentTime = 0
         select.play()
@@ -317,4 +317,36 @@ export function setupEventListeners() {
         select.currentTime = 0
         select.play()
     }
+
+    // detect tabbing out
+    addEventListener('visibilitychange', () => {
+        console.log('hidden')
+        if (document.hidden) {
+            if (gameState.gameStarted) {
+                gameState.paused = true
+                document.getElementById('pause-menu').style.visibility = 'visible'
+
+                keys = {
+                    a: false,
+                    d: false,
+                    w: false,
+                    s: false
+                }
+            }
+        }
+    })
+    window.addEventListener('blur', () => {
+        console.log('unfocus')
+        if (gameState.gameStarted) {
+            gameState.paused = true
+            document.getElementById('pause-menu').style.visibility = 'visible'
+
+            keys = {
+                a: false,
+                d: false,
+                w: false,
+                s: false
+            }
+        }
+    })
 }

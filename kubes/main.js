@@ -133,7 +133,7 @@ scene.add(light)
 scene.add(new THREE.AmbientLight(0xffffff, 0.5))
 
 // key events
-export const keys = {
+export let keys = {
 	a: false,
 	d: false,
 	w: false,

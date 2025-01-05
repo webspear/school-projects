@@ -6,6 +6,9 @@ body {
     cursor: url("./public/images/cursor.png"), auto;
     font-family: ending;
 }
+* {
+    cursor: url("./public/images/cursor.png"), auto
+}
 @font-face {
     font-family: ending;
     src: url("https://webspear.github.io/kubes/public/fonts/Perfect%20DOS%20VGA%20437.ttf");
@@ -105,7 +108,7 @@ img {
 #options {
     position: absolute;
     top: 45%;
-    left: -50%;
+    left: -60%;
     transform: translateY(-50%);
     margin: 0;
     display: flex;
@@ -216,7 +219,7 @@ img {
 #controls {
     position: absolute;
     top: 45%;
-    left: -50%;
+    left: -60%;
     transform: translateY(-50%);
     margin: 0;
     display: flex;
@@ -246,7 +249,7 @@ img {
 #help {
     position: absolute;
     top: 45%;
-    left: -50%;
+    left: -60%;
     transform: translateY(-50%);
     margin: 0;
     display: flex;
@@ -279,7 +282,7 @@ img {
 #game-select {
     position: absolute;
     top: 50%;
-    left: -50%;
+    left: -60%;
     transform: translateY(-50%);
     margin: 0;
     display: flex;
