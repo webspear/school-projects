@@ -98,7 +98,7 @@ class Exp extends THREE.Mesh {
     levelUp(player) {
         // set attributes for cards
         const attributes = [
-            {id: 0, img: './public/images/hp.png', pos: '+3 Health', neg: '-5% Speed'},
+            {id: 0, img: './public/images/hp.png', pos: '+2 Health', neg: '-5% Speed'},
             {id: 1, img: './public/images/atk-dmg.png', pos: '+20% Atk Damage', neg: '-3% EXP Gain'},
             {id: 2, img: './public/images/atk-speed.png', pos: '+20% Atk Speed', neg: '-2% Crit Chance'},
             {id: 3, img: './public/images/speed.png', pos: '+20% Speed', neg: '-1 Health'},
@@ -120,9 +120,12 @@ class Exp extends THREE.Mesh {
 
         function handleUpgrade(selectedObject) {
             if (selectedObject?.id === 0) {
-                player.maxHealth += 3
+                player.maxHealth += 2
                 player.speed -= 0.06 * 0.05
                 player.initialSpeed -= 0.06 * 0.05
+                player.health = player.maxHealth
+                document.getElementById('hp-prog').textContent = player.health + '/' + player.maxHealth
+                document.getElementById('hp-bar').style.background = 'linear-gradient(to right, #2bb148 ' + (player.health / player.maxHealth) * 100 + '%, rgb(215, 255, 220) 0%)'
             } else if (selectedObject?.id === 1) {
                 gameState.atkDmgMp += 0.2
                 gameState.expMP -= 0.03
@@ -133,6 +136,11 @@ class Exp extends THREE.Mesh {
                 player.speed += 0.06 * 0.2
                 player.initialSpeed += 0.06 * 0.2
                 player.maxHealth -= 1
+                if (player.health > player.maxHealth) {
+                    player.health = player.maxHealth
+                    document.getElementById('hp-prog').textContent = player.health + '/' + player.maxHealth
+                    document.getElementById('hp-bar').style.background = 'linear-gradient(to right, #2bb148 ' + (player.health / player.maxHealth) * 100 + '%, rgb(215, 255, 220) 0%)'
+                }
             } else if (selectedObject?.id === 4) {
                 gameState.critChance += 0.1
                 gameState.atkSpeedMp -= 0.05
@@ -172,9 +180,6 @@ class Exp extends THREE.Mesh {
         
             gameState.locked = false
         
-            player.health = player.maxHealth
-            document.getElementById('hp-prog').textContent = player.health + '/' + player.maxHealth
-            document.getElementById('hp-bar').style.background = 'linear-gradient(to right, #2bb148 ' + (player.health / player.maxHealth) * 100 + '%, rgb(215, 255, 220) 0%)'
         }
         
         function handleUpgrade1() {
@@ -241,11 +246,6 @@ class Exp extends THREE.Mesh {
         document.getElementById('upg-img-3').src = gameState.selectedObjects[2].img
         document.getElementById('pos-txt-3').textContent = gameState.selectedObjects[2].pos
         document.getElementById('neg-txt-3').textContent = gameState.selectedObjects[2].neg
-
-        // regen character
-        player.health = player.maxHealth
-        document.getElementById('hp-prog').textContent = player.health + '/' + player.maxHealth
-        document.getElementById('hp-bar').style.background = 'linear-gradient(to right, #2bb148 ' + (player.health/player.maxHealth)*100 + '%, rgb(215, 255, 220) 0%)'
     }
 }
 

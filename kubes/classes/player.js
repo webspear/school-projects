@@ -26,7 +26,7 @@ class Player extends THREE.Mesh {
         
         this.initialSpeed = 0.06
         this.speed = this.initialSpeed
-        this.maxHealth = 20
+        this.maxHealth = 10
         this.health = this.maxHealth
 
         this.target = null

@@ -1,4 +1,5 @@
 import {renderer} from "./main.js"
+import {camera} from "./main.js"
 import {gameState} from "./main.js"
 import {startGame} from "./main.js"
 import {keys} from "./main.js"
@@ -140,6 +141,18 @@ export function setupEventListeners() {
         select.currentTime = 0
         select.play()
     })
+
+    // Resize canvas on window resize
+    window.addEventListener('resize', () => {
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        camera.aspect = window.innerWidth / window.innerHeight
+        camera.updateProjectionMatrix()
+    })
+
+    // Initial canvas size
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
 
     document.getElementById('fs-checkbox').onmouseover = () => {
         hover.currentTime = 0

@@ -11,7 +11,7 @@ import Player from './classes/player.js'
 import Enemy from './classes/enemy.js'
 
 const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000)
+export const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000)
 
 export const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true})
 renderer.shadowMap.enabled = true
@@ -233,7 +233,7 @@ function resetGame() {
 	}
 
 	// change the text
-	document.getElementById('hp-prog').textContent = '20/20'
+	document.getElementById('hp-prog').textContent = '10/10'
 	document.getElementById('hp-bar').style.background = 'linear-gradient(to right, #2bb148 100%, rgb(215, 255, 220) 0%)'
 
 	document.getElementById('lvl-txt').textContent = 'LEVEL 1'
@@ -247,7 +247,7 @@ function resetGame() {
 	document.getElementById('wave-announcer-txt').textContent = 'ENEMY SIZE MULTIPLIER: 1x'
 	document.getElementById('wave-announcer-ct').textContent = 'TOTAL ENEMIES THIS WAVE: 10'
 
-	document.getElementById('hp-stats-txt').textContent = 'MAX HEALTH: 20'
+	document.getElementById('hp-stats-txt').textContent = 'MAX HEALTH: 10'
 	document.getElementById('atk-dmg-txt').textContent = 'ATTACK DAMAGE: +0%'
 	document.getElementById('atk-speed-txt').textContent = 'ATTACK SPEED: +0%'
 	document.getElementById('speed-txt').textContent = 'SPEED: +0%'
@@ -276,11 +276,18 @@ function startWave() {
 }
 
 // player shooting
-const playerShoot = setInterval(() => {
-	if (!gameState.paused && !gameState.locked)
-    player.trackClosestEnemy(gameState.enemies, scene)
-}, 1000 / gameState.atkSpeedMp)
+let shootCD = false
+function playerShootBullet() {
+	if (!gameState.paused && !gameState.locked && !shootCD) {
+		shootCD = true
 
+		player.trackClosestEnemy(gameState.enemies, scene)
+
+		setTimeout(() => {
+			shootCD = false
+		}, 1000 / gameState.atkSpeedMp)
+	}
+}
 
 // render the scene
 function animate() {
@@ -325,6 +332,8 @@ function animate() {
 		})
 
 		spawnEnemy()
+
+		playerShootBullet()
 
 		if (gameState.remainingEnemies <= 0 && !gameState.transition) {
 			gameState.transition = true
@@ -406,4 +415,25 @@ export function startGame() {
 	}, 1000);
 }
 
-// startGame()
+// rotate the menu icon
+function rotateMenuIcon() {
+    const menuIcon = document.getElementById('menu-icon-img');
+    const rSteps = 100
+    const rR = 45
+
+    let rStep = 0
+
+    function animateI() {
+        const angle = (Math.tan(Math.PI / rSteps * rStep) < 1000) 
+            ? ((rR * Math.sin(Math.PI / rSteps * rStep)) / (Math.tan(Math.PI / rSteps * rStep)) * 2) 
+            : 0
+
+        menuIcon.style.transform = `rotateY(${angle}deg)`
+        rStep = (rStep + 1) % rSteps
+
+        requestAnimationFrame(animateI)
+    }
+    animateI()
+}
+
+rotateMenuIcon()
