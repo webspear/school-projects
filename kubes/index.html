@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KUBES</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.svg">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- start overlay to circumvent autoplay on browsers -->
+    <div id="start-overlay">
+        START GAME
+        <h1 id="start-txt">CLICK ANYWHERE TO START</h1>
+    </div>
+
+    <!-- menu -->
+    <div id="menu">
+        <h1 id="main-title">KUBES</h1>
+        <h1 id="play-btn">PLAY</h1>
+        <h1 id="options-btn">OPTIONS</h1>
+        <h1 id="controls-btn">CONTROLS</h1>
+        <h1 id="help-btn">HOW TO PLAY</h1>
+    </div>
+    <img src="./images/menu-icon.png" alt="" id="menu-icon">
+
+    <!-- options menu -->
+    <div id="options">
+        <h1 id="options-title">OPTIONS</h1>
+        <div id="volume">
+            <label for="volume-slider">VOLUME:</label>
+            <label for="volume-slider" id="volume-ind">100</label>
+            <input type="range" min="0" max="100" value="100" class="slider" id="volume-slider">
+        </div>
+        <div id="music">
+            <label for="music-slider">MUSIC:</label>
+            <label for="music-slider" id="music-ind">50</label>
+            <input type="range" min="0" max="100" value="50" class="slider" id="music-slider">
+        </div>
+        <div id="fs">
+            <label for="fs-checkbox">FULLSCREEN:</label>
+            <input type="checkbox" min="1" max="100" value="50" class="checkbox" id="fs-checkbox">
+        </div>
+        <h1 id="options-back">BACK</h1>
+    </div>
+
+    <!-- controls screen -->
+    <div id="controls">
+        <h1 id="controls-title">CONTROLS</h1>
+        <h1 id="controls-player1">> [WASD] to move the player</h1>
+        <h1 id="controls-pause">> ESC to pause during game.</h1>
+        <h1 id="controls-back">BACK</h1>
+    </div>
+    
+    <!-- how to play -->
+    <div id="help">
+        <h1 id="help-title">HOW TO PLAY</h1>
+        <h1 id="help-txt">The goal of the game is to survive the constant waves of enemies. Contact with an enemy causes damage and defeating an enemy drops experience points, helping the player level up as the game progresses. Each level up gives the player three choices, each with a positive and a negative aspect.</h1>
+        <h1 id="help-back">BACK</h1>
+    </div>
+
+    <!-- game selection menu -->
+    <div id="game-select">
+        <h1 id="vs-player">STANDARD</h1>
+        <h1 id="game-desc-1">Survive 5 waves</h1>
+        <h1 id="vs-cpu-easy">ENDLESS</h1>
+        <h1 id="game-desc-2">An infinite number of waves</h1>
+    </div>
+
+    <!-- game -->
+    <div id="game">
+        <!-- hp bar -->
+        <div id="hp-container">
+            <div id="hp-txt-container">
+                <h1 id="hp-txt">HEALTH</h1>
+                <img src="./images/hp-icon.png" alt="" id="hp-icon">
+            </div>
+            <h1 id="hp-prog">20/20</h1>
+            <div id="hp-bar"></div>
+        </div>
+
+        <!-- exp bar -->
+        <div id="exp-container">
+            <h1 id="lvl-txt">LEVEL 1</h1>
+            <h1 id="lvl-prog">0/0</h1>
+            <div id="exp-bar"></div>
+        </div>
+
+        <!-- wave indicator -->
+        <div id="wave-container">
+            <h1 id="wave-ind">WAVE: 1</h1>
+            <h1 id="wave-prog">ENEMIES REMAINING: 10</h1>
+        </div>
+
+        <!-- upgrades -->
+        <div id="upg-container">
+            <div id="upg-title-div">
+                <h1 id="upg-title">LEVEL UP!</h1>
+                <h1 id="upg-desc">CHOOSE ONE OF THE FOLLOWING SKILL CARDS</h1>
+            </div>
+            
+            <div id="upg-1" class="upg-card">
+                <img id="upg-img-1" src="./images/atk-speed.png" alt="" class="upg-img">
+                <h1 id="pos-txt-1" class="upg-pos">Atk speed</h1>
+                <h1 id="neg-txt-1" class="upg-neg">Health</h1>
+            </div>
+            <div id="upg-2" class="upg-card">
+                <img id="upg-img-2" src="" alt="" class="upg-img">
+                <h1 id="pos-txt-2" class="upg-pos"></h1>
+                <h1 id="neg-txt-2" class="upg-neg"></h1>
+            </div>
+            <div id="upg-3" class="upg-card">
+                <img id="upg-img-3" src="" alt="" class="upg-img">
+                <h1 id="pos-txt-3" class="upg-pos"></h1>
+                <h1 id="neg-txt-3" class="upg-neg"></h1>
+            </div>
+        </div>
+
+        <!-- wave announcer -->
+        <div id="wave-announcer-container">
+            <h1 id="wave-announcer-title">WAVE 1</h1>
+            <h1 id="wave-announcer-txt">ENEMY SIZE MULTIPLIER: 1x</h1>
+            <h1 id="wave-announcer-ct">TOTAL ENEMIES THIS WAVE: 10</h1>
+            <img class="wave-icon" id="wave-icon-1" src="./images/wave-icon.png" alt="">
+            <img class="wave-icon" id="wave-icon-2" src="./images/wave-icon.png" alt="">
+        </div>
+
+        <!-- pause menu -->
+        <div id="pause-menu">
+            <h1 id="pause-txt">PAUSED</h1>
+            <h1 id="pause-stats-txt">STATS:</h1>
+            <div id="stats-txt">
+                <h1 id="hp-stats-txt" class="stat">MAX HEALTH: 20</h1>
+                <h1 id="atk-dmg-txt" class="stat">ATTACK DAMAGE: +0%</h1>
+                <h1 id="atk-speed-txt" class="stat">ATTACK SPEED: +0%</h1>
+                <h1 id="speed-txt" class="stat">SPEED: +0%</h1>
+                <h1 id="crit-txt" class="stat">CRIT CHANCE: 0%</h1>
+                <h1 id="exp-stats-txt" class="stat">EXP GAIN: +0%</h1>
+            </div>
+            <h1 id="pause-help">[ESC] TO UNPAUSE</h1>
+        </div>
+
+        <!-- end menu -->
+        <div id="end-menu">
+            <h1 id="end-title">VICTORY</h1>
+            <h1 id="end-stats-txt">PLAYER STATS:</h1>
+            <div id="end-stats">
+                <h1 id="end-hp-stats" class="stat">MAX HEALTH: 20</h1>
+                <h1 id="end-atk-dmg" class="stat">ATTACK DAMAGE: +0%</h1>
+                <h1 id="end-atk-speed" class="stat">ATTACK SPEED: +0%</h1>
+                <h1 id="end-speed" class="stat">SPEED: +0%</h1>
+                <h1 id="end-crit" class="stat">CRIT CHANCE: 0%</h1>
+                <h1 id="end-exp-stats" class="stat">EXP GAIN: +0%</h1>
+            </div>
+            <h1 id="replay-btn">REPLAY</h1>
+            <h1 id="back-to-title-btn">BACK TO TITLE SCREEN</h1>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
