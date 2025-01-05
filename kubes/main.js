@@ -330,7 +330,7 @@ function animate() {
 			gameState.transition = true
 
 			setTimeout(() => {
-				if (gameState.waveMultiplier >= 1 && !gameState.endlessMode){ // ends at wave 5 (def 5)
+				if (gameState.waveMultiplier >= 5 && !gameState.endlessMode){ // ends at wave 5 (def 5)
 					end.currentTime = 0
 					end.play()
 
