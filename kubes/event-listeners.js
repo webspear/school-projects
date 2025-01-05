@@ -326,12 +326,10 @@ export function setupEventListeners() {
                 gameState.paused = true
                 document.getElementById('pause-menu').style.visibility = 'visible'
 
-                keys = {
-                    a: false,
-                    d: false,
-                    w: false,
-                    s: false
-                }
+                keys.a = false
+                keys.d = false
+                keys.w = false
+                keys.s = false
             }
         }
     })
@@ -341,12 +339,10 @@ export function setupEventListeners() {
             gameState.paused = true
             document.getElementById('pause-menu').style.visibility = 'visible'
 
-            keys = {
-                a: false,
-                d: false,
-                w: false,
-                s: false
-            }
+            keys.a = false
+            keys.d = false
+            keys.w = false
+            keys.s = false
         }
     })
 }
