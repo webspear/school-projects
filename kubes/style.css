@@ -109,6 +109,7 @@ img {
     height: 100%;
     object-fit: contain;
     transform-style: preserve-3d;
+    perspective: 1px;
 }
 
 /* options menu */

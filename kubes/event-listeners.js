@@ -336,8 +336,10 @@ export function setupEventListeners() {
         console.log('hidden')
         if (document.hidden) {
             if (gameState.gameStarted) {
-                gameState.paused = true
-                document.getElementById('pause-menu').style.visibility = 'visible'
+                if (!gameState.locked) {
+                    gameState.paused = true
+                    document.getElementById('pause-menu').style.visibility = 'visible'
+                }
 
                 keys.a = false
                 keys.d = false
@@ -349,8 +351,10 @@ export function setupEventListeners() {
     window.addEventListener('blur', () => {
         console.log('unfocus')
         if (gameState.gameStarted) {
-            gameState.paused = true
-            document.getElementById('pause-menu').style.visibility = 'visible'
+            if (!gameState.locked) {
+                gameState.paused = true
+                document.getElementById('pause-menu').style.visibility = 'visible'
+            }
 
             keys.a = false
             keys.d = false

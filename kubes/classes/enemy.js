@@ -1,11 +1,12 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js'
 import Exp from './exp.js'
+import EnemyBullet from './enemy-bullet.js'
 import {gameState} from '../main.js'
-import { dmg } from '../main.js'
-import { crit } from '../main.js'
+import {dmg} from '../main.js'
+import {crit} from '../main.js'
 
 class Enemy extends THREE.Mesh {
-    constructor({color = '#f6b447', position = {x:0, y:2, z:0}, random}) {
+    constructor({color = '#f6b447', position = {x:0, y:2, z:0}, random, player}) {
         const ranSide = random * 0.5 + 1
 
         super(
@@ -29,18 +30,30 @@ class Enemy extends THREE.Mesh {
         }
         this.gravity = -0.005
         
-        this.speed = Math.max(random * -0.01 + 0.02, 0.002)
+        this.speed = Math.max(random * -0.01 + 0.03, 0.006)
         this.direction = 45
         this.maxHealth = random * 0.5 + 1
         this.health = this.maxHealth
 
         this.isDead = false
 
+        this.type = 1 // type of enemy; 1 is normal, 2 is shooter
+
+        this.shootCD = true
+        this.frameCount = 30
+        this.direction2 = new THREE.Vector3()
+            .subVectors(player.position, this.position)
+            .normalize()
+
         // enemies.push(this)
     }
 
     spawn(player, ground) {
         let validSpawn = false
+
+        if (this.type === 2) {
+            this.material.color.set('#ea8f29')
+        }
     
         while (!validSpawn) {
             // random position
@@ -70,7 +83,7 @@ class Enemy extends THREE.Mesh {
         }
     }
 
-    update(player, ground) {
+    update(player, ground, scene) {
         this.bottom = this.position.y - this.height/2
         this.top = this.position.y + this.height/2
 
@@ -88,20 +101,101 @@ class Enemy extends THREE.Mesh {
         
         // track player
         this.direction = Math.atan2(player.position.z - this.position.z, player.position.x - this.position.x)*-1
-
+ 
         if (this.direction >= 180) {
             this.direction -= 180
         }
 
-        // ball direction of movement
+        // enemy direction of movement
         this.velocity.x = Math.cos(this.direction)
         this.velocity.z = Math.sin(this.direction) * -1
+
+        // type 2 stays at a certain distance
+        if (this.type === 2) {
+            this.keepDistance(player)
+        }
+
+        // apply vleocity to position
         this.position.x += this.velocity.x * this.speed
         this.position.z += this.velocity.z * this.speed
 
         this.applyGravity(ground)
 
-        
+        this.direction2 = new THREE.Vector3()
+            .subVectors(player.position, this.position)
+            .normalize()
+
+        // shoot player
+        if (this.type === 2) {
+            const raycaster = new THREE.Raycaster()
+            raycaster.set(this.position, this.direction2)
+            const intersects = raycaster.intersectObjects(scene.children)
+
+            for (const intersect of intersects) {
+                let shouldBreak = false
+                gameState.enemies.forEach((enemy) => {
+                    if (intersect.object === enemy) {
+                        shouldBreak = true
+                    }
+                    else if (intersect.object === player) {
+                        this.frameCount++
+                        if (!gameState.paused && !gameState.locked && !this.shootCD) {
+                            this.shootCD = true
+                    
+                            this.fireBullet(scene, player)
+                    
+                        }
+                        if (this.frameCount >= (Math.random()*30+150)*2) {
+                            this.shootCD = false
+                            this.frameCount = 0
+                        }
+                    }
+                })
+
+                if (shouldBreak) {
+                    break
+                }
+
+                // if (intersect.object === player) {
+                //     this.frameCount++
+                //     if (!gameState.paused && !gameState.locked && !this.shootCD) {
+                //         this.shootCD = true
+                
+                //         this.fireBullet(scene, player)
+                
+                //     }
+                //     if (this.frameCount >= (Math.random()*30+90)*2) {
+                //         this.shootCD = false
+                //         this.frameCount = 0
+                //     }
+                // }
+                // else {
+                //     console.log('nope')
+                // }
+            }
+        }
+    }
+
+    keepDistance(player) {
+        if (Math.sqrt((player.position.x - this.position.x)**2 + (player.position.z - this.position.z)**2) <= 6) {
+            this.velocity.x = 0
+            this.velocity.z = 0
+        }
+    }
+
+    fireBullet(scene, player) {
+        // shoot.currentTime = 0
+        // shoot.play()
+
+        const bullet = new EnemyBullet({
+            position: { x: this.position.x, y: player.position.y, z: this.position.z },
+            target: player,
+        })
+
+        scene.add(bullet)
+        scene.add(bullet.trail)
+
+        gameState.enemyBullets.push(bullet)
     }
 
     applyGravity(ground) {
@@ -210,7 +304,10 @@ class Enemy extends THREE.Mesh {
 
         this.material.color.set('#ff0000')
         setTimeout(() => {
+            if (this.type === 1)
             this.material.color.set('#f6b447')
+            else
+            this.material.color.set('#ea8f29')
         }, 100)
 
         if (this.health <= 0) {

@@ -1,7 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js'
 
-class Bullet extends THREE.Mesh {
-    constructor({color = '#ffff00', velocity = {x:0, y:0, z:0}, position, target}) {
+class EnemyBullet extends THREE.Mesh {
+    constructor({color = '#ff0000', velocity = {x:0, y:0, z:0}, position, target}) {
         super (
             new THREE.OctahedronGeometry(0.07, 0), 
             new THREE.MeshStandardMaterial({color})
@@ -12,8 +12,13 @@ class Bullet extends THREE.Mesh {
 
         this.target = target
 
+        this.direction = new THREE.Vector3()
+            .subVectors(this.target.position, this.position)
+            .normalize()
+            .multiplyScalar(0.1)
+
         // bullet trail
-        this.trailLength = 5
+        this.trailLength = 10
         this.trailPositions = new Float32Array(this.trailLength * 3)
         this.trailGeometry = new THREE.BufferGeometry()
         this.trailGeometry.setAttribute('position', new THREE.BufferAttribute(this.trailPositions, 3))
@@ -36,6 +41,8 @@ class Bullet extends THREE.Mesh {
 
         // this.type = 1 // 1 is player bullet, 2 is enemy bullet
 
+        this.wait = true
+
         this.initializeTrail()
     }
 
@@ -53,31 +60,28 @@ class Bullet extends THREE.Mesh {
     }
 
     update(scene) {
-        // using vectors for the first time ()
-        if (this.target) {
-            const direction = new THREE.Vector3()
-                .subVectors(this.target.position, this.position)
-                .normalize()
-                .multiplyScalar(0.4)
-            this.velocity = direction
-        }
+        this.velocity = this.direction
 
         this.position.add(this.velocity)
 
         this.updateTrail()
 
         // del bullet when reaching target
-        if (this.target && this.position.distanceTo(this.target.position) < 0.2) {
-            if (!this.target.isDead) {
-                this.target.damaged(scene)
+        if (
+            this.target &&
+            this.position.x > this.target.position.x - this.target.width / 2 &&
+            this.position.x < this.target.position.x + this.target.width / 2 &&
+            this.position.z > this.target.position.z - this.target.depth / 2 &&
+            this.position.z < this.target.position.z + this.target.depth / 2
+        ) {
+            if (!this.wait) {
+                this.wait = true
+                scene.remove(this)
+                scene.remove(this.trail)
             }
             else {
-                this.target = null
-                return
+                this.wait = false
             }
-            
-            scene.remove(this)
-            scene.remove(this.trail)
         }
 
         // del bullet if it's too far
@@ -105,4 +109,4 @@ class Bullet extends THREE.Mesh {
     }
 }
 
-export default Bullet
+export default EnemyBullet

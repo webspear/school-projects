@@ -27,7 +27,7 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 camera.position.set(0, 20, 5)
 camera.lookAt(0, 0, 0)
 
-// global variables
+// global variables CHANGE IT AT RESET TOO
 export let gameState = {
     playerExperience: 0,
     playerLvl: 1,
@@ -36,6 +36,7 @@ export let gameState = {
 	transition: false,
     waveMultiplier: 1,
     enemies: [],
+	enemyBullets: [],
     expPts: [],
 	expMP: 1, // def 1
 	atkSpeedMp: 1, // def 1
@@ -150,8 +151,12 @@ function spawnEnemy() {
 		enemySpawnCD = true
 
 		const enemy = new Enemy({
-			random: Math.random() * gameState.waveMultiplier
+			random: Math.random() * gameState.waveMultiplier,
+			player: player,
 		})
+		if (gameState.waveMultiplier > 2 && Math.random() < 0.2) {
+			enemy.type = 2
+		}
 		enemy.spawn(player, ground, gameState.enemies)
 		gameState.enemies.push(enemy)
 		enemy.castShadow = true
@@ -196,6 +201,16 @@ function resetGame() {
 			player.bullets.splice(i, 1)
 		}
 	}
+	for (let i = gameState.enemyBullets.length - 1; i >= 0; i--) {
+		const bullet = gameState.enemyBullets[i]
+		scene.remove(bullet)
+		scene.remove(bullet.trail)
+	
+		// Remove from array if disposed
+		if (!scene.children.includes(bullet)) {
+			player.bullets.splice(i, 1)
+		}
+	}
 
 	// add new player
 	player = new Player({
@@ -219,6 +234,7 @@ function resetGame() {
 		transition: false,
 		waveMultiplier: 1,
 		enemies: [],
+		enemyBullets: [],
 		expPts: [],
 		expMP: 1, // def 1
 		atkSpeedMp: 1, // def 1
@@ -277,15 +293,18 @@ function startWave() {
 
 // player shooting
 let shootCD = false
+let frameCount = 0
 function playerShootBullet() {
+	frameCount++
 	if (!gameState.paused && !gameState.locked && !shootCD) {
 		shootCD = true
 
 		player.trackClosestEnemy(gameState.enemies, scene)
 
-		setTimeout(() => {
-			shootCD = false
-		}, 1000 / gameState.atkSpeedMp)
+	}
+	if (frameCount >= 60/gameState.atkSpeedMp) {
+		shootCD = false
+		frameCount = 0
 	}
 }
 
@@ -314,13 +333,22 @@ function animate() {
 		player.update(ground, scene, gameState.enemies)
 
 		gameState.enemies.forEach((enemy, index) => {
-			enemy.update(player, ground, gameState.enemies)
+			enemy.update(player, ground, scene)
 
 			// rem bullets if disposed
 			if (!scene.children.includes(enemy)) {
 				gameState.enemies.splice(index, 1)
 			}
 		})
+
+        gameState.enemyBullets.forEach((bullet, index) => {
+            bullet.update(scene)
+
+            // rem bullets if disposed
+            if (!scene.children.includes(bullet)) {
+                gameState.enemyBullets.splice(index, 1)
+            }
+        })
 
 		gameState.expPts.forEach((exp, index) => {
 			exp.update(scene, player)
@@ -335,6 +363,7 @@ function animate() {
 
 		playerShootBullet()
 
+		// waves
 		if (gameState.remainingEnemies <= 0 && !gameState.transition) {
 			gameState.transition = true
 
