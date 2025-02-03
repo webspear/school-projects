@@ -5,3 +5,7 @@ body {
     user-select: none;
     cursor: none;
 }
+@font-face {
+    font-family: ending;
+    src: url("./assets/fonts/Righteous-Regular.ttf");
+}

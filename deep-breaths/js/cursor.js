@@ -1,4 +1,5 @@
-import {canvas, ctx, buttons} from "../main.js";
+import {canvas, ctx, buttons, ripples} from "../main.js";
+import Ripple from "./classes/ripple.js";
 
 export function cursor() {
     // animate cursor
@@ -18,8 +19,11 @@ export function cursor() {
         cursorY = event.clientY - rect.top
     })
 
-    canvas.addEventListener('mousedown', () => {
+    canvas.addEventListener('mousedown', (e) => {
         cursorMouseDown = true
+
+        // ripples
+        ripples.push(new Ripple(e.clientX, e.clientY))
     })
     canvas.addEventListener('mouseup', () => {
         cursorMouseDown = false
@@ -29,20 +33,28 @@ export function cursor() {
         requestAnimationFrame(animate)
 
         if (cursorX !== null && cursorY !== null) {
+            // update ripples
+            ripples.forEach((ripple, index) => {
+                ripple.update()
+                if (!ripple.isActive) {
+                    ripples.splice(index, 1)
+                }
+            })
+
             ctx.beginPath()
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+            ctx.fillStyle = 'rgba(236, 239, 241,1)'
             ctx.arc(cursorX, cursorY, cursorInner, 0, Math.PI * 2, true)
             ctx.fill()
             // ctx.stroke()
 
-            trailX += (cursorX - trailX) * lerp;
-            trailY += (cursorY - trailY) * lerp;
+            trailX += (cursorX - trailX) * lerp
+            trailY += (cursorY - trailY) * lerp
 
             // draw the circle
-            ctx.beginPath();
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-            ctx.arc(trailX, trailY, cursorOuter, 0, Math.PI * 2, true);
-            ctx.stroke();
+            ctx.beginPath()
+            ctx.strokeStyle = 'rgba(236, 239, 241,1)'
+            ctx.arc(trailX, trailY, cursorOuter, 0, Math.PI * 2, true)
+            ctx.stroke()
 
             // click animation
             if (cursorMouseDown) {
@@ -56,13 +68,15 @@ export function cursor() {
 
             // detect hover
             buttons.forEach((button) => {
-                if (Math.sqrt((button.position.x - cursorX)**2 + (button.position.y - cursorY)**2) <= button.radius && cursorOuter <= 16) {
+                if (button.isHovered) {
                     if (cursorOuter < 16) {
                         cursorOuter += 2
                         hovering = true
                     }
                 }
-                else {hovering = false}
+                else if (cursorOuter >= 16) {
+                    hovering = false
+                }
             })
         }
     }
