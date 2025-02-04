@@ -4,6 +4,7 @@ import {chapter2} from "./js/chapters/chap2.js";
 import {chapter3} from "./js/chapters/chap3.js";
 import {chapter4} from "./js/chapters/chap4.js";
 import {background} from "./js/background.js";
+import {options} from "./js/options.js";
 
 export const canvas = document.getElementById('canvas')
 export const ctx = canvas.getContext('2d')
@@ -35,6 +36,8 @@ background()
 setTimeout(() => {
 }, 1000)
 
-chapter2()
+// chapter1()
+
+options()
 
 cursor()

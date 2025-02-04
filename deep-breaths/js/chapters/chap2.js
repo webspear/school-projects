@@ -1,4 +1,5 @@
 import { ctx, canvas } from "../../main.js"
+import {chapter3} from "./chap3.js";
 
 export function chapter2() {
     let baseRadius = 300
@@ -23,6 +24,12 @@ export function chapter2() {
 
     let noInput = true
     let setupPhase = true
+    let breathCounted = false
+    let breathCount = 0
+    let breathDone = false
+    let endPhase = false
+
+    let chapterDone = false
 
     function update() {
         if (setupPhase) {
@@ -33,7 +40,17 @@ export function chapter2() {
                 textMessage = "[↑] to Inhale"
                 noInput = false
             }
-        } else {
+        }
+        else if (endPhase) {
+            radius += (0 - radius) * 0.05
+            textHide = true
+
+            if (radius <= 1) {
+                chapterDone = true
+                chapter3()
+            }
+        }
+        else {
             if (isExpanding) {
                 targetRadius = maxRadius
                 isBreathing = false
@@ -59,9 +76,21 @@ export function chapter2() {
             if (radius >= maxRadius - 1) {
                 textMessage = "[↓] to Exhale"
                 textHide = false
+                if (!breathCounted) {
+                    breathCounted = true
+                    breathCount++
+                    console.log(breathCount)
+                }
             } else if (radius <= minRadius + 1) {
                 textMessage = "[↑] to Inhale"
+
+                if (breathCount === 3) {
+                    textMessage = "Breathing is the core of calm and presence."
+                    breathDone = true
+                }
                 textHide = false
+
+                if (breathCounted) {breathCounted=false}
             }
         }
 
@@ -97,10 +126,18 @@ export function chapter2() {
             textAlpha -= 0.03
         }
 
-        noInput = !(textAlpha >= 1)
+        noInput = (!(textAlpha >= 1) || breathDone)
 
+        if (chapterDone) return
         requestAnimationFrame(update)
     }
+
+    // check for chapter done
+    window.addEventListener('click', () => {
+        if (breathDone) {
+            endPhase = true
+        }
+    })
 
     // toggle inhale/exhale
     window.addEventListener("keydown", (e) => {
