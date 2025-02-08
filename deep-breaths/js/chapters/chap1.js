@@ -1,6 +1,8 @@
 import Button from "../classes/button.js"
 import {buttons, ctx, canvas} from '../../main.js'
 import {chapter2} from "./chap2.js";
+import {options} from "../options.js";
+import {cursor} from "../cursor.js";
 
 export function chapter1() {
     let alpha = 0
@@ -19,6 +21,8 @@ export function chapter1() {
 
     let chapterDone = false
     let chapter2Triggered = false
+
+    let noInput = false
 
     function drawText() {
         ctx.font = `${fontSize}px ending`
@@ -93,6 +97,25 @@ export function chapter1() {
                 buttonAppear2 = true
             }
             helpButton.update()
+
+            if (helpButton.clicked) {
+                if (alpha > 0) {
+                    alpha -= 0.03
+                }
+                if (startButton.alpha > 0) {
+                    startButton.alpha -= 0.03
+                }
+                if (startButton.alpha > 0) {
+                    helpButton.alpha -= 0.03
+                }
+                setTimeout(() => {
+                    chapterDone = true
+
+                    if (chapter2Triggered) return
+                    chapter2Triggered = true
+                    options()
+                }, 500)
+            }
         }
 
         drawText()

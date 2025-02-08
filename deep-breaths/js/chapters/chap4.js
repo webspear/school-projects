@@ -1,5 +1,4 @@
 import { ctx, canvas } from '../../main.js'
-import button from "../classes/button.js";
 import Button from "../classes/button.js";
 
 export function chapter4() {
@@ -61,6 +60,14 @@ export function chapter4() {
         letter.y = canvas.height / 2
         xPos += letter.width + spacing
     }
+
+    // img
+    let imgAlpha = 0
+    let fadeSpeed = 0.01
+    let imgYOffset = 50
+    let imgYLerpSpeed = 2
+    const myImage = new Image(200, 200)
+    myImage.src = './assets/images/replay.png'
 
     function easeOutQuad(t) {
         return t * (2 - t)
@@ -125,6 +132,18 @@ export function chapter4() {
                     buttonAppear = true
                 }
                 endButton.update()
+
+                // end image
+                if (imgAlpha < 0.6) {
+                    imgAlpha += fadeSpeed
+                }
+                if (imgYOffset > 0) {
+                    imgYOffset -= imgYLerpSpeed
+                    imgYLerpSpeed *= 0.95
+                }
+                ctx.globalAlpha = imgAlpha
+                ctx.drawImage(myImage, canvas.width/2 - 100, canvas.height/4 + imgYOffset, 200, 200)
+                ctx.globalAlpha = 1
             }
         }
 

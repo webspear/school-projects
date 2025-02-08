@@ -9,3 +9,23 @@ body {
     font-family: ending;
     src: url("./assets/fonts/Righteous-Regular.ttf");
 }
+
+/* start-overlay */
+#start-overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    background-color: black;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    color: white;
+    font-family: ending;
+}
+#start-txt {
+    font-size: 20px;
+}

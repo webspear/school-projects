@@ -1,4 +1,4 @@
-import { ctx, buttons } from "../../main.js"
+import {ctx, buttons, click1, click2} from "../../main.js"
 
 class Button {
     constructor(x, y, width, height, baseColor, hoverColor, textColor, text) {

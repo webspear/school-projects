@@ -21,6 +21,17 @@ window.addEventListener("resize", () => {
 export let buttons = []
 export let ripples = []
 
+// audio
+export const click1 = new Audio()
+click1.src = './assets/audio/click1.mp3'
+export const click2 = new Audio()
+click2.src = './assets/audio/click2.mp3'
+
+export const music = new Audio()
+music.src = './assets/audio/music.mp3'
+music.volume = 0.5
+music.loop = true
+
 // clear canvas function
 function clearCanvas() {
     requestAnimationFrame(clearCanvas)
@@ -31,13 +42,19 @@ function clearCanvas() {
 
 clearCanvas()
 
-background()
+document.getElementById('start-overlay').addEventListener('click', () => {
+    document.getElementById('start-overlay').style.visibility = 'hidden'
 
-setTimeout(() => {
-}, 1000)
+    background()
+    chapter1()
+
+    music.play()
+})
+
+// background()
 
 // chapter1()
 
-options()
+// options()
 
 cursor()

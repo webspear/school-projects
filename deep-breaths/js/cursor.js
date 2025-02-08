@@ -1,4 +1,4 @@
-import {canvas, ctx, buttons, ripples} from "../main.js";
+import {canvas, ctx, buttons, ripples, click1, click2} from "../main.js";
 import Ripple from "./classes/ripple.js";
 
 export function cursor() {
@@ -22,6 +22,9 @@ export function cursor() {
     canvas.addEventListener('mousedown', (e) => {
         cursorMouseDown = true
 
+        click1.currentTime = 0
+        click1.play()
+
         // ripples
         ripples.push(new Ripple(e.clientX, e.clientY))
     })
@@ -30,7 +33,7 @@ export function cursor() {
     })
 
     function animate() {
-        requestAnimationFrame(animate)
+        setTimeout(() => {requestAnimationFrame(animate)}, 10)
 
         if (cursorX !== null && cursorY !== null) {
             // update ripples
@@ -68,7 +71,7 @@ export function cursor() {
 
             // detect hover
             buttons.forEach((button) => {
-                if (button.isHovered) {
+                if (button.isHovered && !button.clicked) {
                     if (cursorOuter < 16) {
                         cursorOuter += 2
                         hovering = true

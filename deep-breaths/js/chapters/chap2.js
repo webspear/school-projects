@@ -79,7 +79,6 @@ export function chapter2() {
                 if (!breathCounted) {
                     breathCounted = true
                     breathCount++
-                    console.log(breathCount)
                 }
             } else if (radius <= minRadius + 1) {
                 textMessage = "[↑] to Inhale"
