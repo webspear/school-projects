@@ -32,6 +32,9 @@ music.src = './assets/audio/music.mp3'
 music.volume = 0.5
 music.loop = true
 
+export let volumes = [100, 50]
+export let isFullscreen = [false]
+
 // clear canvas function
 function clearCanvas() {
     requestAnimationFrame(clearCanvas)

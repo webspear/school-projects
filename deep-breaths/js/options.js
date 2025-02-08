@@ -1,4 +1,4 @@
-import {canvas, ctx, buttons, ripples, music, click1, click2} from "../main.js";
+import {canvas, ctx, buttons, ripples, music, click1, click2, volumes, isFullscreen} from "../main.js";
 import Button from "./classes/button.js";
 import {chapter1} from "./chapters/chap1.js";
 
@@ -7,10 +7,6 @@ export function options() {
     const fadeSpeed = 0.03
     let yOffset = 50
     let yLerpSpeed = 2
-
-    let volumeValue = 100
-    let musicValue = 50
-    let isFullscreen = false
 
     let backButton
     let buttonAppear = false
@@ -105,7 +101,7 @@ export function options() {
 
         Object.entries(sliderAreas).forEach(([key, yPos]) => {
             const sliderX = canvas.width/2 - sliderWidth/2
-            const thumbX = sliderX + ((key === 'volume' ? volumeValue : musicValue)/100 * sliderWidth)
+            const thumbX = sliderX + ((key === 'volume' ? volumes[0] : volumes[1])/100 * sliderWidth)
 
             if (mouseY > yPos - 20 && mouseY < yPos + 20) {
                 if (Math.abs(mouseX - thumbX) < thumbRadius*2) {
@@ -115,13 +111,13 @@ export function options() {
                     const value = getSliderValue(mouseX, sliderX)
 
                     if (key === 'volume') {
-                        volumeValue = value
-                        click1.volume = volumeValue / 100
-                        click2.volume = volumeValue / 100
+                        volumes[0] = value
+                        click1.volume = volumes[0] / 100
+                        click2.volume = volumes[0] / 100
                     }
                     else {
-                        musicValue = value
-                        music.volume = musicValue / 100
+                        volumes[1] = value
+                        music.volume = volumes[1] / 100
                     }
                     isDragging = key
                 }
@@ -132,7 +128,7 @@ export function options() {
         const fsY = canvas.height/2 + 45 + yOffset
         if (mouseX > fsX && mouseX < fsX + checkboxSize &&
             mouseY > fsY && mouseY < fsY + checkboxSize) {
-            isFullscreen = !isFullscreen
+            isFullscreen[0] = !isFullscreen[0]
 
             if (window.innerHeight == screen.height) {
                 document.exitFullscreen()
@@ -153,13 +149,13 @@ export function options() {
         const value = getSliderValue(mouseX, sliderX)
 
         if (isDragging === "volume") {
-            volumeValue = value
-            click1.volume = volumeValue / 100
-            click2.volume = volumeValue / 100
+            volumes[0] = value
+            click1.volume = volumes[0] / 100
+            click2.volume = volumes[0] / 100
         }
         else if (isDragging === "music") {
-            musicValue = value
-            music.volume = musicValue / 100
+            volumes[1] = value
+            music.volume = volumes[1] / 100
         }
     }
 
@@ -186,8 +182,8 @@ export function options() {
 
         // sliders
         ctx.globalAlpha = alpha
-        drawSlider("Volume", volumeValue, canvas.height/2 - 60)
-        drawSlider("Music", musicValue, canvas.height/2)
+        drawSlider("Volume", volumes[0], canvas.height/2 - 60)
+        drawSlider("Music", volumes[1], canvas.height/2)
 
         // fs toggle
         ctx.save()
@@ -202,7 +198,7 @@ export function options() {
             canvas.height/2 + 45 + yOffset,
             30, 30
         )
-        if (isFullscreen) {
+        if (isFullscreen[0]) {
             ctx.fillStyle = accentColor
             ctx.fillRect(
                 canvas.width/2 + sliderWidth/2 - 27,
