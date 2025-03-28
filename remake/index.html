@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flappy Bird Remake</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- start overlay to circumvent autoplay on browsers -->
+    <div id="start-overlay">
+        START GAME
+        <h1 id="start-txt">CLICK ANYWHERE TO START</h1>
+    </div>
+
+    <!--menu-->
+    <div id="menu">
+        <img src="./assets/images/flappy-bird-logo.png" alt="" id="title-card">
+        <h1 id="play-btn">PLAY</h1>
+        <h1 id="store-btn">STORE</h1>
+        <h1 id="options-btn">OPTIONS</h1>
+        <h1 id="info-btn">INFO</h1>
+    </div>
+
+    <!--level selector-->
+    <div id="levels">
+        <h1 id="lvl-1">Level 1</h1>
+        <h1 id="lvl-2">Level 2</h1>
+        <h1 id="lvl-3">Level 3</h1>
+        <h1 id="lvl-4">Level 4</h1>
+        <h1 id="lvl-back">← Back</h1>
+    </div>
+
+    <!--store-->
+    <div id="store">
+        <div id="store-tabs">
+            <h1 id="skin-select" class="store-tab">Skins</h1>
+            <h1 id="skill-select" class="store-tab">Skills</h1>
+            <div id="currency-wrapper">
+                <h1 id="currency-skill" class="currency">Skill Points: 0</h1>
+                <h1 id="currency-coin" class="currency">Coins: 0</h1>
+            </div>
+        </div>
+        <div id="skins"></div>
+        <div id="skills">
+            <div id="skills-row-1" class="skill-row">
+                 <div id="skill-1" class="skill">
+                     <h1>SLOW AND STEADY</h1>
+                     <p class="item-desc">Slow the game for an easier time.</p>
+                     <button class="skill-btn">Unlock (2)</button>
+                </div>
+                <div id="skill-2" class="skill">
+                    <h1>MIDAS</h1>
+                    <p class="item-desc">Increased chance of coins appearing.</p>
+                    <button class="skill-btn">Unlock (1)</button>
+                </div>
+                <div id="skill-3" class="skill">
+                    <h1>OPEN SESAME</h1>
+                    <p class="item-desc">Bigger gap between pipes.</p>
+                    <button class="skill-btn">Unlock (2)</button>
+                </div>
+            </div>
+            <div id="skills-row-2" class="skill-row">
+                <div id="skill-4" class="skill">
+                    <h1>PHOENIX</h1>
+                    <p class="item-desc">Gain an extra life.</p>
+                    <button class="skill-btn">Unlock (4)</button>
+                </div>
+                <div id="skill-5" class="skill">
+                    <h1>MOONWALKING</h1>
+                    <p class="item-desc">Reduce the effect of gravity.</p>
+                    <button class="skill-btn">Unlock (2)</button>
+                </div>
+            </div>
+        </div>
+        <div id="store-back-wrapper"><h1 id="store-back">← Back</h1></div>
+    </div>
+
+    <!-- options menu -->
+    <div id="options">
+        <h1 id="options-title">OPTIONS</h1>
+        <div id="volume">
+            <label for="volume-slider">Volume:</label>
+            <label for="volume-slider" id="volume-ind">100</label>
+            <input type="range" min="0" max="100" value="100" class="slider" id="volume-slider">
+        </div>
+        <div id="music">
+            <label for="music-slider">Music:</label>
+            <label for="music-slider" id="music-ind">50</label>
+            <input type="range" min="0" max="100" value="50" class="slider" id="music-slider">
+        </div>
+        <div id="fs">
+            <label for="fs-checkbox">Fullscreen:</label>
+            <input type="checkbox" min="1" max="100" value="50" class="checkbox" id="fs-checkbox">
+        </div>
+        <h1 id="options-back">← Back</h1>
+    </div>
+
+    <div class="info" id="info">
+        <h1 id="info-title">INFO</h1>
+        <p>A modern take on the classic game with new features!</p>
+
+        <div class="section">
+            <h2>Varying Difficulty Levels.</h2>
+            <ul>
+                <li><strong>Level 1:</strong> Wider gaps, slower pipes.</li>
+                <li><strong>Level 2:</strong> Classic experience.</li>
+                <li><strong>Level 3:</strong> Chance of moving pipes.</li>
+                <li><strong>Level 4:</strong> All pipes will move.</li>
+            </ul>
+            <p> Each level is a checkpoint!</p>
+        </div>
+
+        <div class="section">
+            <h2>Skins</h2>
+            <p>Collect coins and customize your game with unique skins!</p>
+            <ul>
+                <li><strong>Yellow Coin (Common):</strong> +100</li>
+                <li><strong>Red Coin (Uncommon):</strong> +150</li>
+                <li><strong>Blue Coin (Rarest):</strong> +300</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Skills</h2>
+            <p>Gain skill points by leveling up!</p>
+            <ul>
+                <li><strong>Slow and Steady:</strong> Temporarily slows the game.</li>
+                <li><strong>Midas:</strong> More coins appear.</li>
+                <li><strong>Open Sesame:</strong> Pipes have larger gaps.</li>
+                <li><strong>Phoenix:</strong> Gain an extra life.</li>
+                <li><strong>Moonwalking:</strong> Gain an extra life.</li>
+            </ul>
+        </div>
+
+        <h1 id="info-back">← Back</h1>
+    </div>
+
+    <!--gui-->
+    <div id="gui">
+        <h1 id="distance-display">0</h1>
+
+        <div id="lvl-announcer">
+            <h1 id="lvl-txt">LEVEL 1</h1>
+        </div>
+
+        <!-- pause menu -->
+        <div id="pause-menu">
+            <h1 id="pause-txt">PAUSED</h1>
+            <h1 id="pause-help">[ESC] TO UNPAUSE</h1>
+        </div>
+    </div>
+
+    <!--end-->
+    <div id="end">
+        <h1 id="end-title">Victory</h1>
+        <h1 id="end-subtitle">...and beyond!</h1>
+        <h1 id="end-coins">Coins Collected: <span style="color: #c9940c">+</span>1000</h1>
+        <h1 id="end-dist">Distance: 25</h1>
+        <div id="end-exp">
+            <h1 id="end-prev-lvl">Lvl 1</h1>
+            <div id="end-exp-bar"></div>
+            <h1 id="end-next-lvl">Lvl 2</h1>
+        </div>
+        <h1 id="end-exp-skill">+1 new skill point</h1>
+        <div id="end-btns">
+            <h1 id="end-btn-1">⟳ Checkpoint</h1>
+            <h1 id="end-btn-2">← Back to Menu</h1>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script src="js/event-listeners.js"></script>
+    <script src="js/classes/player.js"></script>
+    <script src="js/classes/obstacle.js"></script>
+    <script src="js/classes/base.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
