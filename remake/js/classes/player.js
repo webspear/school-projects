@@ -9,8 +9,8 @@ class Player {
         this.vy = 0
 
         // size
-        this.w = 136
-        this.h = 96
+        this.w = 104
+        this.h = 88
 
         this.gravity = 0.7 // reset
 
@@ -52,10 +52,10 @@ class Player {
             0,
             this.frameWidth,
             this.frameHeight,
-            -this.w / 2,
-            -this.h / 2,
-            this.w,
-            this.h
+            -this.frameWidth / 2,
+            -this.frameHeight / 2,
+            this.frameWidth,
+            this.frameHeight
         );
 
         ctx.restore()

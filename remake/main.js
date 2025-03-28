@@ -148,7 +148,7 @@ function displayLvl() {
     // console.log(game.obstaclePerLvl*(game.gameLevel - game.gameLevelInit))
     if (!game.lvlDisplayed && game.playerDist >= game.obstaclePerLvl*(game.gameLevel - game.gameLevelInit)) {
         setTimeout(() => {
-            document.getElementById('lvl-txt').textContent = 'LEVEL ' + game.gameLevel
+            document.getElementById('lvl-txt').textContent = 'STAGE ' + game.gameLevel
             document.getElementById('lvl-announcer').style.width = `500px`
             setTimeout(() => {
                 document.getElementById('lvl-announcer').style.width = '0px'

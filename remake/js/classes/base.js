@@ -32,7 +32,6 @@ class Base {
 
     check() {
         if (this.x + this.sprite.width <= -this.sprite.width) {
-            console.log(this.sprite.width)
             this.done = true
         }
     }
