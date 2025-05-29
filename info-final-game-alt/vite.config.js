@@ -2,7 +2,7 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/info-final-game/",
+  base: "/info-final-game-alt/",
   build: {
     target: "esnext",
     rollupOptions: {

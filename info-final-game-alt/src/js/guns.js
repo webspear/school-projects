@@ -377,7 +377,7 @@ export class Explosion {
 export const starterWeapons = [
   new Weapon(
     "default",
-    8, // damage
+    10, // damage
     5, // speed
     1500, // range
     "handgun", // type

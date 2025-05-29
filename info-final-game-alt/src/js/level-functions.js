@@ -16,7 +16,7 @@ export class LevelFunctions {
     this.camera = camera;
 
     // lvls
-    this.level = 1;
+    this.level = 4;
     this.sublevel = 1;
 
     // html elements
@@ -655,7 +655,7 @@ export class LevelFunctions {
     }
   }
 
-  async boss() {
+  async boss(progressCallback = () => {}) {
     this.sublevel++;
     if (this.sublevel > 3) {
       this.level++;
@@ -702,16 +702,18 @@ export class LevelFunctions {
 
     // console.log(this.player.x, this.player.y)
 
-    setTimeout(() => {
-      this.player.movementLocked = true;
-      this.player.moving = false;
+    // setTimeout(() => {
+    //   this.player.movementLocked = true;
+    //   this.player.moving = false;
+    //
+    //   this.announcerSub(text.boss2, 2000);
+    //
+    //   setTimeout(() => {
+    //     this.player.movementLocked = false;
+    //   }, 2500);
+    // }, 4000);
 
-      this.announcerSub(text.boss2, 2000);
-
-      setTimeout(() => {
-        this.player.movementLocked = false;
-      }, 2500);
-    }, 4000);
+    progressCallback(100); // BEGIN GAME
   }
 
   update() {

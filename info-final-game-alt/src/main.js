@@ -246,7 +246,7 @@ document.getElementById("play-start").addEventListener("click", () => {
 
   music.menu.pause();
 
-  levelFunctions.start((progress) => {
+  levelFunctions.boss((progress) => {
     const progressBar = document.querySelector(".progressBarCont");
     const loadBlocker = document.querySelector(".loadBlocker");
     progressBar.style.width = `${progress}%`;
